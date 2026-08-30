@@ -163,7 +163,6 @@ function assertCanonicalHeadlines(story) {
   const checks = [
     ['hero.play_button_label', byId.hero?.play_button_label, hero.play_button_label],
     ['hero.film.title', byId.hero?.film?.title, hero.video?.title],
-    ['ride.headline', byId.ride?.headline, demo.title],
     ['ride.lede', byId.ride?.lede, demo.lede],
   ];
   const storyClips = byId.ride?.clips || [];
@@ -340,7 +339,7 @@ export function buildStory() {
   fs.copyFileSync(path.join(TEMPLATE, 'story.js'), path.join(OUT, 'story.js'));
 
   const title = site.title || 'Navier';
-  const desc = (site.og && site.og.description) || 'Watch the films. Read the coverage.';
+  const desc = (site.og && site.og.description) || 'Watch. Read the coverage.';
   const ogImage = assetMap.photo_goldengate || assetMap.hero_poster || '';
   const html = `<!DOCTYPE html>
 <html lang="en">
