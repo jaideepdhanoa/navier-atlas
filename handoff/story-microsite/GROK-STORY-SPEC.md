@@ -31,9 +31,9 @@ Do not add a thesis chapter, three-costs, GMVP ladder, Atlas, or dual-use essay.
    sound. Eyebrow only: `NAVIER — AN AMERICAN MARITIME COMPANY`. No thesis as H1.
    No KPI chips.
 2. **Ride** — `/invest` Traction demo grid, equal-weight tiles, muted loop,
-   click for sound. Functional headline `On the water` (the invest title
-   "Don't take our word for it" has no claim above it here). Lede + five clip
-   captions from `proof.json` `demo-grid`, verbatim. Includes `flat-turning.mp4`.
+   click for sound. Functional headline `On the water`. No section lede — the
+   invest lede is the stabilization clip, not the grid. Each clip caption from
+   `proof.json` `demo-grid`, verbatim. Includes `flat-turning.mp4`.
 3. **Deep dives** — three large plates, on-page titles from `/invest` (not YouTube
    titles): Sampriti first (`QhiaYVgXMf0`, headline *The breakthrough that will
    fundamentally change what we can do at sea.*), then CTO (`S7WB91FvSFI`,
