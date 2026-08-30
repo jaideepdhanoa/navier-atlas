@@ -9,6 +9,8 @@ the one URL an investor opens to **watch the films and read the articles**.
 **Watch + read. One URL. No homework.**
 
 - Public, noindex, no password. Forwardable.
+- Tab title + Open Graph: `Navier — An American Maritime Company`. Absolute
+  `og:image` (Golden Gate still). Navier monogram favicon.
 - Every film plays on the page (self-hosted mp4 or YouTube lightbox). Never
   “open this YouTube link” as the primary action.
 - Every article is an on-page press card (outlet + verbatim published headline).
