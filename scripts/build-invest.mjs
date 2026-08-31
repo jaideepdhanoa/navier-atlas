@@ -11,6 +11,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { injectCartoKey } from './carto-basemap.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const SRC = path.join(ROOT, 'handoff', 'invest-microsite');
@@ -274,7 +275,7 @@ function emitSite({ basePath, distRel, bundle, label }) {
 </body>
 </html>
 `;
-  fs.writeFileSync(path.join(DIST, 'index.html'), html);
+  fs.writeFileSync(path.join(DIST, 'index.html'), injectCartoKey(html));
 
   // Kill-scan on emitted data blob
   const banned = [

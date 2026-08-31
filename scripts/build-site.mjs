@@ -33,6 +33,7 @@ import { buildInvest } from './build-invest.mjs';
 import { buildDefense } from './build-defense.mjs';
 import { buildStory } from './build-story.mjs';
 import { buildPartnersHub } from './build-partners-hub.mjs';
+import { injectCartoKey } from './carto-basemap.mjs';
 import { parseProfile, applyProfile, normalizeRouteBlob } from './build-profile.mjs';
 import { applyRouteDisplay } from './route-display.mjs';
 import {
@@ -379,7 +380,7 @@ let aggregateData = applyProfile(data, profile);
   });
   delete aggregateData._route_display;
 }
-const indexHtml = fs.readFileSync(path.join(ROOT, 'index.html'), 'utf8');
+const indexHtml = injectCartoKey(fs.readFileSync(path.join(ROOT, 'index.html'), 'utf8'));
 
 // aggregate — public profile strips partner/story data; internal keeps full admin surface
 const aggregateMeta = partnerMeta({ display: 'Navier Atlas', partner_id: 'atlas', hero: { title: 'Navier Atlas · Mobility Network', subtitle: 'Interactive map of the electric-hydrofoil mobility network.' }, region: 'Global' });

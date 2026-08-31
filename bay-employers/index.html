@@ -647,7 +647,12 @@ footer strong{color:var(--text-0);letter-spacing:0.1em;font-size:12px}
         sources: {
           carto: {
             type: 'raster',
-            tiles: ['https://basemaps.cartocdn.com/dark_all/{z}/{x}/{y}@2x.png'],
+            tiles: [
+              (window.CARTO_BASEMAP_KEY
+                ? 'https://basemaps.cartocdn.com/dark_all/{z}/{x}/{y}@2x.png?key=' +
+                  encodeURIComponent(window.CARTO_BASEMAP_KEY)
+                : 'https://basemaps.cartocdn.com/dark_all/{z}/{x}/{y}@2x.png'),
+            ],
             tileSize: 256,
             attribution: '© CARTO · © OpenStreetMap',
           },
