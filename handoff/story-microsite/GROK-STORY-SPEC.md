@@ -46,8 +46,8 @@ Do not add a thesis chapter, three-costs, GMVP ladder, Atlas, or dual-use essay.
    *The 3-minute version, from our CTO*), then Vance (`ZNgh39DM_Jg`, *A long-form
    company visit with Ashlee Vance — 9:49*). Click → lightbox with sound.
    Launch film is the hero CTA only — do not duplicate here.
-5. **Press** — WSJ, National Interest, TechCrunch, Axios (verbatim headlines) +
-   Doctrine link. Robb Report never named.
+5. **Press** — WSJ, National Interest, TechCrunch, Axios, Defence Blog
+   (verbatim headlines) + Doctrine link. Robb Report never named.
 6. **Talk** — Reply to Sampriti · investors@ copy · request materials.
 
 ## Visual system
