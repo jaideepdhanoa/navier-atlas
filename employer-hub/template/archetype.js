@@ -120,20 +120,25 @@
       parts.push(section('infra', 'Infrastructure-light', html));
     }
 
-    // Dual posture
+    // Dual posture — omit a track when its copy is null/empty (RAK operate-only)
     const posture = A.posture;
     if (posture && posture.copy) {
       const w = (posture.data && posture.data.weighting) || 'balanced';
+      const enableCopy = (posture.copy.enable_track || '').trim();
+      const operateCopy = (posture.copy.operate_track || '').trim();
       const enableFirst = w !== 'operate_dominant';
-      const enableCard = `<div class="arch-card ${enableFirst ? 'emphasis' : ''}">
+      const enableCard = enableCopy
+        ? `<div class="arch-card ${enableFirst ? 'emphasis' : ''}">
         <span class="arch-badge enable">Enable</span>
         <h3>Enable the network</h3>
-        <p>${esc(posture.copy.enable_track)}</p>
-      </div>`;
-      const operateCard = `<div class="arch-card ${!enableFirst ? 'emphasis' : ''}">
+        <p>${esc(enableCopy)}</p>
+      </div>`
+        : '';
+      const operateCard = operateCopy
+        ? `<div class="arch-card ${!enableFirst || !enableCopy ? 'emphasis' : ''}">
         <span class="arch-badge operate">Operate</span>
         <h3>Operate the service</h3>
-        <p>${esc(posture.copy.operate_track)}</p>
+        <p>${esc(operateCopy)}</p>
         ${
           posture.data && posture.data.operate_proof_points && posture.data.operate_proof_points.length
             ? `<ul class="pair-list">${posture.data.operate_proof_points
@@ -144,12 +149,19 @@
                 .join('')}</ul>`
             : ''
         }
-      </div>`;
-      const cards = enableFirst ? enableCard + operateCard : operateCard + enableCard;
-      let html = '';
-      if (posture.copy.framing) html += `<p class="lead">${esc(posture.copy.framing)}</p>`;
-      html += `<div class="arch-grid-2">${cards}</div>`;
-      parts.push(section('posture', 'Two ways to partner', html));
+      </div>`
+        : '';
+      const both = !!(enableCard && operateCard);
+      const cards = enableFirst && both ? enableCard + operateCard : operateCard + enableCard;
+      if (cards) {
+        let html = '';
+        if (posture.copy.framing) html += `<p class="lead">${esc(posture.copy.framing)}</p>`;
+        html += `<div class="${both ? 'arch-grid-2' : 'arch-grid-1'}">${cards}</div>`;
+        const title = both
+          ? 'Two ways to partner'
+          : posture.copy.section_title || 'The partnership';
+        parts.push(section('posture', title, html));
+      }
     }
 
     // Public value
@@ -270,12 +282,17 @@
     // Flywheel
     const fw = A.flywheel && A.flywheel.copy;
     if (fw) {
-      const html = `<div class="flywheel">
-        <div class="wheel"><div class="n">1 · Employers</div><p>${esc(fw.employers || '')}</p></div>
-        <div class="wheel"><div class="n">2 · Public partners</div><p>${esc(fw.public_partners || '')}</p></div>
-        <div class="wheel"><div class="n">3 · Fleet investors</div><p>${esc(fw.fleet_investors || '')}</p></div>
-      </div>`;
-      parts.push(section('flywheel', 'How the pieces fit', html));
+      const wheels = [
+        ['1 · Employers', fw.employers],
+        ['2 · Public partners', fw.public_partners],
+        ['3 · Fleet investors', fw.fleet_investors],
+      ].filter((w) => (w[1] || '').trim());
+      if (wheels.length) {
+        const html = `<div class="flywheel">${wheels
+          .map(([n, p]) => `<div class="wheel"><div class="n">${esc(n)}</div><p>${esc(p)}</p></div>`)
+          .join('')}</div>`;
+        parts.push(section('flywheel', 'How the pieces fit', html));
+      }
     }
 
     return parts.join('');
