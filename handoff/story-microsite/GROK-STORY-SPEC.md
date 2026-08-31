@@ -40,7 +40,7 @@ Do not add a thesis chapter, three-costs, GMVP ladder, Atlas, or dual-use essay.
    SOF Week loop, cockpit, approach, TE 26-3 montage (native 826×720 letterbox),
    SAS officers-looking still. Renders after the ride grid, before deep dives.
    No dual-use essay, no tent photo, no 400V.
-4. **Deep dives** — three large plates, on-page titles from `/invest` (not YouTube
+4. **Deep dives** — three equal grid tiles (same as the ride/defense grids), on-page titles from `/invest` (not YouTube
    titles): Sampriti first (`QhiaYVgXMf0`, headline *The breakthrough that will
    fundamentally change what we can do at sea.*), then CTO (`S7WB91FvSFI`,
    *The 3-minute version, from our CTO*), then Vance (`ZNgh39DM_Jg`, *A long-form
