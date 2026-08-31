@@ -22,7 +22,7 @@ the one URL an investor opens to **watch the films and read the articles**.
 
 ## Section order (binding)
 
-`hero` → `ride` → `films` → `field` → `press` → `talk`
+`hero` → `ride` → `field` → `films` → `press` → `talk`
 
 Do not add a thesis chapter, three-costs, GMVP ladder, Atlas, or dual-use essay.
 
@@ -36,15 +36,16 @@ Do not add a thesis chapter, three-costs, GMVP ladder, Atlas, or dual-use essay.
    click for sound. Functional headline `On the water`. No section lede — the
    invest lede is the stabilization clip, not the grid. Each clip caption from
    `proof.json` `demo-grid`, verbatim. Includes `flat-turning.mp4`.
-3. **Deep dives** — three large plates, on-page titles from `/invest` (not YouTube
+3. **Defense demonstrations** — `/invest` dual-use footage, captions verbatim:
+   SOF Week loop, cockpit, approach, TE 26-3 montage (native 826×720 letterbox),
+   SAS officers-looking still. Renders after the ride grid, before deep dives.
+   No dual-use essay, no tent photo, no 400V.
+4. **Deep dives** — three large plates, on-page titles from `/invest` (not YouTube
    titles): Sampriti first (`QhiaYVgXMf0`, headline *The breakthrough that will
    fundamentally change what we can do at sea.*), then CTO (`S7WB91FvSFI`,
    *The 3-minute version, from our CTO*), then Vance (`ZNgh39DM_Jg`, *A long-form
    company visit with Ashlee Vance — 9:49*). Click → lightbox with sound.
    Launch film is the hero CTA only — do not duplicate here.
-4. **Field** — `/invest` dual-use footage, captions verbatim: SOF Week loop,
-   cockpit, approach, TE 26-3 montage (native 826×720 letterbox), SAS
-   officers-looking still. No dual-use essay, no tent photo, no 400V.
 5. **Press** — WSJ, National Interest, TechCrunch, Axios (verbatim headlines) +
    Doctrine link. Robb Report never named.
 6. **Talk** — Reply to Sampriti · investors@ copy · request materials.
