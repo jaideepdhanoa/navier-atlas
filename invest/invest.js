@@ -2682,6 +2682,9 @@
       var idx = cityIndex();
       try {
         // Fixed global framing — no nav control, no drag/scroll zoom (disclosure rule)
+        var cartoKey = (typeof window !== 'undefined' && window.CARTO_BASEMAP_KEY) || '';
+        var cartoRaster = 'https://basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}@2x.png';
+        if (cartoKey) cartoRaster += '?key=' + encodeURIComponent(String(cartoKey));
         map = new maplibregl.Map({
           container: host,
           style: {
@@ -2689,9 +2692,7 @@
             sources: {
               basemap: {
                 type: 'raster',
-                tiles: [
-                  'https://basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}@2x.png',
-                ],
+                tiles: [cartoRaster],
                 tileSize: 256,
                 attribution: '© CARTO · © OSM',
               },

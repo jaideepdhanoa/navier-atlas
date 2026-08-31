@@ -1594,21 +1594,27 @@ const CAMERAS = {
   global:{ center:[40,15], zoom:1.8 },   // the "Global" reset; per-region jumps are computed from data (see region-select)
 };
 
+function withCartoKey(url) {
+  const k = (typeof window !== 'undefined' && window.CARTO_BASEMAP_KEY) || '';
+  if (!k) return url;
+  return url + (url.indexOf('?') >= 0 ? '&' : '?') + 'key=' + encodeURIComponent(k);
+}
+
 const map = window.map = new maplibregl.Map({
   container:'map',
   style:{
     version:8,
     glyphs:'https://demotiles.maplibre.org/font/{fontstack}/{range}.pbf',
     sources:{ 'carto-dark':{ type:'raster', tiles:[
-      'https://a.basemaps.cartocdn.com/rastertiles/dark_all/{z}/{x}/{y}@2x.png',
-      'https://b.basemaps.cartocdn.com/rastertiles/dark_all/{z}/{x}/{y}@2x.png',
-      'https://c.basemaps.cartocdn.com/rastertiles/dark_all/{z}/{x}/{y}@2x.png',
-      'https://d.basemaps.cartocdn.com/rastertiles/dark_all/{z}/{x}/{y}@2x.png'
+      withCartoKey('https://a.basemaps.cartocdn.com/rastertiles/dark_all/{z}/{x}/{y}@2x.png'),
+      withCartoKey('https://b.basemaps.cartocdn.com/rastertiles/dark_all/{z}/{x}/{y}@2x.png'),
+      withCartoKey('https://c.basemaps.cartocdn.com/rastertiles/dark_all/{z}/{x}/{y}@2x.png'),
+      withCartoKey('https://d.basemaps.cartocdn.com/rastertiles/dark_all/{z}/{x}/{y}@2x.png')
     ], tileSize:256, attribution:'© OpenStreetMap · © CARTO' },
     // Vector tiles — used ONLY to tint the ocean. CARTO's free vector basemap (same CDN as the raster
     // above). Its `water` source-layer is oceans + lakes; we wash it deep blue so water reads clearly
     // against the dark raster land. If these tiles ever fail, the raster below is unaffected (no regression).
-    'carto-vector':{ type:'vector', url:'https://tiles.basemaps.cartocdn.com/vector/carto.streets/v1/tiles.json', attribution:'© OpenStreetMap · © CARTO' }},
+    'carto-vector':{ type:'vector', url: withCartoKey('https://tiles.basemaps.cartocdn.com/vector/carto.streets/v1/tiles.json'), attribution:'© OpenStreetMap · © CARTO' }},
     // A brand-dark background paints instantly so the canvas isn't pure black while the third-party
     // CARTO tiles load (softens the cold-load blank window — F-13/F-06). Then the basemap on top:
     // lift the near-black base slightly + add saturation so coastlines/waterbodies read as distinct

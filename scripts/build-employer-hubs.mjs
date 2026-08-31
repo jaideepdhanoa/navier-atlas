@@ -11,6 +11,7 @@ import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { spawnSync } from 'child_process';
+import { injectCartoKey } from './carto-basemap.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, '..');
@@ -43,21 +44,6 @@ function readJson(p) {
 
 function ensureDir(p) {
   fs.mkdirSync(p, { recursive: true });
-}
-
-/** Inject CARTO basemap key at build/deploy time only — never commit the secret. */
-function cartoKeyBootstrapScript() {
-  const key = process.env.CARTO_BASEMAP_KEY || '';
-  if (!key) return '';
-  const safe = String(key).replace(/\\/g, '\\\\').replace(/'/g, "\\'").replace(/"/g, '\\"');
-  return `<script>window.CARTO_BASEMAP_KEY="${safe}";</script>\n`;
-}
-
-function injectCartoKey(html) {
-  const boot = cartoKeyBootstrapScript();
-  if (!boot) return html;
-  if (/<\/head>/i.test(html)) return html.replace(/<\/head>/i, `${boot}</head>`);
-  return boot + html;
 }
 
 /**
