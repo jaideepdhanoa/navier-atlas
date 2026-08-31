@@ -183,7 +183,7 @@
     return `<section class="story-section" id="${esc(sec.id)}" data-section="${esc(sec.id)}">
       <div class="section-inner">
         <h2 class="headline">${esc(sec.headline)}</h2>
-        <div class="film-plates">
+        <div class="video-grid">
           ${(sec.films || [])
             .map(function (f) {
               const poster =
