@@ -309,16 +309,16 @@
             { wide: false, withSound: true }
           )
         : '';
-      // v4: intro|hangar, then beats|film (film no longer hangs alone below with empty stage)
+      // v4: full-width title, lede|hangar, then two-up beats|film
       if (beats && filmInner) {
         return `<section class="section-block stage-section about-stage about-stage--opener" id="${esc(s.id)}" data-reveal>
           <div class="section-inner about-opener">
+            <div class="about-opener-head">
+              ${s.kicker ? `<p class="about-kicker">${esc(s.kicker)}</p>` : ''}
+              <h2 class="h2 about-title">${esc(s.title || 'An American Maritime Company.')}</h2>
+            </div>
             <div class="about-opener-top">
-              <div class="about-opener-intro">
-                ${s.kicker ? `<p class="about-kicker">${esc(s.kicker)}</p>` : ''}
-                <h2 class="h2 about-title">${esc(s.title || 'An American Maritime Company.')}</h2>
-                ${bodyLead}
-              </div>
+              <div class="about-opener-intro">${bodyLead}</div>
               ${hangar ? `<div class="about-opener-hangar">${hangar}</div>` : ''}
             </div>
             <div class="about-opener-split">
@@ -533,6 +533,16 @@
       }
       const press = quoteBlock(s.press_quote, 'defense-quote--press');
       const usmi = quoteBlock(s.pull_quote, '');
+      const pressArticles = (s.press_articles || [])
+        .map(function (a) {
+          if (!a || !a.url) return '';
+          const outlet = [a.outlet, a.date].filter(Boolean).join(' · ');
+          return `<a class="defense-press-card" href="${esc(a.url)}" target="_blank" rel="noopener noreferrer">
+            ${outlet ? `<span class="defense-press-outlet">${esc(outlet)}</span>` : ''}
+            <span class="defense-press-headline">${esc(a.headline || a.label || a.url)}</span>
+          </a>`;
+        })
+        .join('');
       const photoHtml = photos
         .map(function (ph) {
           const raw = ph.src || ph;
@@ -568,7 +578,7 @@
         .join('');
       // PLATFORM beat (thesis / blocks / mission renders) now lives under def-family
       const quietProof =
-        [press, usmi].filter(Boolean).join('') +
+        [press, usmi, pressArticles].filter(Boolean).join('') +
         (s.deployment_line ? `<p class="defense-deploy">${esc(s.deployment_line)}</p>` : '');
       return `<section class="section-block dual-use-stage" id="${esc(s.id)}" data-reveal data-home="gtm.defense">
         <div class="section-inner">
