@@ -2650,6 +2650,36 @@ a.team-link:hover {
 .defense-quiet .defense-deploy {
   grid-column: 1 / -1;
 }
+.defense-press-card {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin: 0;
+  padding: 18px 20px;
+  border-radius: 10px;
+  border: 1px solid rgba(224, 203, 143, 0.28);
+  background: rgba(255, 255, 255, 0.03);
+  text-decoration: none;
+  color: inherit;
+  min-width: 0;
+}
+.defense-press-card:hover {
+  border-color: rgba(224, 203, 143, 0.55);
+  text-decoration: none;
+}
+.defense-press-outlet {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent-bright);
+}
+.defense-press-headline {
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: clamp(1rem, 1.4vw, 1.18rem);
+  line-height: 1.35;
+  color: var(--text-0);
+}
 .defense-quiet .defense-quote,
 .defense-quote {
   position: static; /* override legacy cinema absolute */
@@ -3592,29 +3622,32 @@ a.team-link:hover {
   justify-content: flex-start !important;
   padding-block: clamp(36px, 6vw, 64px) !important;
 }
+.about-stage--opener > .section-inner.about-opener {
+  max-width: var(--stage);
+}
 .about-opener {
   width: 100%;
-  max-width: 1180px;
+  max-width: var(--stage);
   margin: 0 auto;
   display: flex;
   flex-direction: column;
   gap: 28px;
 }
+.about-opener-head .about-title {
+  margin-bottom: 0;
+  max-width: 22em !important;
+}
 .about-opener-top {
   display: grid;
-  grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
-  gap: 28px 36px;
+  grid-template-columns: minmax(0, 1.2fr) minmax(280px, 0.8fr);
+  gap: 24px 36px;
   align-items: start;
-}
-.about-opener-intro .about-title {
-  margin-bottom: 14px;
 }
 .about-opener-hangar .about-plate {
   margin: 0;
 }
 .about-opener-hangar .about-plate-frame {
   aspect-ratio: 4 / 3;
-  max-height: 320px;
 }
 .about-opener-hangar img {
   width: 100%;
@@ -3624,7 +3657,7 @@ a.team-link:hover {
 }
 .about-opener-split {
   display: grid;
-  grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+  grid-template-columns: minmax(0, 1.25fr) minmax(280px, 0.75fr);
   gap: 24px 32px;
   align-items: start;
 }
@@ -3638,18 +3671,18 @@ a.team-link:hover {
 .defense-specs.def-opener-beats,
 .def-opener-beats {
   display: grid;
-  gap: 14px;
+  gap: 16px 28px;
   margin: 0;
   padding: 0;
   border: 0;
-  grid-template-columns: 1fr !important;
+  grid-template-columns: 1fr 1fr;
 }
 .def-opener-beat .defense-spec-term {
   font-size: 0.95rem;
   letter-spacing: 0.08em;
 }
 .def-opener-beat .defense-spec-desc {
-  max-width: 58ch;
+  max-width: none;
   line-height: 1.5;
 }
 .def-beats-source {
@@ -3717,8 +3750,12 @@ a.team-link:hover {
     grid-template-columns: 1fr;
     gap: 20px;
   }
-  .about-opener-hangar .about-plate-frame {
-    max-height: none;
+  .defense-specs.def-opener-beats,
+  .def-opener-beats {
+    grid-template-columns: 1fr;
+  }
+  .about-opener-head .about-title {
+    max-width: none !important;
   }
   .def-doctrine-wrap {
     justify-content: flex-start;
