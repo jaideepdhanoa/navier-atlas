@@ -702,6 +702,33 @@
         </div>`;
         })
         .join('')}</div>`;
+      const mg = s.morpheus_gallery || {};
+      const morphImgs = mg.images || [];
+      const morphCard = function (it, role) {
+        const src = mediaPath(it.src);
+        if (!src) return '';
+        let cap = it.caption || '';
+        if (cap && !/concept render/i.test(cap)) cap = cap + ' · CONCEPT RENDER';
+        const badge = it.badge || 'CONCEPT RENDER';
+        return `<figure class="def-morph-card${role === 'lead' ? ' def-morph-lead' : ''}">
+          <div class="def-morph-frame">
+            <span class="def-morph-badge">${esc(badge)}</span>
+            <img src="${esc(src)}" alt="${esc(it.alt || cap)}" loading="lazy" />
+          </div>
+          ${cap ? `<figcaption>${esc(cap)}</figcaption>` : ''}
+        </figure>`;
+      };
+      const lead = morphImgs.find(function (im) { return im.role === 'lead'; }) || morphImgs[0];
+      const rest = morphImgs.filter(function (im) { return im !== lead; });
+      const morphHtml = morphImgs.length
+        ? `<div class="def-morph" data-reveal>
+            <p class="sublabel">${esc(mg.kicker || 'SHIP SCALE')}</p>
+            ${mg.title ? `<h3 class="h3">${esc(mg.title)}</h3>` : ''}
+            ${mg.body ? `<p class="lead">${esc(mg.body)}</p>` : ''}
+            ${lead ? morphCard(lead, 'lead') : ''}
+            ${rest.length ? `<div class="def-morph-grid">${rest.map(function (im) { return morphCard(im); }).join('')}</div>` : ''}
+          </div>`
+        : '';
       // PLATFORM beat lives under Family (moved from dual-use)
       const blocks = (s.blocks || [])
         .map(
@@ -747,6 +774,7 @@
           ${g.title ? `<h3 class="h3" style="margin-top:8px">${esc(g.title)}</h3>` : ''}
           ${gmvp}
           ${ladder}
+          ${morphHtml}
           ${platformBeat}
         </div>
       </section>`;
