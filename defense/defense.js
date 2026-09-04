@@ -410,7 +410,7 @@
         </div>
         ${
           loops.length
-            ? `<div class="def-video-row media-inner" style="grid-template-columns:1fr;max-width:960px;margin:20px auto 0">${loops
+            ? `<div class="def-video-row media-inner" style="grid-template-columns:1fr;margin-top:20px">${loops
                 .map(function (v) {
                   return videoTile(v);
                 })
@@ -511,7 +511,7 @@
           <h2 class="h2">${esc(s.title || '')}</h2>
           ${s.sub ? `<p class="demo-lede lead">${esc(s.sub)}</p>` : ''}
         </div>
-        <div class="video-grid equal-grid media-inner" style="max-width:1100px;margin-left:auto;margin-right:auto">${cards}</div>
+        <div class="video-grid equal-grid media-inner">${cards}</div>
         ${s.closer ? `<p class="def-closer section-inner">${esc(s.closer)}</p>` : ''}
       </section>`;
     },
