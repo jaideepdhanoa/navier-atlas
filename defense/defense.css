@@ -75,28 +75,18 @@ img, video { max-width: 100%; display: block }
 button { font: inherit; cursor: pointer; border: 0; background: none; color: inherit }
 :focus-visible { outline: 2px solid var(--accent-bright); outline-offset: 3px }
 
-/* Shared containers — one horizontal inset owner per section */
-.section-inner {
-  max-width: 1200px;
-  margin-inline: auto;
-  padding-inline: var(--pad-inline);
-  width: 100%;
-  box-sizing: border-box;
-}
-.media-inner {
-  max-width: 1440px;
+/* Shared containers — one horizontal inset owner per section.
+   Headers and media share --stage so kickers/titles line up with content. */
+.section-inner,
+.media-inner,
+.shell-stage,
+.shell-prose,
+.page-pad {
+  max-width: var(--stage);
   margin-inline: auto;
   padding-inline: var(--pad-inline-stage);
   width: 100%;
   box-sizing: border-box;
-}
-.shell-prose, .page-pad {
-  max-width: 1200px; margin-inline: auto;
-  padding-inline: var(--pad-inline); width: 100%; box-sizing: border-box;
-}
-.shell-stage {
-  max-width: 1440px; margin-inline: auto;
-  padding-inline: var(--pad-inline-stage); width: 100%; box-sizing: border-box;
 }
 /* Avoid double horizontal pad when mount wraps shell-stage in section-inner */
 .section-block.shell-stage:has(> .section-inner),
@@ -906,9 +896,6 @@ button { font: inherit; cursor: pointer; border: 0; background: none; color: inh
 
 /* Team — no logo strip; keep inside section-inner like other chapters */
 .team-lede { white-space: pre-line }
-.team-section .section-inner {
-  max-width: 1200px;
-}
 .team-layout {
   display: grid;
   grid-template-columns: minmax(200px, 280px) minmax(0, 1fr);
@@ -1893,8 +1880,8 @@ a.team-link:hover {
   grid-template-columns: 1fr 1fr;
   gap: clamp(16px, 2.5vw, 28px);
   align-items: start;
-  margin: 24px auto 0;
-  max-width: 1100px;
+  margin: 24px 0 0;
+  max-width: none;
   text-align: left;
 }
 .go-deeper-media .film-card {
@@ -3215,8 +3202,8 @@ a.team-link:hover {
 
 .def-film-wrap {
   position: relative;
-  max-width: 1280px;
-  margin: 28px auto 0;
+  max-width: none;
+  margin: 28px 0 0;
 }
 .def-film-wrap .def-video-tile,
 .def-film-wrap .def-video-frame {
@@ -3225,7 +3212,7 @@ a.team-link:hover {
 }
 .def-film-wrap video {
   width: 100%;
-  max-width: 1280px;
+  max-width: none;
   display: block;
   border-radius: 8px;
   background: #000;
@@ -3343,12 +3330,12 @@ a.team-link:hover {
   gap: 14px;
   margin-top: 18px;
 }
-.def-video-row--lead { grid-template-columns: 1fr; max-width: 960px; }
+.def-video-row--lead { grid-template-columns: 1fr; }
 @media (max-width: 800px) {
   .def-video-row { grid-template-columns: 1fr; }
 }
 .def-video-tile { margin: 0; }
-.def-video-tile--wide { max-width: 960px; }
+.def-video-tile--wide { max-width: none; }
 .def-video-frame {
   position: relative;
   border-radius: 12px;
