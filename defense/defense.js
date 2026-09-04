@@ -419,6 +419,67 @@
         }
       </section>`;
     },
+    'def-autonomy'(s) {
+      const rungs = (s.rungs || [])
+        .map(function (r) {
+          return `<div class="autonomy-rung">
+            <div class="autonomy-stage">${esc(r.stage || '')}</div>
+            <div class="autonomy-rung-label">${esc(r.label || '')}</div>
+            <p class="autonomy-rung-body">${esc(r.body || '')}</p>
+          </div>`;
+        })
+        .join('');
+      function autoClip(m, extraClass) {
+        if (!m || !m.src) return '';
+        const px = m.native_px || [];
+        const ar = px.length === 2 ? ` style="aspect-ratio:${px[0]} / ${px[1]}"` : '';
+        const badge = m.badge || 'FILMED';
+        const poster = mediaPath(m.poster || '');
+        const sim = /simulation/i.test(badge);
+        return `<figure class="autonomy-clip${extraClass ? ' ' + extraClass : ''}${sim ? ' autonomy-clip--sim' : ''}">
+          <div class="autonomy-clip-frame"${ar}>
+            <span class="autonomy-clip-badge">${esc(badge)}</span>
+            <video muted playsinline loop preload="metadata" poster="${esc(poster)}" data-lazy-video ${reduceMotion ? '' : 'autoplay'}>
+              <source src="${esc(mediaPath(m.src))}" type="video/mp4" />
+            </video>
+          </div>
+          ${m.caption ? `<figcaption>${esc(m.caption)}</figcaption>` : ''}
+        </figure>`;
+      }
+      const byId = {};
+      (s.media || []).forEach(function (m) {
+        if (m && m.id) byId[m.id] = m;
+      });
+      const strips = [byId.segmentation, byId['stereo-depth']]
+        .filter(Boolean)
+        .map(function (m) {
+          return autoClip(m, 'autonomy-clip--strip');
+        })
+        .join('');
+      const pair = [byId['slam-map'], byId['sim-waypoint']]
+        .filter(Boolean)
+        .map(function (m) {
+          return autoClip(m, 'autonomy-clip--pair');
+        })
+        .join('');
+      return `<section class="section-block stage-section autonomy-stage-section" id="${esc(s.id)}" data-reveal>
+        <div class="section-inner">
+          ${kicker(s)}
+          <h2 class="h2">${esc(s.title || '')}</h2>
+          ${s.body ? `<p class="lead">${esc(s.body)}</p>` : ''}
+        </div>
+        <div class="autonomy-compose media-inner">
+          <div class="autonomy-ladder">
+            <div class="autonomy-rungs">${rungs}</div>
+            ${s.fleet_data_line ? `<p class="autonomy-fleet">${esc(s.fleet_data_line)}</p>` : ''}
+          </div>
+          <div class="autonomy-media">
+            ${strips}
+            ${pair ? `<div class="autonomy-pair">${pair}</div>` : ''}
+          </div>
+        </div>
+      </section>`;
+    },
     'def-flight'(s) {
       // Exactly three equal tiles — no fourth floating video
       const clips = (s.clips || s.videos || []).slice(0, 3);

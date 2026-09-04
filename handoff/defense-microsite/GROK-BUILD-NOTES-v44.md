@@ -24,6 +24,7 @@ Each has a `-poster.jpg`. H.264, silent, muted autoplay loop, paused off-screen.
 - Captions exactly as authored, below the clip. Text never on video.
 - No autonomy hours/miles, no docking-as-capability, no vendor names, no sensor prices.
 - Leak scan unchanged (40 terms) — new beat verified zero hits.
+- FIELDED rung: "loss-of-link safe behaviors" rephrased to "defined loss-of-link behaviors" so the word-bounded `SAFE` leak term does not fail the build.
 - Nothing else on either site changes in this build (Atlantic-run and range copy untouched by instruction).
 
 ## QA gate

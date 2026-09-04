@@ -19,7 +19,7 @@ const TEMPLATE = path.join(ROOT, 'invest');
 
 /** Sections dropped from /teaser (keep Maldives + Gulf + discrete pipeline + Go Deeper + finale). */
 const TEASER_EXCLUDE = {
-  product: new Set(['quanta-unlocks', 'competitive']),
+  product: new Set(['quanta-unlocks', 'competitive', 'autonomy-proof']),
   gtm: new Set([
     'revenue-lines',
     'unit-econ',
@@ -133,6 +133,17 @@ function applyTeaserFilter(bundle) {
   for (const [chapter, drop] of Object.entries(TEASER_EXCLUDE)) {
     if (!out[chapter] || !Array.isArray(out[chapter].sections)) continue;
     out[chapter].sections = out[chapter].sections.filter((s) => !drop.has(s.id));
+  }
+  // Drop excluded ids from in-chapter cluster lists so /teaser has no leftover jump targets
+  const clusters = out.site && out.site.nav && out.site.nav.chapter_clusters;
+  if (clusters && typeof clusters === 'object') {
+    for (const [chapter, drop] of Object.entries(TEASER_EXCLUDE)) {
+      const list = clusters[chapter];
+      if (!Array.isArray(list)) continue;
+      list.forEach((cl) => {
+        if (Array.isArray(cl.sections)) cl.sections = cl.sections.filter((id) => !drop.has(id));
+      });
+    }
   }
 
   // Insert discrete pipeline after Gulf (Maldives → Gulf → Discrete Pipeline → …)
