@@ -1,5 +1,5 @@
 {
- "version": "v4.3",
+ "version": "v4.4",
  "route": "/defense",
  "gate": {
   "mode": "email+code",
@@ -214,6 +214,91 @@
      "role": "stabilization-loop"
     }
    ]
+  },
+  {
+   "id": "def-autonomy",
+   "kicker": "03 · THE PLATFORM",
+   "title": "Unmanned Today. Autonomous by Stages.",
+   "body": "The craft that ran at SOCOM TE 26-3 was unmanned — commanded over a hardened datalink with defined loss-of-link behaviors, from the helm or a ground control station. Autonomy is layered onto that same control core in stages, and every stage is on the water before it is claimed.",
+   "rungs": [
+    {
+     "stage": "PROVEN",
+     "label": "Flight control",
+     "body": "NavierOS flies the foils hundreds of times a second — 10,000+ operating hours. Stable through Sea State 4; every autonomy layer inherits it."
+    },
+    {
+     "stage": "FIELDED",
+     "label": "Unmanned operation",
+     "body": "Helm and ground-control-station commanding · dual-antenna GNSS + inertial navigation · Starlink and hardened datalink with defined loss-of-link behaviors. Run live at SOCOM TE 26-3, August 2026."
+    },
+    {
+     "stage": "ON THE WATER",
+     "label": "Perception",
+     "body": "Vision-first, sensor-fused. Live scene segmentation, stereo depth and 3D harbor mapping from real operations; radar and AIS fusion being added. 74,000+ images captured in one week of demonstrations."
+    },
+    {
+     "stage": "IN TEST",
+     "label": "Vehicle autonomy",
+     "body": "Heading hold, waypoint following and station-keeping in simulation; on-water N30 trials begin September 2026. Advisory detect-and-avoid rides beside the operator on every trial — the autonomy record is built before the loop is closed."
+    }
+   ],
+   "fleet_data_line": "Every hull logs perception, telemetry and energy data to a central fleet database. Every hour the commercial fleet flies hardens the same stack the defense fleet runs.",
+   "media": [
+    {
+     "id": "segmentation",
+     "src": "assets/autonomy/autonomy-segmentation-quad.mp4",
+     "poster": "assets/autonomy/autonomy-segmentation-quad-poster.jpg",
+     "native_px": [
+      640,
+      170
+     ],
+     "duration": "0:15",
+     "badge": "FILMED",
+     "caption": "What the boat sees — raw camera feeds (left) and live scene segmentation: sky, land, water, vessel, people (right). N30 operations, Idaho, August 2026."
+    },
+    {
+     "id": "stereo-depth",
+     "src": "assets/autonomy/autonomy-stereo-depth-dock.mp4",
+     "poster": "assets/autonomy/autonomy-stereo-depth-dock-poster.jpg",
+     "native_px": [
+      800,
+      150
+     ],
+     "duration": "0:15",
+     "badge": "FILMED",
+     "caption": "Stereo depth on a dock approach — left camera, point cloud, depth map. Pilings, dock edge and hulls resolved in 3D from a bow-mounted stereo camera. Sausalito, August 2026."
+    },
+    {
+     "id": "slam-map",
+     "src": "assets/autonomy/autonomy-slam-harbor-map.mp4",
+     "poster": "assets/autonomy/autonomy-slam-harbor-map-poster.jpg",
+     "native_px": [
+      800,
+      450
+     ],
+     "duration": "0:06",
+     "badge": "FILMED",
+     "caption": "The boat maps its own harbor — shoreline and docks reconstructed in 3D from the run itself, track overlaid. Alameda estuary, August 2026."
+    },
+    {
+     "id": "sim-waypoint",
+     "src": "assets/autonomy/autonomy-sim-waypoint-helm.mp4",
+     "poster": "assets/autonomy/autonomy-sim-waypoint-helm-poster.jpg",
+     "native_px": [
+      640,
+      190
+     ],
+     "duration": "0:10",
+     "badge": "SIMULATION",
+     "caption": "Waypoint following and heading hold in simulation, commanded from the NavierOS helm display — the same screen the operator uses on the water."
+    }
+   ],
+   "media_rules": "All four clips muted autoplay loop, paused off-screen. Native aspect, never upscale. Badge chip (FILMED / SIMULATION) top-left of each clip — SIMULATION badge on the sim clip is mandatory. Captions exactly as authored, below the clip, never on it.",
+   "render_notes": "NEW v4.4 beat. Sits directly after def-platform (same '03 · THE PLATFORM' chapter — second beat, same pattern as the 05 · QUANTA trio). Two-column at desktop: four-rung ladder left (stage chip gold small-caps · label Playfair · one-paragraph body), media stack right (segmentation strip, stereo strip, then SLAM map + sim clip side-by-side). fleet_data_line as a single closing sentence under the ladder. Capability brief tone: no dollar figures, no fundraising language, no autonomy hours/miles, no docking-as-capability, no vendor or sensor-price names. Stage chips render verbatim — never promote 'IN TEST'.",
+   "_internal": {
+    "source": "All Hands 2026-08-27 s26 + Technical Team Meeting 2026-09-01 s13 + Jaideep/David call 2026-09-02",
+    "added": "Jaideep 2026-09-04"
+   }
   },
   {
    "id": "def-flight",
@@ -677,5 +762,6 @@
  "_v4_notes": "2026-08-23 founder review (Sampriti voice notes) + Jaideep approvals: (1) hero subline defense-specific; (2) 01 rebuilt as defense-first opener — two-line implication, GMVP-as-breakthrough, asymmetric-cost logic, doctrine stats + chip (verbatim-lock to /invest removed, founder explicit); (3) global-resilience defense thesis added to dual-use; (4) N45 ladder card = single aft container render + stability-explicit lens; (5) family-card crop rule; (6) sharp-turning video retitled 'Coordinated turns at high speed'; (7) gate v2 — email + per-recipient revocable codes, Google Sheet logging only. Doctrine figures verified against navierboat.com/doctrine 2026-08-23.",
  "_v41_restore_notes": "2026-08-24 restore after founder critique: Quanta kickers/title; short moment headline; belief as quote; resilience moved to Who We Are; dual-use retitled + proof kicker; dropped duplicate capability_rail; ladder contain CSS in defense.css.",
  "_v42_notes": "2026-08-25 — Quanta-D publicly named in company LinkedIn post (TE 26-3 completion). Contract updates: (1) naming bridge at first rendered mention (def-quanta-stats subhead), 'Quanta-D' thereafter; (2) public specs added — <1° pitch/roll SS4 + ±2cm flight height (def-platform body), 400V/100kW DE chip (def-quanta-stats); (3) TE 26-3 secondary video swapped to multi-feed montage (defense-te263-montage.mp4 — source master from founder, H.264 web encode, audio stripped); (4) 'Quanta-D' removed from leak kill list; N30D still banned. (5) public_post link added beneath the TE 26-3 proof block in def-dual-use (URL supplied 2026-08-25).",
- "_v43_notes": "V4.3 (2026-09-02, Sampriti request): larger-vessel imagery so /defense does not read as small-boats-only. Adds morpheus_gallery to def-family (3 concept renders: logistics hero / drone carrier / armed escort) + 'N120' leak term. Renders sourced from send-deck s12–s13; the 120-ft 'N120-T' naming on those slides is stale — public class is Morpheus (no hull number externally). Staged alternate: defense-morpheus-cargo-v1.png (daylight container render, unreferenced). Photo-real trimaran-with-helicopter image from s12 deliberately EXCLUDED — reads as a real warship photo, fails render-honesty bar. 2026-09-02 refine: three-up single row; drop caption 'CONCEPT RENDER' (badge only); body ends 'One hull, reconfigured by mission.'"
+ "_v43_notes": "V4.3 (2026-09-02, Sampriti request): larger-vessel imagery so /defense does not read as small-boats-only. Adds morpheus_gallery to def-family (3 concept renders: logistics hero / drone carrier / armed escort) + 'N120' leak term. Renders sourced from send-deck s12–s13; the 120-ft 'N120-T' naming on those slides is stale — public class is Morpheus (no hull number externally). Staged alternate: defense-morpheus-cargo-v1.png (daylight container render, unreferenced). Photo-real trimaran-with-helicopter image from s12 deliberately EXCLUDED — reads as a real warship photo, fails render-honesty bar. 2026-09-02 refine: three-up single row; drop caption 'CONCEPT RENDER' (badge only); body ends 'One hull, reconfigured by mission.'",
+ "_v44_notes": "V4.4 (2026-09-04, Jaideep): adds def-autonomy beat after def-platform — honest four-rung ladder (PROVEN / FIELDED / ON THE WATER / IN TEST) + four real sensor-output clips re-encoded from the engineering slides (segmentation quad, stereo depth dock approach, SLAM harbor map, sim waypoint+helm). SIMULATION badge mandatory on the sim clip. Fifth engineering clip (4-camera Golden Gate run) deliberately EXCLUDED — overcast, fails image-mood rule. No other content changes; Atlantic-run and range copy untouched. Leak terms unchanged (40)."
 }

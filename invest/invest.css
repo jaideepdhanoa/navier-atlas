@@ -3358,3 +3358,105 @@ a.team-link:hover {
   line-height: 1.45;
   color: rgba(224, 203, 143, 0.9);
 }
+
+/* Autonomy proof — native-aspect clips, never crop to 16:9 */
+.autonomy-stage-section { padding-block: clamp(28px, 4vw, 56px); }
+.autonomy-compose {
+  display: grid;
+  grid-template-columns: minmax(0, 0.4fr) minmax(0, 0.6fr);
+  gap: 28px 36px;
+  align-items: start;
+  margin-top: 8px;
+}
+.autonomy-rung + .autonomy-rung {
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+.autonomy-stage {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent-bright, #e0cb8f);
+}
+.autonomy-rung-label {
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: clamp(1.15rem, 1.6vw, 1.35rem);
+  font-weight: 600;
+  line-height: 1.25;
+  margin: 4px 0 8px;
+  color: var(--text-0, #f7f7f8);
+}
+.autonomy-rung-body {
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.72);
+}
+.autonomy-fleet {
+  margin: 20px 0 0;
+  font-size: 15px;
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.62);
+  font-style: normal;
+}
+.autonomy-media {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  min-width: 0;
+}
+.autonomy-clip { margin: 0; min-width: 0; }
+.autonomy-clip-frame {
+  position: relative;
+  width: 100%;
+  background: #07080a;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 10px;
+  overflow: hidden;
+}
+.autonomy-clip-frame video {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center;
+  display: block;
+  background: #07080a;
+}
+.autonomy-clip-badge {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  z-index: 2;
+  padding: 5px 9px;
+  border-radius: 6px;
+  background: rgba(0, 0, 0, 0.72);
+  border: 1px solid rgba(224, 203, 143, 0.45);
+  color: #e0cb8f;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  pointer-events: none;
+}
+.autonomy-clip--sim .autonomy-clip-badge {
+  border-color: rgba(224, 203, 143, 0.75);
+}
+.autonomy-clip figcaption {
+  margin-top: 8px;
+  font-size: 12px;
+  line-height: 1.4;
+  color: rgba(255, 255, 255, 0.55);
+}
+.autonomy-pair {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  align-items: start;
+}
+@media (max-width: 960px) {
+  .autonomy-compose { grid-template-columns: 1fr; }
+  .autonomy-media { order: -1; }
+  .autonomy-pair { grid-template-columns: 1fr; }
+}

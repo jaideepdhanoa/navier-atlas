@@ -46,7 +46,7 @@ function copyDir(src, dest) {
   }
 }
 
-function collectRenderableStrings(obj, out, skipKeys = new Set(['render_notes', 'leak_scan_notes', 'global_render_rules', 'leak_scan_terms_must_be_zero', 'behavior', 'render', 'advisors_note', 'core_note', 'alt', '_v41_notes', '_staged_assets_te263'])) {
+function collectRenderableStrings(obj, out, skipKeys = new Set(['render_notes', 'leak_scan_notes', 'global_render_rules', 'leak_scan_terms_must_be_zero', 'behavior', 'render', 'advisors_note', 'core_note', 'alt', 'media_rules', '_v41_notes', '_staged_assets_te263'])) {
   if (obj == null) return;
   if (typeof obj === 'string') {
     out.push(obj);
