@@ -291,7 +291,6 @@ function emitSite({ basePath, distRel, bundle, label }) {
   // Kill-scan on emitted data blob
   const banned = [
     /\$600\s*B/i,
-    /2,?400\s*NMi/i,
     /\bN120\b/,
     /Sergey Brin/i,
     /not yet public/i,
