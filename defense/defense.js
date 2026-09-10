@@ -208,7 +208,7 @@
     { id: 'def-dual-use', label: 'Proof' },
     { id: 'def-family', label: 'Fleet' },
     { id: 'def-team', label: 'Team' },
-    { id: 'def-close', label: 'Close' },
+    { id: 'def-amc', label: 'Close' },
   ];
 
   function renderNav() {
@@ -731,7 +731,7 @@
           <div class="table-wrap"><table class="cmp cmp-s17"><thead>${head}</thead><tbody>${body}</tbody></table></div>
           ${takeaway ? `<p class="closing-line takeaway-line">${esc(takeaway)}</p>` : ''}
           ${s.explainer ? `<p class="explainer">${esc(s.explainer)}</p>` : ''}
-          ${s.source_note ? `<p class="muted source-note">${esc(s.source_note)}</p>` : ''}
+          ${s.sources_line || s.source_note ? `<p class="muted source-note">${esc(s.sources_line || s.source_note)}</p>` : ''}
         </div>
       </section>`;
     },
@@ -862,6 +862,61 @@
         </div>
       </section>`;
     },
+    'def-amc'(s) {
+      const gap = s.gap || {};
+      const pic = gap.pictogram || {};
+      const chinaN = pic.china_squares || 340;
+      const usN = pic.us_squares || 1;
+      let chinaCells = '';
+      for (let i = 0; i < chinaN; i++) chinaCells += '<i></i>';
+      let usCells = '';
+      for (let i = 0; i < usN; i++) usCells += '<i></i>';
+      const china = gap.china || {};
+      const us = gap.us || {};
+      const answer = s.answer || {};
+      const pillars = (answer.pillars || [])
+        .map(function (p) {
+          return `<div class="amc-pillar">
+            <div class="amc-pillar-n">${esc(p.n || '')}</div>
+            <div class="amc-pillar-copy">
+              <div class="amc-pillar-head">${esc(p.head || '')}</div>
+              <p class="amc-pillar-body">${esc(p.body || '')}</p>
+            </div>
+          </div>`;
+        })
+        .join('');
+      return `<section class="section-block amc-stage" id="${esc(s.id)}" data-reveal>
+        <div class="section-inner">
+          ${kicker(s)}
+          <h2 class="h2">${esc(s.title || '')}</h2>
+          <div class="amc-split">
+            <div class="amc-gap">
+              ${gap.kicker ? `<p class="amc-kicker">${esc(gap.kicker)}</p>` : ''}
+              <div class="amc-stat amc-stat--china">
+                <div class="amc-num">${esc(china.value || '')}</div>
+                <div class="amc-lab">${esc(china.label || '')}</div>
+                <div class="amc-picto amc-picto--china" aria-hidden="true">${chinaCells}</div>
+                ${china.caption ? `<p class="amc-cap">${esc(china.caption)}</p>` : ''}
+              </div>
+              <div class="amc-stat amc-stat--us">
+                <div class="amc-num amc-num--us">${esc(us.value || '')}</div>
+                <div class="amc-lab">${esc(us.label || '')}</div>
+                <div class="amc-picto amc-picto--us" aria-hidden="true">${usCells}</div>
+                ${us.caption ? `<p class="amc-cap">${esc(us.caption)}</p>` : ''}
+              </div>
+              ${pic.legend ? `<p class="amc-legend">${esc(pic.legend)}</p>` : ''}
+              ${gap.source_line ? `<p class="amc-source">${esc(gap.source_line)}</p>` : ''}
+            </div>
+            <div class="amc-answer">
+              ${answer.kicker ? `<p class="amc-kicker">${esc(answer.kicker)}</p>` : ''}
+              ${answer.headline ? `<h3 class="amc-headline">${esc(answer.headline)}</h3>` : ''}
+              ${answer.subhead ? `<p class="amc-subhead">${esc(answer.subhead)}</p>` : ''}
+              ${pillars ? `<div class="amc-rail">${pillars}</div>` : ''}
+            </div>
+          </div>
+        </div>
+      </section>`;
+    },
     'def-close'(s) {
       const h = s.hero || {};
       const vsrc = mediaPath(h.background_video || 'assets/closing-loop.mp4');
@@ -920,7 +975,7 @@
   };
 
   function renderSection(s) {
-    const fn = R[s.id] || (s.type === 'defense-panel' ? R['def-dual-use'] : null);
+    const fn = R[s.id] || (s.type === 'defense-panel' ? R['def-dual-use'] : s.type === 'gap-answer' ? R['def-amc'] : null);
     if (fn) return fn(s);
     return `<section class="section-block shell-stage" id="${esc(s.id)}" data-reveal>
       ${kicker(s)}
