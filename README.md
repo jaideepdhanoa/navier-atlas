@@ -22,7 +22,7 @@ and **Claude** (render/UI).
 
 ## What is deliberately NOT here
 `build.py`, `route_network.py`, `partition/`, `boarding-points/`, `route-demand-config.json`,
-`humans.json`, dossiers, references, secrets — these are **Tasklet-internal** and stay in the
+`humans.json`, dossiers, private reference material, secrets — these are **Tasklet-internal** and stay in the
 private working tree. The repo is the merge surface, not the pipeline.
 
 ## Branching
@@ -35,3 +35,10 @@ private working tree. The repo is the merge surface, not the pipeline.
 2. Tasklet runs **partition → both gates → `_dist/` deploy** and is the only side that ships to production.
 3. The render contract in `DIVISION-OF-LABOR.md` is the frozen seam — changed only by mutual PR.
 4. Every merge ships a `HANDOFF-*.md` changelog entry.
+
+## Standalone briefs and public partner research
+
+- [Partner two-pager toolkit and Skill](deck-studio/two-pagers/README.md) — a separate, content-driven PDF lane; it does not alter live Slides or the Atlas production pipeline.
+- [Public partner research](reference/partners/README.md) — source-linked, sanitized corporate facts only. This public subset is distinct from the restricted relationship dossiers and private references excluded above.
+
+Confidential partner PDFs, their editable company/partner content, private communications and negotiation context remain outside this repository. No new open-source license is introduced by the toolkit addition.

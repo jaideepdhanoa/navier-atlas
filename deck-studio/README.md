@@ -50,6 +50,12 @@ deck-studio qa --root . --deck grab --receipt out/grab-qa-receipt.json
 6. Every number or claim in the deck points to a source, Sheet, or explicit assumption.
 7. Final external outreach stays human-reviewed.
 
+## Standalone partner two-pagers
+
+For a two-page company/partner PDF rather than a live Slides deck, use the [two-pager lane](two-pagers/README.md), [portable Skill](two-pagers/partner-two-pager/SKILL.md) and [build rules](docs/TWO-PAGER-BUILD-RULES.md). One content file produces dark/light editions, actual page/phone renders and QA receipts. The existing Slides API workflow above is unchanged.
+
+Reusable public corporate research lives in [reference/partners](../reference/partners/README.md). Private partner briefs, relationship dossiers and company evidence stay outside the public repository.
+
 ## Strategic-partnership decks
 
 For bespoke industrial, systems, licensing, distribution or mission-led strategic partnerships, use [`strategic-partners/`](strategic-partners/README.md). This optional lane shares Deck Studio's native-Slides and review discipline without replacing the approved mobility/country deck workflows. It includes partner-neutral intake and evidence contracts, commercial opportunities, seven editable layouts, asset search, offline compilation, a native staging adapter, narrow review-copy revisions, and tests. Start with the [workflow](strategic-partners/docs/WORKFLOW.md) or [quickstart](strategic-partners/docs/QUICKSTART.md).

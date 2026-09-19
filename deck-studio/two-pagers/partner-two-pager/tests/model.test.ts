@@ -1,0 +1,24 @@
+import { test, expect } from 'bun:test';
+import { readFile } from 'node:fs/promises';
+import { validateBrief, safeLocalPath, richText, scanText } from '../scripts/model';
+import { renderHtml } from '../scripts/template';
+const input=JSON.parse(await readFile(new URL('../examples/public-demo/content.json',import.meta.url),'utf8'));
+const fresh=()=>structuredClone(input);
+
+test('public demonstration passes structured validation',()=>expect(validateBrief(fresh()).meta.classification).toBe('public-example'));
+test('missing evidence reference fails',()=>{const c=fresh();c.claims[0].sourceIds=['MISSING'];expect(()=>validateBrief(c)).toThrow('Unknown source');});
+test('uncleared claim fails',()=>{const c=fresh();c.claims[0].shareable=false;expect(()=>validateBrief(c)).toThrow('not cleared');});
+test('unused private source cannot ride inside public exports',()=>{const c=fresh();c.sources.push({...c.sources[0],id:'UNUSED',visibility:'internal'});expect(()=>validateBrief(c)).toThrow('Internal source');});
+test('restricted source fails even for confidential audience',()=>{const c=fresh();c.meta.classification='partner-confidential';c.sources[0].visibility='restricted';expect(()=>validateBrief(c)).toThrow('Restricted source');});
+test('internal source allowed only in confidential project',()=>{const c=fresh();c.meta.classification='partner-confidential';c.sources.push({...c.sources[0],id:'PRIVATE',visibility:'internal',locator:'private-source.md'});expect(validateBrief(c).sources.length).toBe(2);});
+test('unreviewed image fails',()=>{const c=fresh();c.assets[0].reviewed=false;expect(()=>validateBrief(c)).toThrow('Unreviewed');});
+test('unknown asset binding fails',()=>{const c=fresh();c.cover.tiles[0].asset='MISSING';expect(()=>validateBrief(c)).toThrow('Unknown asset');});
+test('public source cannot use a local locator',()=>{const c=fresh();c.sources[0].locator='/local/private.md';expect(()=>validateBrief(c)).toThrow('HTTP(S)');});
+test('image crop accepts only bounded percentage syntax',()=>{const c=fresh();c.cover.tiles[0].position='50% 50%;color:red';expect(()=>validateBrief(c)).toThrow();});
+test('asset path traversal and remote resources rejected',()=>{for(const p of ['../secret.png','https://example.com/image.png','/secret.png'])expect(()=>safeLocalPath('/project',p)).toThrow();expect(safeLocalPath('/project','assets/photo.jpg')).toBe('/project/assets/photo.jpg');});
+test('rich text cannot execute markup',()=>{const x=richText('<b>Bold</b><script>bad()</script><img src="bad"><br>next');expect(x).toContain('<b>Bold</b>');expect(x).not.toContain('<script>');expect(x).not.toContain('<img');expect(x).toContain('<br>');});
+test('duplicate source IDs rejected',()=>{const c=fresh();c.sources.push(c.sources[0]);expect(()=>validateBrief(c)).toThrow('Duplicate');});
+test('required phrases tolerate case and PDF letterspacing',()=>{const c=validateBrief(fresh());expect(scanText('P R O P O S E D C O L L A B O R A T I O N ILLUSTRATIVE TEMPLATE',c).issues).toEqual([]);});
+test('disclosure scan catches forbidden visible text',()=>{const c=validateBrief(fresh());expect(scanText('Proposed collaboration. Illustrative template. pre-money valuation',c).issues.length).toBeGreaterThan(0);});
+test('word-boundary scans do not block innocent substrings',()=>{const c=validateBrief(fresh());c.policy.forbiddenPatterns=['\\bsecret\\b'];expect(scanText('Proposed collaboration. Illustrative template. secretary',c).issues).toEqual([]);});
+test('dark and light use exactly the same authored content',()=>{const c=validateBrief(fresh()),paths=new Map(c.assets.map(a=>[a.id,a.path]));const d=renderHtml(c,'', 'dark',paths),l=renderHtml(c,'','light',paths);expect(d.replace('data-theme="dark"','data-theme="light"')).toBe(l);});
