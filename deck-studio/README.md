@@ -49,3 +49,9 @@ deck-studio qa --root . --deck grab --receipt out/grab-qa-receipt.json
 5. Canonical N30 compositing; no Atlas-generated images.
 6. Every number or claim in the deck points to a source, Sheet, or explicit assumption.
 7. Final external outreach stays human-reviewed.
+
+## Strategic-partnership decks
+
+For bespoke industrial, systems, licensing, distribution or mission-led strategic partnerships, use [`strategic-partners/`](strategic-partners/README.md). This optional lane shares Deck Studio's native-Slides and review discipline without replacing the approved mobility/country deck workflows. It includes partner-neutral intake and evidence contracts, commercial opportunities, seven editable layouts, asset search, offline compilation, a native staging adapter, narrow review-copy revisions, and tests. Start with the [workflow](strategic-partners/docs/WORKFLOW.md) or [quickstart](strategic-partners/docs/QUICKSTART.md).
+
+Keep real partner projects and live bindings in restricted storage. The checked-in example is wholly fictional. Automatic production revision promotion remains disabled unless the provider supports atomic conditional revisions.
