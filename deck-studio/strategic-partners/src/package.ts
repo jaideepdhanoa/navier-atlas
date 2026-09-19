@@ -5,8 +5,9 @@ import type { Project, Asset, ReviewReceipt, CompiledDeck } from './types';
 import { compileProject } from './render';
 import { sha256 } from './primitives';
 import { validateProject } from './validate';
+import {salesArtifacts,emptySalesAuthoring,migrationDraft} from './sales-package';
 
-export const PACKAGE_VERSION = '1.0.0';
+export const PACKAGE_VERSION = '2.0.0';
 export const DISPLAY_NAME_LIMIT = 42;
 export const LEGAL_ENTITY_LIMIT = 64;
 
@@ -50,7 +51,8 @@ function displayName(value: string, label: string, max: number): string {
 
 function intakeProject(partner: string, entity: string): Project {
   return {
-    schemaVersion: '1.0.0',
+    schemaVersion: '2.0.0',
+    sales:emptySalesAuthoring(),
     meta: {
       projectId: 'intake_replace_me', revision: 'r0', title: 'Incomplete strategic partnership intake',
       company: 'Company name to replace', partner, legalEntity: entity, audience: 'internal', archetype: 'strategic',
@@ -116,13 +118,13 @@ function storyboardMarkdown(project: Project, compiled: CompiledDeck): string {
   })].join('\n');
 }
 function contentSource(project: Project) {
-  return { schemaVersion: '1.0.0', projectId: project.meta.projectId, fictional: project.meta.fictional, sources: project.sources, claims: project.claims, opportunities: project.opportunities, note: 'Claims and source locators are editorial inputs; this package does not certify them.' };
+  return { schemaVersion: project.schemaVersion, projectId: project.meta.projectId, fictional: project.meta.fictional, sources: project.sources, claims: project.claims, opportunities: project.opportunities, ...(project.sales?{sales:project.sales}:{}), note: 'Claims and source locators are editorial inputs; this package does not certify them.' };
 }
 function imageManifest(project: Project, compiled: CompiledDeck, urls: Record<string, string>) {
-  return { schemaVersion: '1.0.0', images: selectedAssets(project, compiled).map(a => ({ assetId: a.id, filename: basename(a.path), path: a.path, sha256: a.sha256, width: a.width, height: a.height, mimeType: a.mimeType, caption: a.caption, resolvedUrl: urls[a.id] || a.embeddingUrl || `asset://${a.id}`, uses: compiled.assetUses.filter(u => u.assetId === a.id).map(u => ({ slideKey: u.slideKey, role: u.role })) })) };
+  return { schemaVersion: '1.0.0', images: selectedAssets(project, compiled).map(a => ({ assetId: a.id, filename: basename(a.path), path: a.path, sha256: a.sha256, width: a.width, height: a.height, mimeType: a.mimeType, caption: a.caption, visualBrief:a.visualBrief, resolvedUrl: urls[a.id] || a.embeddingUrl || `asset://${a.id}`, uses: compiled.assetUses.filter(u => u.assetId === a.id).map(u => ({ slideKey: u.slideKey, role: u.role })) })) };
 }
 function reviewTemplate(project: Project, stage: ReviewReceipt['stage'], subjectHash = digest(project)) {
-  return { schemaVersion: '1.0.0', stage, subjectHash, decision: 'held', status: 'HELD', reviewer: '', reviewedAt: '', notes: 'Unsigned template only. A human must perform and record the review; this file is never an approval.', signature: null, fictional: project.meta.fictional };
+  return { schemaVersion: '1.0.0', stage, subjectHash, decision: 'held', status: 'HELD', reviewer: '', reviewedAt: '', notes: 'Unsigned template only. A human must perform and record the review; this file is never an approval.', signature: null, reviewerKind:'human', purpose:stage==='release'?'external-release':stage==='storyboard'?'storyboard-approval':stage==='visual'?'finished-deck':'internal-readiness', fictional: project.meta.fictional };
 }
 
 export async function compilePackage(projectPath: string, out: string, urlsPath?: string): Promise<{ compiled: CompiledDeck; manifest: any; out: string }> {
@@ -153,6 +155,7 @@ export async function compilePackage(projectPath: string, out: string, urlsPath?
     'image-manifest.json': JSON.stringify(imageManifest(project, compiled, urls), null, 2) + '\n',
     'review-template.json': JSON.stringify(reviewTemplate(project, 'storyboard', compiled.inputHash), null, 2) + '\n',
   };
+  Object.assign(artifacts,salesArtifacts(project,compiled));
   const artifactHashes = Object.fromEntries(Object.entries(artifacts).map(([name, value]) => [name, digest(value)]));
   const manifest = { schemaVersion: '1.0.0', packageVersion: PACKAGE_VERSION, projectId: project.meta.projectId, revision: project.meta.revision, inputHash: projectHash, compiledHash, artifactHashes, status: holds.length ? 'HELD' : 'READY_FOR_REVIEW', holds, nativeRender: 'not-performed', visualQa: 'not-performed' };
   artifacts['build-manifest.json'] = JSON.stringify(manifest, null, 2) + '\n';
@@ -179,5 +182,18 @@ export async function writeReviewTemplate(projectPath: string, stage: ReviewRece
 }
 
 export function cliUsage(): string {
-  return 'Usage:\n  bun src/cli.ts init --out <new-dir> --partner <name> --entity <legal entity>\n  bun src/cli.ts validate --project <project.json> [--public]\n  bun src/cli.ts compile --project <project.json> --out <new-build-dir> [--urls <asset-url-map.json>]\n  bun src/cli.ts assets --project <project.json> --query <term>\n  bun src/cli.ts review-template --project <project.json> --stage storyboard|comprehension|visual|release --out <dir>';
+  return 'Usage:\n  bun src/cli.ts init --out <new-dir> --partner <name> --entity <legal entity>\n  bun src/cli.ts validate --project <project.json> [--public]\n  bun src/cli.ts compile --project <project.json> --out <new-build-dir> [--urls <asset-url-map.json>]\n  bun src/cli.ts migrate --project <v1-project.json> --out <new-draft-dir>\n  bun src/cli.ts render-review --project <project.json> --compiled <compiled.json> --snapshot <native-after.json> --pdf <deck.pdf> --out <review-dir>\n  bun src/cli.ts assets --project <project.json> --query <term>\n  bun src/cli.ts review-template --project <project.json> --stage storyboard|comprehension|visual|release --out <dir>';
+}
+
+/** Non-destructive migration aid, not an automatic rewrite of the story or native deck. */
+export async function migratePackage(projectPath:string,out:string){
+ const project=await readProject(projectPath);
+ const checked=await validateProject(project,{projectRoot:dirname(resolve(projectPath)),checkFiles:true});
+ if(!checked.ok)throw new PackageError('Fix V1 validation before migration. No files changed.');
+ const draft=migrationDraft(project),root=resolve(out);
+ await writeDeterministicJson(join(root,'project-v1.json'),project);
+ for(const asset of project.assets){const bytes=await readFile(resolve(dirname(projectPath),asset.path));const dest=join(root,asset.path);await mkdir(dirname(dest),{recursive:true});if(await exists(dest)){if(digest(await readFile(dest))!==digest(bytes))throw new PackageError('Refusing to overwrite migrated asset '+dest);}else await writeFile(dest,bytes,{flag:'wx'});}
+ await writeDeterministicJson(join(root,'v2-authoring-draft.json'),draft);
+ await writeNew(join(root,'MIGRATION.md'),'# V2 migration — HELD\n\nThe V1 project and assets are preserved here. The V2 authoring draft is intentionally incomplete, not compiler input. Author the thesis, source dispositions, sales cases and visible block bindings before creating a separate V2 project. Never regenerate a human-edited native deck in place.\n');
+ return {status:'HELD',v1Snapshot:join(root,'project-v1.json'),draft:join(root,'v2-authoring-draft.json'),sourceUnchanged:true};
 }

@@ -1,21 +1,26 @@
-# Native layout contract
+# V2 composition contract
 
-`compileProject` emits one blank native Slides page per `Project.slides` item. The page is 720 × 405 pt and uses a dark editorial palette with Exo 2 text. Every slide includes a deterministic `createSlide`, page background, editable text boxes, native lines/shapes, and native images; no raster slide is created.
+`src/compositions.ts` renders the eight registered `sales` compositions. Sales slide string fields are `CopyBlock` IDs. The validator and renderer use the same registered names; unknown names/fields fail. Each visual must be source-linked and reviewed; concepts remain concepts.
 
-## Layouts
+| Composition | Required role and fields | Use when / avoid when |
+|---|---|---|
+| `partner-opportunity` | `intro`, `domains[]`, `proof[]`, `offer`; contextual proof and explicit offer | Introduce why this partner has a portfolio opportunity. Avoid a generic company overview. |
+| `product-value` | `visual`, `mechanism`, `benefits[]`, `proof` | Explain a product-led mechanism and customer outcome. Avoid substituting a generic hero image for mechanism proof. |
+| `platform-architecture` | `banner`, `physical[]` (optional visual per item), `ownership`, `software`, `revenue`, `demand[]`, `takeaway` | Show physical/digital/customer/ownership architecture and how value is created. Keep unresolved architecture qualified. |
+| `opportunity-portfolio` | `intro`, `programs[]` (`opportunityId`, `heading`, `value`, `visual`), `connection` | Make the businesses legible before chapters. Do not collapse distinct payer/payment relationships. |
+| `mission-hero` | `visual`, `need`, `benefits[]`, `payoff` | Sell one mission-specific product and benefit. A concept visual must not imply demonstrated performance. |
+| `customer-alternative` | `intro`, `alternatives[]` (`heading`, `body`, `emphasis`), `jobs`, `advantage`, `comparison` (`basisBlockId`, `claimIds`, `kind`) | Explain current alternatives and the service/product gap. `kind` is `qualitative`, `modeled`, or `measured`; do not invent a basis. |
+| `integrated-infrastructure` | `visual`, `intro`, `actions[]`, `options` | Explain operating roles and integrated infrastructure choices. State options and unresolved decisions. |
+| `strategic-close` | `intro`, `stakes[]`, `visual`, `invitation`; optional `companion` (`labelBlockId`, `url`) | Close on partner-specific strategic value and a concrete invitation. An investment companion link does not turn this into an investment deck. |
 
-- **cover** — large visual field, editable company/partner marks when supplied, one title/subtitle/body and 1–3 pillars.
-- **fit** — dominant product visual paired with company contribution, partner value and 2–3 benefits.
-- **options** — 2–3 independent alternatives. A supplied visual is preferred; otherwise the renderer draws a clearly illustrative manufacture, hybrid or service schematic. Any transaction is a labelled **PROPOSED PAYMENTS** chain.
-- **models** — exactly two ownership/payment models with product boundary, optional visual, payment actors and benefit.
-- **channels** — scope/selection/criteria on the left, 1–2 channel mechanics and service terms on the right. It never invents a map, route or operating coverage.
-- **missions** — a 2–4 image gallery. Four cards use a shorter title budget and smaller cards so passenger-transport-network-length titles remain readable in two lines.
-- **close** — experience-led visual and 1–3 concrete conversations, ask and contact.
+## Shared rules
 
-## Images and safety
+- `SalesBase` has `layout:'sales'` and a `status`; title/status and other displayed strings resolve from block IDs as appropriate.
+- Bind visible blocks to the opportunity fields they express. Use claims for quantitative or otherwise material assertions and preserve qualification.
+- Composition fields are not a mandatory internal eight-box checklist. The sales case can live in notes/appendix; the core must still communicate importance, Navier difference, recognizable businesses, strategic upside and invitation.
+- Choose copy lengths that fit the renderer's budgets; change composition or edit copy before shrinking the deck. The native output remains editable: text, shapes, lines, images, manifests and notes are not rasterized.
+- Payment relationships use explicit `Transaction` objects (`kind:'payment'`, actors, label). Do not imply payment direction through prose or generic arrows.
+- A visual's `VisualBrief.argument` says what claim the image carries. `requiredFeatures` and `prohibitedImplications` protect product/architecture truth; `origin:'generated'` or `derivative` is illustrative and cannot serve as evidence. `architectureOptions` and `unresolvedChoices` prevent unchecked defaults.
+- Source-slide reuse is a disposition and rights/editorial decision. An accessible URL is not a clearance record.
 
-URLs come from `options.assetUrls` first, then `Asset.embeddingUrl`. With `allowUnresolvedAssets`, unresolved URLs become `asset://<id>` and a warning is emitted; these placeholders are not valid for native apply. Native image placement preserves aspect ratio using CENTER_CROP for product fields and CENTER_INSIDE for logos and contained hardware references. Google Slides mints the image IDs; the native lifecycle rebinds them from a fresh snapshot.
-
-Arbitrary explicit crop metadata is rejected rather than silently ignored. Use an archived crop derivative or a reviewed native edit for a custom crop. Noncentral focal points and protected regions produce review warnings; they are not automatically honored by CENTER_CROP. Inspect the actual rendered result. Use a provider-supported image format for native embedding: archive raster derivatives of SVG/WebP sources when the provider requires PNG/JPEG/GIF. Local validation of an SVG does not imply native-provider compatibility.
-
-Text, payment arrows and source/claim/opportunity manifest notes remain editable or inspectable. IDs are deterministic, namespaced by project and slide key, and capped at 50 characters. Bounds warnings identify native elements that extend beyond the page; title and large-content budgets fail before request generation.
+The original legacy layouts remain supported where their V1 contract is valid; do not create a partner-specific renderer. A materially new argument should become a tested reusable composition rather than a private fork.

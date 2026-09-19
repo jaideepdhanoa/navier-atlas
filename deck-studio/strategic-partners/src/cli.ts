@@ -1,6 +1,8 @@
 #!/usr/bin/env bun
-import { initPackage, validatePackage, compilePackage, searchAssets, writeReviewTemplate, PackageError, cliUsage } from './package';
+import { initPackage, validatePackage, compilePackage, searchAssets, writeReviewTemplate, PackageError, cliUsage, migratePackage, readProject } from './package';
 import type { ReviewReceipt } from './types';
+import {readFile} from 'node:fs/promises';
+import {collectRenderReview} from './render-review';
 
 function flag(args: string[], name: string, required = true): string | undefined {
   const index = args.indexOf(name);
@@ -32,6 +34,8 @@ async function main() {
     output({ status: result.manifest.status, out: result.out, inputHash: result.manifest.inputHash, compiledHash: result.manifest.compiledHash, holds: result.manifest.holds });
     return;
   }
+  if(command==='migrate'){output(await migratePackage(flag(args,'--project')!,flag(args,'--out')!));return;}
+  if(command==='render-review'){const project=await readProject(flag(args,'--project')!);const compiled=JSON.parse(await readFile(flag(args,'--compiled')!,'utf8'));const snapshot=JSON.parse(await readFile(flag(args,'--snapshot')!,'utf8'));const bundle=await collectRenderReview(project,compiled,snapshot,flag(args,'--pdf')!,flag(args,'--out')!);output({status:bundle.status,pages:bundle.pageCount,holds:bundle.holds,inspected:false,externalRelease:'held'});return;}
   if (command === 'assets') {
     const result = await searchAssets(flag(args, '--project')!, flag(args, '--query')!);
     output(result);

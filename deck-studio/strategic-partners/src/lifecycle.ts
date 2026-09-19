@@ -3,6 +3,8 @@ import {resolve} from 'node:path';
 import type {Project,CompiledDeck,Binding,DeckSnapshot,ElementRole,PatchPlan,ReviewReceipt,SlidesRequest} from './types';
 import {sha256,EMU} from './primitives';
 import {assertValidProject} from './validate';
+import type {EditorialReview} from './types';
+import {requireEditorialReview} from './reviews';
 import {snapshotHash,elementsById,verifyPatchPlan,patchRequests,verifyPatchResult,makePatchPlan} from './revisions';
 
 /** Inject an authenticated connection. This library itself contains no accounts, credentials or destination IDs. */
@@ -35,7 +37,10 @@ export function bindRoles(compiled:CompiledDeck,after:DeckSnapshot):ElementRole[
       if(candidates.length!==1)throw new Error(`Ambiguous/missing native image binding for ${s.key}/${role.role}: ${candidates.length}`);
       used.add(candidates[0].objectId);roles.push({...role,objectId:candidates[0].objectId});
     }
-  }return roles;
+  }
+  const originals=compiled.slides.flatMap(s=>s.elements);
+  const remap=new Map(originals.map((e,i)=>[e.objectId,roles[i].objectId]));
+  return roles.map(r=>r.parentObjectId?{...r,parentObjectId:remap.get(r.parentObjectId)??r.parentObjectId}:r);
 }
 function pageSizeValid(s:DeckSnapshot){if(!s.pageSize)return false;const v=(x:any)=>x?.magnitude/(x?.unit==='EMU'?EMU:1);return Math.abs(v(s.pageSize.width)-720)<.05&&Math.abs(v(s.pageSize.height)-405)<.05;}
 export function verifyCompiledReadback(compiled:CompiledDeck,after:DeckSnapshot,roles:ElementRole[]){
@@ -45,7 +50,7 @@ export function verifyCompiledReadback(compiled:CompiledDeck,after:DeckSnapshot,
   for(const s of compiled.slides){for(const b of s.boxes.filter(b=>b.role==='text'&&b.text)){const e=native.get(b.objectId);const text=((e?.shape as any)?.text?.textElements??[]).map((x:any)=>x.textRun?.content??'').join('').replace(/\n$/,'');if(text!==b.text)throw new Error(`Native text mismatch at ${s.key}/${b.objectId}`);}}
   if(roles.filter(r=>r.kind==='image').length!==compiled.assetUses.length)throw new Error('Image binding count mismatch.');
 }
-export function requireReview(receipt:ReviewReceipt|undefined,stage:ReviewReceipt['stage'],hash:string){if(!receipt||receipt.stage!==stage||receipt.subjectHash!==hash||receipt.decision!=='approved'||!receipt.reviewer||!receipt.reviewedAt)throw new Error(`${stage} review is missing, stale or held.`);}
+export function requireReview(receipt:ReviewReceipt|undefined,stage:ReviewReceipt['stage'],hash:string,requireHuman=false){if(!receipt||receipt.stage!==stage||receipt.subjectHash!==hash||receipt.decision!=='approved'||!receipt.reviewer||!receipt.reviewedAt||Number.isNaN(Date.parse(receipt.reviewedAt)))throw new Error(`${stage} review is missing, stale or held.`);if((requireHuman||stage==='release'||receipt.purpose==='finished-deck'||receipt.purpose==='external-release')&&receipt.reviewerKind!=='human')throw new Error(`${stage} requires an explicit human reviewer; agent/fixture/legacy identity is not approval.`);if(stage==='release'&&receipt.purpose!=='external-release')throw new Error('Release requires explicit external-release purpose.');}
 
 function pristineDefaultTitleSlide(s:DeckSnapshot):boolean {
   if(s.slides.length!==1)return false;
@@ -56,8 +61,13 @@ function pristineDefaultTitleSlide(s:DeckSnapshot):boolean {
   if((page as any).pageProperties?.pageBackgroundFill?.propertyState!=='INHERIT')return false;
   return (page.slideProperties?.notesPage?.pageElements??[]).every(empty);
 }
-export async function createStaging(project:Project,compiled:CompiledDeck,port:NativePort,options:{root:string;out:string;storyboard:ReviewReceipt;title?:string;verifiedAssetHashes:Record<string,string>;unverifiedInternalAssetIds?:string[];protectedIds?:string[];allowPristineTitleSlide?:boolean}):Promise<StageReceipt>{
+export async function createStaging(project:Project,compiled:CompiledDeck,port:NativePort,options:{root:string;out:string;storyboard:ReviewReceipt;title?:string;verifiedAssetHashes:Record<string,string>;unverifiedInternalAssetIds?:string[];protectedIds?:string[];allowPristineTitleSlide?:boolean;editorial?:EditorialReview;workflowTest?:boolean}):Promise<StageReceipt>{
   await assertValidProject(project,{projectRoot:options.root,checkFiles:true});validateCompiled(compiled);requireReview(options.storyboard,'storyboard',compiled.inputHash);
+  if(project.schemaVersion==='2.0.0'){
+    requireEditorialReview(project,compiled,options.editorial);
+    if(options.workflowTest){if(!project.meta.fictional||project.meta.audience!=='internal'||options.storyboard.purpose!=='workflow-test'||!['agent','fixture'].includes(options.storyboard.reviewerKind??''))throw new Error('Workflow-test staging is limited to explicitly fictional internal proofs; never impersonate human approval.');}
+    else {requireReview(options.storyboard,'storyboard',compiled.inputHash,true);if(options.storyboard.purpose!=='storyboard-approval')throw new Error('Human storyboard approval must state its purpose.');}
+  }
   if(compiled.inputHash!==sha256(project))throw new Error('Compiled project is stale.');
   for(const id of new Set(compiled.assetUses.map(u=>u.assetId))){const asset=project.assets.find(a=>a.id===id)!;if(options.verifiedAssetHashes[id]!==asset.sha256&&!(project.meta.audience==='internal'&&options.unverifiedInternalAssetIds?.includes(id)))throw new Error(`Remote image bytes not verified for ${id}.`);}
   await mkdir(options.out,{recursive:true});const receiptPath=resolve(options.out,'stage-receipt.json'),title=options.title??`[INTERNAL REVIEW] ${project.meta.title}`;
@@ -111,7 +121,7 @@ export async function createStaging(project:Project,compiled:CompiledDeck,port:N
 /** Production promotion is fail-closed unless the port supports native atomic revision control. */
 export async function promoteRevision(binding:Binding,plan:PatchPlan,port:NativePort,review:ReviewReceipt){
   if(!port.conditionalRevisions)throw new Error('LIVE_PROMOTION_HELD: this connection has no atomic conditional revision support. Review staging; do not claim a preflight hash is a lock.');
-  requireReview(review,'visual',plan.planHash);const before=await port.snapshot(binding.presentationId);const gate=verifyPatchPlan(binding,before,plan);if(gate.status==='no-op')return gate;
+  requireReview(review,'visual',plan.planHash,true);const before=await port.snapshot(binding.presentationId);const gate=verifyPatchPlan(binding,before,plan);if(gate.status==='no-op')return gate;
   if(!before.revisionId)throw new Error('Native revision token is missing.');
   const backup=await port.duplicate(binding.presentationId,`${binding.expectedTitle} — before ${plan.revision}`);
   const finalBefore=await port.snapshot(binding.presentationId);verifyPatchPlan(binding,finalBefore,plan);if(!finalBefore.revisionId)throw new Error('Native revision token missing.');

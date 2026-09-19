@@ -2,12 +2,14 @@ import type {
   Asset, Audience, BaseSlide, Claim, Crop, Opportunity, Project, Slide, Source, Transaction, ValidationIssue, ValidationResult, Visual,
 } from './types';
 import { isPlausibleMime, isUnsafeAssetPath, verifyAssetFiles } from './assets';
+import {schemaIssues} from './schema';
+import {salesIssues,blockIds,resolveBlock,collectVisuals,slideBlockClaims} from './authoring';
 
 const AUDIENCES = new Set<Audience>(['internal', 'partner', 'public']);
 const VISIBILITIES = new Set(['public', 'internal', 'restricted']);
 const EVIDENCE = new Set(['measured', 'demonstrated', 'historical', 'company-reported', 'preliminary', 'modeled', 'planned', 'proposed', 'fictional']);
 const OPPORTUNITY_KINDS = new Set(['supply', 'co-development', 'contract-build', 'license', 'direct-sale', 'resale', 'service', 'operator-program', 'other']);
-const LAYOUTS = new Set(['cover', 'fit', 'options', 'models', 'channels', 'missions', 'close']);
+const LAYOUTS = new Set(['cover', 'fit', 'options', 'models', 'channels', 'missions', 'close', 'sales']);
 const ID = /^[A-Za-z0-9_-]+$/;
 const DATE = /^\d{4}-\d{2}-\d{2}$/;
 const ISO_HEADLINE_LIMIT = 95;
@@ -197,7 +199,8 @@ function validateSlide(issues: ValidationIssue[], value: unknown, index: number,
     if (!Array.isArray(value.conversations) || value.conversations.length < 1 || value.conversations.length > 3) error(issues, 'COUNT_BOUNDARY', `${path}.conversations`, 'Close conversations must contain 1–3 items');
     else value.conversations.forEach((c: any, i: number) => { const p = `${path}.conversations[${i}]`; if (!isRecord(c) || !str(c.title) || !str(c.body)) error(issues, 'CONVERSATION_INVALID', p, 'Conversation requires title and body'); });
   }
-  checkSlideBudgets(issues, value, path);
+  if(layout==='sales')collectVisuals(value).forEach((v,i)=>visual(v,`${path}.visuals[${i}]`));
+  else checkSlideBudgets(issues, value, path);
 }
 
 function allStrings(value: unknown, path = '', output: Array<{ value: string; path: string }> = []): Array<{ value: string; path: string }> {
@@ -217,9 +220,15 @@ function readiness(text: string): boolean { return /\b(?:ready\s+to\s+(?:launch|
 export async function validateProject(data: unknown, options: { projectRoot?: string; checkFiles?: boolean; forPublication?: boolean } = {}): Promise<ValidationResult> {
   const issues: ValidationIssue[] = [];
   if (!isRecord(data)) return { ok: false, releaseReady: false, issues: [{ severity: 'error', code: 'PROJECT_OBJECT_REQUIRED', path: '', message: 'Project must be an object' }] };
+  const structural=schemaIssues(data);issues.push(...structural);
+  // Union errors can include irrelevant missing properties from other slide layouts.
+  // Preserve V1's detailed budget/readiness diagnostics when traversal is safe.
+  const unsafeRoot=!isRecord(data.meta)||!isRecord(data.policy)||['sources','claims','assets','opportunities','slides'].some(key=>!Array.isArray(data[key])||data[key].some((item:unknown)=>!isRecord(item)));
+  const unsafeV2=data.schemaVersion==='2.0.0'&&structural.some(i=>/must be (?:object|array|string|number|boolean)|must have required property/.test(i.message));
+  if(unsafeRoot||unsafeV2)return {ok:false,releaseReady:false,issues};
   const project = data as any;
   required(issues, project, ['schemaVersion', 'meta', 'sources', 'claims', 'assets', 'opportunities', 'slides', 'policy'], 'project');
-  if (project.schemaVersion !== '1.0.0') error(issues, 'SCHEMA_VERSION', 'schemaVersion', 'Expected schemaVersion 1.0.0');
+  if (!['1.0.0','2.0.0'].includes(project.schemaVersion)) error(issues, 'SCHEMA_VERSION', 'schemaVersion', 'Expected schemaVersion 1.0.0 or 2.0.0');
   const meta = project.meta;
   if (!isRecord(meta)) error(issues, 'META_REQUIRED', 'meta', 'meta must be an object');
   else {
@@ -234,8 +243,8 @@ export async function validateProject(data: unknown, options: { projectRoot?: st
     for (const key of ['forbiddenTerms', 'forbiddenPartnerNames', 'requiredPhrases']) if (!Array.isArray(policy[key]) || policy[key].some((x: unknown) => !str(x))) error(issues, 'POLICY_ARRAY_INVALID', `policy.${key}`, 'Policy values must be text arrays');
     if (typeof policy.allowMissingLogosForInternalReview !== 'boolean') error(issues, 'POLICY_BOOLEAN', 'policy.allowMissingLogosForInternalReview', 'allowMissingLogosForInternalReview must be boolean');
   }
-  const sources = Array.isArray(project.sources) ? project.sources : []; const claims = Array.isArray(project.claims) ? project.claims : []; const assets = Array.isArray(project.assets) ? project.assets : []; const opportunities = Array.isArray(project.opportunities) ? project.opportunities : []; const slides = Array.isArray(project.slides) ? project.slides : [];
-  for (const [key, value] of [['sources', sources], ['claims', claims], ['assets', assets], ['opportunities', opportunities], ['slides', slides] as const]) if (!Array.isArray(project[key])) error(issues, 'ARRAY_REQUIRED', key, 'Expected an array');
+  const sources:any[] = Array.isArray(project.sources) ? project.sources : []; const claims:any[] = Array.isArray(project.claims) ? project.claims : []; const assets:any[] = Array.isArray(project.assets) ? project.assets : []; const opportunities:any[] = Array.isArray(project.opportunities) ? project.opportunities : []; const slides:any[] = Array.isArray(project.slides) ? project.slides : [];
+  for (const key of ['sources','claims','assets','opportunities','slides'] as const) if (!Array.isArray(project[key])) error(issues, 'ARRAY_REQUIRED', key, 'Expected an array');
   uniqueIds(issues, [{ value: sources, path: 'sources' }, { value: claims, path: 'claims' }, { value: assets, path: 'assets' }, { value: opportunities, path: 'opportunities' }, { value: slides, path: 'slides' }]);
   sources.forEach((s, i) => validateSource(issues, s, `sources[${i}]`));
   const sourceIds = new Set(sources.filter(isRecord).map(s => s.id).filter((x): x is string => typeof x === 'string'));
@@ -246,10 +255,11 @@ export async function validateProject(data: unknown, options: { projectRoot?: st
   assets.forEach((a, i) => { if (isRecord(a)) refs(issues, a.sourceIds, `assets[${i}].sourceIds`, sourceIds, true); });
   opportunities.forEach((o, i) => validateOpportunity(issues, o, `opportunities[${i}]`, claimIds));
   const opportunityIds = new Set(opportunities.filter(isRecord).map(o => o.id).filter((x): x is string => typeof x === 'string'));
+  if(project.schemaVersion==='2.0.0'&&structural.length===0)issues.push(...salesIssues(project));
   const known = { claims: claimIds, sources: sourceIds, assets: assetIds, opportunities: opportunityIds, assetRecords: assets };
   slides.forEach((s, i) => validateSlide(issues, s, i, known));
   if (slides.length < 2 || slides[0]?.layout !== 'cover') error(issues, 'SLIDE_ORDER', 'slides', 'Slide order must start with cover and include a variable-length deck');
-  if (slides.length < 2 || slides[slides.length - 1]?.layout !== 'close') error(issues, 'SLIDE_ORDER', 'slides', 'Slide order must end with close');
+  if (slides.length < 2 || slides[slides.length - 1]?.layout !== 'close' && !(slides[slides.length - 1]?.layout === 'sales' && slides[slides.length - 1]?.composition === 'strategic-close')) error(issues, 'SLIDE_ORDER', 'slides', 'Slide order must end with close');
   // Strong privacy and audience checks intentionally include unused records for public artifacts.
   const audience: Audience | undefined = meta?.audience;
   const publication = options.forPublication === true || audience === 'public';
@@ -261,6 +271,7 @@ export async function validateProject(data: unknown, options: { projectRoot?: st
   const usedClaimIds = new Set<string>(); const usedAssetIds = new Set<string>(); const usedSourceIds = new Set<string>();
   slides.forEach((s: any) => { if (!isRecord(s)) return; (s.claimIds ?? []).forEach((x: any) => usedClaimIds.add(x)); (s.sourceIds ?? []).forEach((x: any) => usedSourceIds.add(x)); (s.opportunityIds ?? []).forEach((x: any) => { const o = opportunities.find((v: any) => v?.id === x); (o?.claimIds ?? []).forEach((c: any) => usedClaimIds.add(c)); }); const visit = (v: any) => { if (!v || typeof v !== 'object') return; if (typeof v.assetId === 'string') usedAssetIds.add(v.assetId); Object.values(v).forEach(visit); }; visit(s); });
   opportunities.forEach((o: any) => (o?.claimIds ?? []).forEach((x: any) => usedClaimIds.add(x)));
+  if(project.sales)for(const b of project.sales.blocks??[])for(const id of b.claimIds??[])usedClaimIds.add(id);
   for (const claimId of usedClaimIds) { const c: any = claims.find(x => x?.id === claimId); (c?.sourceIds ?? []).forEach((x: any) => usedSourceIds.add(x)); }
   for (const assetId of usedAssetIds) { const a: any = assets.find(x => x?.id === assetId); (a?.sourceIds ?? []).forEach((x: any) => usedSourceIds.add(x)); }
   if (meta?.companyLogoAssetId) usedAssetIds.add(meta.companyLogoAssetId);
@@ -279,10 +290,10 @@ export async function validateProject(data: unknown, options: { projectRoot?: st
   if (meta?.partnerLogoAssetId && !assetIds.has(meta.partnerLogoAssetId)) error(issues, 'UNKNOWN_REFERENCE', 'meta.partnerLogoAssetId', 'Unknown partner logo asset');
   // A small, intentionally conservative heuristic: only strong readiness claims are blocked.
   slides.forEach((s: any, i: number) => {
-    const texts = slideText(s); const combined = texts.join(' ');
+    let texts=slideText(s);if(s.layout==='sales'&&structural.length===0){try{texts=blockIds(s).map(id=>resolveBlock(project,id).text);}catch{ /* Resolution errors are reported by salesIssues. */ }}const combined=texts.join(' ');
     if (readiness(combined)) error(issues, 'FUTURE_READINESS_UNSUPPORTED', `slides[${i}]`, 'Evaluation material cannot imply launch readiness, approved integration, guaranteed delivery, or available capacity');
     if (quantitative(combined)) {
-      if (!Array.isArray(s.claimIds) || s.claimIds.length === 0) error(issues, 'QUANTITATIVE_CLAIM_MISSING', `slides[${i}]`, 'Visible quantitative content needs at least one referenced claim');
+      if ((!Array.isArray(s.claimIds) || s.claimIds.length === 0) && !(s.layout==='sales'&&structural.length===0&&blockIds(s).some(id=>{try{return resolveBlock(project,id).claimIds.length>0;}catch{return false;}}))) error(issues, 'QUANTITATIVE_CLAIM_MISSING', `slides[${i}]`, 'Visible quantitative content needs at least one referenced claim');
       else for (const claimId of s.claimIds) { const c: any = claims.find(x => x?.id === claimId); if (c && !str(c.basis)) error(issues, 'QUANTITATIVE_BASIS_MISSING', `claims.${claimId}.basis`, 'Quantitative visible content needs a claim with basis'); }
     }
   });
@@ -294,13 +305,14 @@ export async function validateProject(data: unknown, options: { projectRoot?: st
     const content = allStrings({ ...project, policy: undefined }).filter(x => x.path !== 'meta.partner');
     for (const item of content) for (const term of forbidden) if (term && item.value.toLocaleLowerCase().includes(term.toLocaleLowerCase())) error(issues, 'FORBIDDEN_CONTENT', item.path, 'Content contains a policy-forbidden term or other-partner name');
     for (const item of content) if (/\bN120\b/i.test(item.value)) error(issues, 'RETIRED_PRODUCT_LEAKAGE', item.path, 'Retired product name N120 is prohibited');
-    const visible = slides.flatMap((s: any) => slideText(s)).join(' ').toLocaleLowerCase();
+    const visible = slides.flatMap((s: any) => {if(s.layout==='sales'&&structural.length===0){try{return blockIds(s).map(id=>resolveBlock(project,id).text);}catch{return [];}}return slideText(s);}).join(' ').toLocaleLowerCase();
     for (const phrase of policy.requiredPhrases ?? []) if (str(phrase) && !visible.includes(phrase.toLocaleLowerCase())) error(issues, 'REQUIRED_PHRASE_MISSING', 'slides', `Required phrase is missing from visible slide copy: ${phrase}`);
   }
   if (options.checkFiles) {
     if (!options.projectRoot) error(issues, 'PROJECT_ROOT_REQUIRED', 'options.projectRoot', 'projectRoot is required when checkFiles is true');
     else issues.push(...await verifyAssetFiles(project as Project, options.projectRoot));
   }
+  hold(issues, 'HUMAN_RELEASE_REQUIRED', 'review', 'Validation is not human finished-deck approval or external-release permission.');
   const hasErrors = issues.some(i => i.severity === 'error');
   const releaseReady = !hasErrors && !issues.some(i => i.severity === 'release-hold');
   return { ok: !hasErrors, releaseReady, issues };

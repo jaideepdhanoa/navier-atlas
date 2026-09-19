@@ -1,11 +1,17 @@
 import type { Asset, CompiledDeck, CompiledSlide, Project, Slide, Visual, Transaction } from './types';
 import { COLORS, NativeCanvas, PAGE, outOfCanvas, sha256, stableId } from './primitives';
+import type {CopyEmission} from './types';
+import {drawSales} from './compositions';
+import {assertSchema} from './schema';
+import {salesIssues,slideTitle,slideBlockClaims,notesBlocks} from './authoring';
+import {attachmentFrame} from './attachments';
 export interface RenderOptions {assetUrls?:Record<string,string>;allowUnresolvedAssets?:boolean;}
 export class RenderSafetyError extends Error {constructor(message:string){super(message);this.name='RenderSafetyError';}}
 type Warning=CompiledDeck['warnings'][number];
 const warn=(warnings:Warning[],code:string,path:string,message:string,severity:Warning['severity']='warning')=>warnings.push({code,path,message,severity});
 const budget=(text:unknown,max:number,path:string)=>{if(typeof text==='string'&&text.length>max)throw new RenderSafetyError(`${path} exceeds ${max} characters; edit the copy or choose a different composition.`);};
 function checkBudgets(s:Slide){
+  if(s.layout==='sales')return;
   budget(s.title,95,`${s.key}.title`);budget(s.kicker,70,`${s.key}.kicker`);
   const v=(v:Visual|undefined,max=110)=>v&&budget(v.caption,max,`${s.key}.caption`);
   if(s.layout==='cover'){budget(s.title,52,`${s.key}.title`);budget(s.subtitle,72,`${s.key}.subtitle`);budget(s.body,135,`${s.key}.body`);s.pillars.forEach(x=>budget(x,42,`${s.key}.pillar`));v(s.visual);}
@@ -18,9 +24,10 @@ function checkBudgets(s:Slide){
   if('explore'in s)budget(s.explore,110,`${s.key}.explore`);
 }
 function notes(project:Project,s:Slide){
-  const sourceIds=new Set([...s.sourceIds,...project.claims.filter(c=>s.claimIds.includes(c.id)).flatMap(c=>c.sourceIds)]);
+  const claimIds=slideBlockClaims(project,s);
+  const sourceIds=new Set([...s.sourceIds,...project.claims.filter(c=>claimIds.includes(c.id)).flatMap(c=>c.sourceIds)]);
   const sources=project.sources.filter(x=>sourceIds.has(x.id)&&x.visibility==='public').map(x=>`${x.id}: ${x.title}\n${x.locator} (as of ${x.asOf})`).join('\n\n');
-  return [s.title,project.meta.audience==='internal'?s.notes:'',`EVIDENCE\n${project.claims.filter(c=>s.claimIds.includes(c.id)).map(c=>`${c.id} · ${c.evidenceClass}: ${c.basis}`).join('\n')}`,sources?`PUBLIC SOURCES\n${sources}`:'',`BINDING\n${JSON.stringify({slideKey:s.key,claimIds:s.claimIds,sourceIds:s.sourceIds,opportunityIds:s.opportunityIds})}`].filter(Boolean).join('\n\n');
+  return [slideTitle(project,s),project.meta.audience==='internal'?[s.notes,...notesBlocks(project,s).map(b=>`${b.text} (detail placement: ${b.block.placementReason})`)].join('\n'):'',`EVIDENCE\n${project.claims.filter(c=>claimIds.includes(c.id)).map(c=>`${c.id} · ${c.evidenceClass}: ${c.basis}${c.limitations?' | Limitations: '+c.limitations:''}`).join('\n')}`,sources?`PUBLIC SOURCES\n${sources}`:'',`BINDING\n${JSON.stringify({slideKey:s.key,claimIds:s.claimIds,sourceIds:s.sourceIds,opportunityIds:s.opportunityIds})}`].filter(Boolean).join('\n\n');
 }
 function footer(p:Project){return p.meta.footer||`${p.meta.company} · ${p.meta.partner}`;}
 function visual(c:NativeCanvas,p:Project,warnings:Warning[],assets:Map<string,Asset>,urls:Map<string,string>,v:Visual|undefined,frame:{x:number;y:number;w:number;h:number},role:string,caption:'below'|'inside'|'none'='below',fit:'cover'|'contain'='cover'){
@@ -28,7 +35,8 @@ function visual(c:NativeCanvas,p:Project,warnings:Warning[],assets:Map<string,As
   if(v.crop||a.crop)throw new RenderSafetyError(`Explicit crop for ${a.id} must be supplied as an archived derivative or set in a reviewed native deck; silent crop fallback is forbidden.`);
   if(a.focalPoint&&(Math.abs(a.focalPoint.x-.5)>.01||Math.abs(a.focalPoint.y-.5)>.01))warn(warnings,'FOCAL_REVIEW',`assets.${a.id}`,'Native CENTER_CROP is used. Inspect the focal region in the actual render; noncentral crops require a reviewed native edit or archived derivative.');
   if(a.keepRegion)warn(warnings,'KEEP_REGION_REVIEW',`assets.${a.id}`,'Check the protected region against actual native crop before approval.');
-  c.image(`${role}_${a.id}`,a,urls.get(a.id)!,frame,role,undefined,fit);
+  const parentId=c.image(`${role}_${a.id}`,a,urls.get(a.id)!,frame,role,undefined,fit);
+  for(const mark of v.attachments??[]){const child=assets.get(mark.assetId);if(!child||mark.parentSha256!==a.sha256||mark.assetSha256!==child.sha256||mark.review.status!=='reviewed')throw new RenderSafetyError('Unreviewed or stale image attachment.');const box=attachmentFrame(a,frame,mark,a.kind==='logo'?'contain':fit);const id=c.image(`${role}_attachment_${child.id}`,child,urls.get(child.id)!,box,role+'-attachment',undefined,'contain');const binding=c.elements.find(e=>e.objectId===id)!;binding.parentObjectId=parentId;}
   if(caption!=='none'){
     const small=frame.w<200,size=small?6.3:6.8,y=caption==='inside'?frame.y+frame.h-22:frame.y+frame.h+4;
     if(caption==='inside')c.shape(`${role}_caption_field`,frame.x,y-3,frame.w,25,COLORS.bg,undefined,'RECTANGLE','mask',.82);
@@ -42,9 +50,10 @@ function logos(c:NativeCanvas,p:Project,assets:Map<string,Asset>,urls:Map<string
   if(!ids[0])c.text('company_name',p.meta.company,36,26,115,30,{size:17,weight:600,color:COLORS.white});
   if(!ids[1])c.text('partner_name',p.meta.partner,166,25,132,39,{size:10.5,weight:500,color:COLORS.white,lineSpacing:103});
 }
-function draw(c:NativeCanvas,s:Slide,p:Project,a:Map<string,Asset>,u:Map<string,string>,w:Warning[],index:number){
-  c.background();
+function draw(c:NativeCanvas,s:Slide,p:Project,a:Map<string,Asset>,u:Map<string,string>,w:Warning[],index:number):CopyEmission[]{
   const image=(v:Visual|undefined,box:{x:number;y:number;w:number;h:number},role:string,cap:'below'|'inside'|'none'='below',fit:'cover'|'contain'='cover')=>visual(c,p,w,a,u,v,box,role,cap,fit);
+  if(s.layout==='sales')return drawSales(c,s,p,index,image);
+  c.background();
   if(s.layout==='cover'){
     image(s.visual,{x:318,y:72,w:402,h:265},'cover','inside');logos(c,p,a,u);
     c.text('cover_kicker',s.kicker,36,91,264,25,{size:8.2,weight:700,color:COLORS.gold,lineSpacing:100});
@@ -82,16 +91,18 @@ function draw(c:NativeCanvas,s:Slide,p:Project,a:Map<string,Asset>,u:Map<string,
     c.text('close_intro',s.intro,414,55,270,68,{size:21,weight:500,color:COLORS.white,lineSpacing:103});s.conversations.forEach((v,i)=>{const y=151+i*56;c.text(`conversation_n${i}`,String(i+1).padStart(2,'0'),414,y+2,23,18,{size:8.3,weight:700,color:COLORS.gold});c.text(`conversation_title${i}`,v.title,444,y,240,23,{size:13.8,weight:500,color:COLORS.white});c.text(`conversation_body${i}`,v.body,444,y+24,240,29,{size:9.8,color:COLORS.body,lineSpacing:104});});c.line('close_rule',414,327,684,327,COLORS.gold,.8);c.text('close_ask',s.ask,414,340,270,29,{size:10.6,weight:500,color:COLORS.paleGold});c.text('contact',s.contact,414,374,270,13,{size:8.6,color:COLORS.white,url:s.contact.includes('@')?`mailto:${s.contact}`:undefined});
   }
   c.footer(footer(p));
+  return [];
 }
 export function compileProject(project:Project,options:RenderOptions={}):CompiledDeck{
+  if(project.schemaVersion==='2.0.0'){assertSchema(project);const bad=salesIssues(project).filter(i=>i.severity==='error');if(bad.length)throw new RenderSafetyError(bad.slice(0,12).map(i=>`${i.code} ${i.path}: ${i.message}`).join('; '));}
   const warnings:Warning[]=[],assets=new Map(project.assets.map(a=>[a.id,a])),used=new Set<string>();
   const visit=(x:any)=>{if(Array.isArray(x))x.forEach(visit);else if(x&&typeof x==='object')Object.entries(x).forEach(([k,v])=>{if(k==='assetId'&&typeof v==='string')used.add(v);else visit(v);});};project.slides.forEach(visit);[project.meta.companyLogoAssetId,project.meta.partnerLogoAssetId].forEach(id=>id&&used.add(id));
   const urls=new Map<string,string>();for(const id of used){const asset=assets.get(id);if(!asset)throw new RenderSafetyError(`Unknown asset ${id}`);const url=options.assetUrls?.[id]||asset.embeddingUrl;if(url)urls.set(id,url);else if(options.allowUnresolvedAssets){urls.set(id,`asset://${id}`);warn(warnings,'UNRESOLVED_ASSET',`assets.${id}`,'Resolve to a verified image URL before native staging.');}else throw new RenderSafetyError(`No embedding URL for asset ${id}`);}
   const slides:CompiledSlide[]=[],requests:any[]=[],seen=new Set<string>();
-  project.slides.forEach((s,i)=>{checkBudgets(s);const id=stableId(project.meta.projectId,s.key,'page'),c=new NativeCanvas(id,project.meta.projectId,s.key);c.requests.push({createSlide:{objectId:id,slideLayoutReference:{predefinedLayout:'BLANK'}}});draw(c,s,project,assets,urls,warnings,i+1);
+  project.slides.forEach((s,i)=>{checkBudgets(s);const id=stableId(project.meta.projectId,s.key,'page'),c=new NativeCanvas(id,project.meta.projectId,s.key);c.requests.push({createSlide:{objectId:id,slideLayoutReference:{predefinedLayout:'BLANK'}}});const copyBindings=draw(c,s,project,assets,urls,warnings,i+1);
     for(const r of c.requests){if(Object.keys(r).length!==1)throw new RenderSafetyError('Each Slides request must contain exactly one operation.');for(const[k,v]of Object.entries(r)as any){if(k.startsWith('create')&&v.objectId){if(seen.has(v.objectId))throw new RenderSafetyError(`Duplicate native ID ${v.objectId}`);seen.add(v.objectId);}}}
     c.boxes.forEach(b=>{if(outOfCanvas(b)&&!b.intentionalClip)warn(warnings,'OUT_OF_CANVAS',`slides.${s.key}.${b.objectId}`,'Element extends beyond canvas.');});
-    slides.push({key:s.key,objectId:id,layout:s.layout,requests:c.requests,elements:c.elements,boxes:c.boxes,visibleText:c.boxes.filter(b=>b.role==='text'&&b.text).map(b=>b.text!),notes:notes(project,s)});requests.push(...c.requests);
+    slides.push({key:s.key,objectId:id,layout:s.layout,requests:c.requests,elements:c.elements,boxes:c.boxes,visibleText:c.boxes.filter(b=>b.role==='text'&&b.text).map(b=>b.text!),notes:notes(project,s),...(s.layout==='sales'?{copyBindings}:{})});requests.push(...c.requests);
   });
   return{schemaVersion:'1.0.0',projectId:project.meta.projectId,revision:project.meta.revision,inputHash:sha256(project),pageSize:PAGE,slides,requests,assetUses:slides.flatMap(s=>s.elements.filter(e=>e.kind==='image'&&e.assetId).map(e=>({assetId:e.assetId!,slideKey:s.key,role:e.role,objectId:e.objectId}))),warnings};
 }
