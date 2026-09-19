@@ -28,12 +28,12 @@ Run from this package directory:
 
 ```sh
 bun src/cli.ts init --out ./my-intake --partner "Example Vessel Company" --entity "Example Vessel Company Ltd"
-bun src/cli.ts validate --project ./examples/public-demo/project.json [--public]
+bun src/cli.ts validate --project ./examples/research-network/project.json [--public]
 bun src/cli.ts migrate --project ./v1-project.json --out ./held-v2-draft
-bun src/cli.ts compile --project ./examples/public-demo/project.json --out ./build-demo [--urls ./asset-url-map.json]
+bun src/cli.ts compile --project ./examples/research-network/project.json --out ./build-demo [--urls ./asset-url-map.json]
 bun src/cli.ts render-review --project ./project.json --compiled ./build/compiled.json --snapshot ./native-after.json --pdf ./deck.pdf --out ./render-review
-bun src/cli.ts assets --project ./examples/public-demo/project.json --query service
-bun src/cli.ts review-template --project ./examples/public-demo/project.json --stage storyboard|comprehension|visual|release --out ./review
+bun src/cli.ts assets --project ./examples/research-network/project.json --query service
+bun src/cli.ts review-template --project ./examples/research-network/project.json --stage storyboard|comprehension|visual|release --out ./review
 bun src/registry-cli.ts search --registry ./registry.json --mission passenger --clearance partner
 ```
 

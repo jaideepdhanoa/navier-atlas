@@ -1,67 +1,89 @@
-# Quickstart
+# V2 quickstart — build the sales argument first
 
-This is a partner-neutral package for source-linked strategic-partnership evaluation decks. Its CLI is offline: it does not connect to a service, create a native deck, publish a presentation, or certify visual QA. The library also provides an optional authenticated adapter for native create/stage/revise; see [`NATIVE-LIFECYCLE.md`](NATIVE-LIFECYCLE.md). Start with the [operating workflow](WORKFLOW.md) for the editorial and review checkpoints.
+Use this package to create a partner-specific strategic sales deck, either standalone or complementary to an investment deck. It is not an evaluation-plan template. Standardize evidence, authoring, production and review—not the partner's story.
 
-## 1. Create and complete an intake
+The CLI works offline. An authorized adapter stages a native deck separately. Start with the [workflow](WORKFLOW.md), [content contract](CONTENT-CONTRACT.md) and [composition guide](LAYOUTS.md).
 
-From the package directory:
+## 1. Open a restricted project
+
+Run from the package directory; place real partner work outside the generic package:
 
 ```sh
-bun src/cli.ts init --out ./my-intake --partner "Example Vessel Company" --entity "Example Vessel Company Ltd"
+bun src/cli.ts init --out ../my-partner-project --partner "Example Vessel Company" --entity "Example Vessel Company Ltd"
 ```
 
-`init` refuses overlong display names rather than shrinking the fixed name area. It creates a fictional `INCOMPLETE-INTAKE` hold and an empty scaffold. Replace every demo field, add source-linked claims and locally archived assets, and obtain review before any production use. It never overwrites existing files.
+`init` creates an incomplete V2 scaffold, including empty sales-authoring fields. It is explicitly fictional and held, contains no evidence or approvals, and never overwrites files. Replace every demo identity and field. Recover approved company evidence, the partner brief/two-pager, strong reference slides, relationship context and image candidates before researching or rewriting from scratch.
 
-A project should distinguish:
+## 2. Write the thesis and source map before slides
 
-- evidence sources and claims (`Source`, `Claim`) with audience clearance, evidence class, basis, and limitations;
-- opportunities (`Opportunity`) with product, customer, payer, contributions, partner benefit, commercial logic, and next question;
-- visuals (`Asset`/`Visual`) with exact version hash, maturity, rights, clearance, role tags, caption, and crop guidance; and
-- slides with explicit claims, sources, opportunities, notes, and a selected narrative layout.
+Complete `sales.brief`: the audience decision, why the opportunity matters to this partner, what the company changes, why the combination is attractive, strategic upside and the desired invitation. Choose `standalone` or `investment-companion`; record what the independent investment deck already covers and avoid repeating its fundraising story.
 
-Use the approved asset library first. `registry-cli.ts` can build and search a local catalogue without network fetches:
+Inventory the important propositions and reference slides. Give each an explicit keep/strengthen/qualify/omit disposition and a destination, plus a visual reuse decision. Preserve the strongest ideas; qualify unsupported certainty without shrinking ambition. Do not bury an essential proposition in notes merely to pass a checklist.
+
+For each opportunity, retain product/customer/payer/payment/contribution fields and complete its `salesCase`: need, current alternative, market or operating basis, differentiated mechanism, customer outcome, ambitious business, credible first engagement, evidence boundary, demand status and readiness. The first study or evaluation is an entry point—not the business being sold.
+
+## 3. Storyboard the visible argument
+
+Introduce the businesses before the detailed chapters. Plan narrative jobs, takeaways and transitions in `sales.narrative`; author the actual slide copy in `sales.blocks` with source/claim and opportunity-field bindings. Use core copy to sell importance, the solution, differentiation, outcomes and strategic upside. Move most scoping, validation and contracting detail to notes or an appendix.
+
+Choose compositions for their explanatory job, not a fixed slide sequence. Three wholly fictional V2 examples demonstrate different structures:
+
+- `examples/energy-infrastructure/`: four opportunities, 11 slides.
+- `examples/industrial-oem/`: three opportunities, nine slides.
+- `examples/research-network/`: one opportunity, seven slides.
+
+These are regression fixtures, not approved sales decks or prescribed storyboards. Their synthetic assets and pending review records must not be carried into real work.
+
+For every visual, record its argument, required features, prohibited implications, maturity, exact bytes, rights/clearance, crop and review. Generated scenes must identify unresolved architecture choices rather than accidentally selecting a power source, site or configuration. Use approved product references; attach marks explicitly rather than inferring them from pixels.
+
+## 4. Validate and review persuasion
 
 ```sh
-bun src/registry-cli.ts build --project ./my-intake/project.json --out ./registry.json
-bun src/registry-cli.ts shortlist --registry ./registry.json --maturity actual --rights held --limit 12 --out ./shortlist.html
+bun src/cli.ts validate --project ../my-partner-project/project.json
+bun src/cli.ts assets --project ../my-partner-project/project.json --query service
+bun src/cli.ts review-template --project ../my-partner-project/project.json --stage storyboard --out ../my-partner-project/storyboard-review
 ```
 
-## 2. Validate and storyboard
+A review template is unsigned and `HELD`. Complete the editorial review against the actual visible copy: can a fresh reader explain why this partner should care, why this company is special, what businesses are proposed, the strategic upside and the invitation? Apply the partner-name-swap, company-removal and source-fidelity tests. Software checks do not answer those questions for the reviewer.
+
+Obtain the user's thesis/storyboard approval before real native production. `validate --public` is a publication-privacy check for deliberately public inputs; it does not authorize disclosure of a restricted partner project.
+
+## 5. Compile locally, then stage native output
+
+A safe fictional V2 example:
 
 ```sh
-bun src/cli.ts validate --project ./my-intake/project.json
-bun src/cli.ts validate --project ./my-intake/project.json --public
-bun src/cli.ts assets --project ./my-intake/project.json --query service
-bun src/cli.ts review-template --project ./my-intake/project.json --stage storyboard --out ./storyboard-review
+bun src/cli.ts compile --project ./examples/research-network/project.json --out ./build-research-demo
 ```
 
-The storyboard template is unsigned and `HELD`. A human must review the commercial thesis, evidence/disclosure, visual choices, and unresolved questions. This internal editorial checkpoint is not approval to send externally. A separate comprehension/visual review and release approval are required later.
-
-## 3. Compile locally
+For a completed restricted project, use a fresh output directory:
 
 ```sh
-bun src/cli.ts compile --project ./examples/public-demo/project.json --out ./build-demo
-bun src/cli.ts compile --project ./examples/public-demo/project.json --out ./build-demo --urls ./asset-url-map.json
+bun src/cli.ts compile --project ../my-partner-project/project.json --out ../my-partner-project/build --urls ../my-partner-project/asset-url-map.json
 ```
 
-`compile` checks schema references, audience clearance, policies, local asset paths, hashes, image metadata, and publication privacy. It emits `compiled.json`, `visible-copy.md`, `storyboard.md`, `content-source.json`, `image-manifest.json`, `build-manifest.json`, and a held storyboard review template. URL mappings are local input; they do not download or verify image bytes. Missing mappings use offline `asset://` placeholders and remain a native-staging hold. A build directory belonging to another input is never overwritten.
+Compilation emits copy/storyboard, source/asset records, native requests and holds. Missing remote asset URLs remain unresolved. URL mappings do not verify remote bytes; compilation does not create a native deck, visually inspect it or approve the pitch.
 
-The output explicitly records that native rendering and visual QA were not performed. Visible copy is useful for comprehension review, but it is not a rendered deck.
+An authorized `NativePort` then supplies native staging. Require the approved storyboard receipt, matching editorial review where configured, verified remote assets and a fresh staging destination. Read back the native output. See [native lifecycle](NATIVE-LIFECYCLE.md).
 
-## 4. Native boundary
-
-A caller with an authenticated provider implements `NativePort` and calls the lifecycle functions in `src/lifecycle.ts`. The local CLI itself remains offline. Creation requires a storyboard receipt and creates a new staging destination; it must never target another partner's or a live production deck. Revision staging duplicates the source into a backup and review copy, applies a narrow verified plan there, and stops if the source changes.
-
-The current Google Slides connection lacks atomic conditional revision support. Consequently, `promoteRevision` remains held unless a provider supplies that capability. A preflight hash is not a lock, and the package must not claim concurrent live-write safety. See [`NATIVE-LIFECYCLE.md`](NATIVE-LIFECYCLE.md) and [`REVISION-SAFETY.md`](REVISION-SAFETY.md).
-
-## 5. Tests
+## 6. Inspect the actual deck and approve release separately
 
 ```sh
+bun src/cli.ts render-review --project ../my-partner-project/project.json --compiled ../my-partner-project/build/compiled.json --snapshot ../my-partner-project/native-after.json --pdf ../my-partner-project/deck.pdf --out ../my-partner-project/render-review
+```
+
+This records the actual native/PDF/full-page/phone artifacts and starts `inspected:false` with release held. Inspect every slide and record the results; collection is not inspection. Human finished-deck and external-release approvals remain distinct from agent/fixture observations. Missing rights or claim clearance stays held.
+
+Revisions use a fresh baseline, backup, narrow allowlist and review copy. Never rebuild over human edits. Live promotion remains blocked without provider atomic conditional revisions; a snapshot hash is not a concurrency lock. See [revision safety](REVISION-SAFETY.md).
+
+## V1 compatibility and checks
+
+The original `examples/public-demo/` remains a V1 compatibility fixture. `migrate` preserves a valid V1 project/assets and produces an incomplete authoring draft—not compiler-ready V2 input or an automatic rewrite:
+
+```sh
+bun src/cli.ts migrate --project ../old-project/project.json --out ../held-v2-draft
 bun test tests --timeout 30000
+bun scripts/smoke.ts
 ```
 
-Tests are local. They do not constitute native rendering, visual inspection, claim certification, or release approval.
-
-## Public demo and privacy
-
-`examples/public-demo/project.json` is wholly synthetic and uses fictional identities, original simple artwork, and a clearly fictional source. Do not copy private partners, names, assets, service-account IDs, production deck IDs, relationship notes, or proposals into this public package.
+Tests validate implementation behavior. They do not certify sales quality, actual imagery, native visual inspection or external release. Keep real partner dossiers, live IDs, relationship notes and confidential assets outside this package.
