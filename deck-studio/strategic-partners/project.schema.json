@@ -1,0 +1,79 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.example.invalid/navier/strategic-partner-project-1.0.0.json",
+  "title": "Strategic partner deck project",
+  "description": "Partner-neutral, source-led deck content contract. Runtime validation adds audience, privacy, filesystem, and editorial heuristics.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "meta", "sources", "claims", "assets", "opportunities", "slides", "policy"],
+  "properties": {
+    "schemaVersion": {"const": "1.0.0"},
+    "meta": {"$ref": "#/$defs/meta"},
+    "sources": {"type": "array", "items": {"$ref": "#/$defs/source"}},
+    "claims": {"type": "array", "items": {"$ref": "#/$defs/claim"}},
+    "assets": {"type": "array", "items": {"$ref": "#/$defs/asset"}},
+    "opportunities": {"type": "array", "items": {"$ref": "#/$defs/opportunity"}},
+    "slides": {"type": "array", "minItems": 2, "items": {"$ref": "#/$defs/slide"}},
+    "policy": {"$ref": "#/$defs/policy"}
+  },
+  "$defs": {
+    "id": {"type": "string", "pattern": "^[A-Za-z0-9_-]+$", "minLength": 1},
+    "text": {"type": "string", "minLength": 1},
+    "audience": {"enum": ["internal", "partner", "public"]},
+    "visibility": {"enum": ["public", "internal", "restricted"]},
+    "date": {"type": "string", "pattern": "^\\d{4}-\\d{2}-\\d{2}$"},
+    "meta": {
+      "type": "object", "additionalProperties": false,
+      "required": ["projectId", "revision", "title", "company", "partner", "legalEntity", "audience", "archetype", "objective", "meetingAudience", "date", "classification", "fictional", "footer"],
+      "properties": {
+        "projectId": {"$ref": "#/$defs/id"}, "revision": {"$ref": "#/$defs/id"}, "title": {"$ref": "#/$defs/text"},
+        "company": {"$ref": "#/$defs/text"}, "partner": {"$ref": "#/$defs/text"}, "legalEntity": {"$ref": "#/$defs/text"},
+        "audience": {"$ref": "#/$defs/audience"}, "archetype": {"enum": ["industrial", "energy-operator", "strategic"]},
+        "objective": {"$ref": "#/$defs/text"}, "meetingAudience": {"$ref": "#/$defs/text"}, "date": {"$ref": "#/$defs/date"},
+        "classification": {"$ref": "#/$defs/text"}, "fictional": {"type": "boolean"}, "companyLogoAssetId": {"$ref": "#/$defs/id"}, "partnerLogoAssetId": {"$ref": "#/$defs/id"}, "footer": {"$ref": "#/$defs/text"}
+      }
+    },
+    "source": {
+      "type": "object", "additionalProperties": false, "required": ["id", "title", "locator", "asOf", "visibility"],
+      "properties": {"id": {"$ref": "#/$defs/id"}, "title": {"$ref": "#/$defs/text"}, "locator": {"$ref": "#/$defs/text"}, "asOf": {"$ref": "#/$defs/date"}, "visibility": {"$ref": "#/$defs/visibility"}}
+    },
+    "claim": {
+      "type": "object", "additionalProperties": false, "required": ["id", "statement", "evidenceClass", "sourceIds", "basis", "clearedFor"],
+      "properties": {
+        "id": {"$ref": "#/$defs/id"}, "statement": {"$ref": "#/$defs/text"},
+        "evidenceClass": {"enum": ["measured", "demonstrated", "historical", "company-reported", "preliminary", "modeled", "planned", "proposed", "fictional"]},
+        "sourceIds": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/id"}}, "basis": {"$ref": "#/$defs/text"},
+        "clearedFor": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/audience"}}, "limitations": {"type": "string"}
+      }
+    },
+    "crop": {"type": "object", "additionalProperties": false, "required": ["left", "top", "right", "bottom"], "properties": {"left": {"type": "number", "minimum": 0, "maximum": 1}, "top": {"type": "number", "minimum": 0, "maximum": 1}, "right": {"type": "number", "minimum": 0, "maximum": 1}, "bottom": {"type": "number", "minimum": 0, "maximum": 1}}},
+    "asset": {
+      "type": "object", "additionalProperties": false,
+      "required": ["id", "path", "sha256", "width", "height", "mimeType", "kind", "maturity", "missions", "geography", "roles", "sourceIds", "visibility", "clearedFor", "rightsNote", "caption"],
+      "properties": {
+        "id": {"$ref": "#/$defs/id"}, "path": {"$ref": "#/$defs/text"}, "sha256": {"type": "string", "pattern": "^[A-Fa-f0-9]{64}$"}, "width": {"type": "number", "exclusiveMinimum": 0}, "height": {"type": "number", "exclusiveMinimum": 0},
+        "mimeType": {"enum": ["image/png", "image/jpeg", "image/webp", "image/gif", "image/svg+xml"]}, "kind": {"enum": ["photograph", "rendering", "schematic", "logo"]}, "maturity": {"enum": ["actual", "demonstrated", "concept", "context", "brand"]},
+        "title": {"$ref": "#/$defs/text"}, "vessel": {"type": "string"}, "missions": {"type": "array", "items": {"$ref": "#/$defs/text"}}, "geography": {"type": "array", "items": {"$ref": "#/$defs/text"}}, "roles": {"type": "array", "items": {"$ref": "#/$defs/text"}}, "sourceIds": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/id"}}, "visibility": {"$ref": "#/$defs/visibility"}, "clearedFor": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/audience"}}, "rightsNote": {"$ref": "#/$defs/text"}, "caption": {"$ref": "#/$defs/text"}, "focalPoint": {"type": "object", "additionalProperties": false, "required": ["x", "y"], "properties": {"x": {"type": "number", "minimum": 0, "maximum": 1}, "y": {"type": "number", "minimum": 0, "maximum": 1}}}, "keepRegion": {"$ref": "#/$defs/crop"}, "crop": {"$ref": "#/$defs/crop"}, "embeddingUrl": {"type": "string", "format": "uri"}, "nativeSource": {"type": "object", "additionalProperties": false, "required": ["presentationId", "slideObjectId", "imageObjectId"], "properties": {"presentationId": {"$ref": "#/$defs/text"}, "slideObjectId": {"$ref": "#/$defs/text"}, "imageObjectId": {"$ref": "#/$defs/text"}}}, "repoSource": {"type": "object", "additionalProperties": false, "required": ["owner", "repo", "ref", "path", "blobSha"], "properties": {"owner": {"$ref": "#/$defs/text"}, "repo": {"$ref": "#/$defs/text"}, "ref": {"$ref": "#/$defs/text"}, "path": {"$ref": "#/$defs/text"}, "blobSha": {"$ref": "#/$defs/text"}}}
+      }
+    },
+    "opportunity": {
+      "type": "object", "additionalProperties": false, "required": ["id", "kind", "title", "product", "customer", "payer", "commercialLogic", "partnerBenefit", "companyContribution", "partnerContribution", "nextQuestion", "claimIds", "status"],
+      "properties": {"id": {"$ref": "#/$defs/id"}, "kind": {"enum": ["supply", "co-development", "contract-build", "license", "direct-sale", "resale", "service", "operator-program", "other"]}, "title": {"$ref": "#/$defs/text"}, "product": {"$ref": "#/$defs/text"}, "customer": {"$ref": "#/$defs/text"}, "payer": {"$ref": "#/$defs/text"}, "commercialLogic": {"$ref": "#/$defs/text"}, "partnerBenefit": {"$ref": "#/$defs/text"}, "companyContribution": {"$ref": "#/$defs/text"}, "partnerContribution": {"$ref": "#/$defs/text"}, "nextQuestion": {"$ref": "#/$defs/text"}, "claimIds": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/id"}}, "status": {"enum": ["proposed", "existing"]}}
+    },
+    "visual": {"type": "object", "additionalProperties": false, "required": ["assetId", "caption"], "properties": {"assetId": {"$ref": "#/$defs/id"}, "caption": {"$ref": "#/$defs/text"}, "crop": {"$ref": "#/$defs/crop"}}},
+    "payment": {"type": "object", "additionalProperties": false, "required": ["actors", "labels", "kind"], "properties": {"actors": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/text"}}, "labels": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/text"}}, "kind": {"const": "payment"}}},
+    "baseSlide": {"type": "object", "required": ["key", "kicker", "title", "claimIds", "sourceIds", "opportunityIds", "notes", "layout"], "properties": {"key": {"$ref": "#/$defs/id"}, "kicker": {"$ref": "#/$defs/text"}, "title": {"$ref": "#/$defs/text"}, "claimIds": {"type": "array", "items": {"$ref": "#/$defs/id"}}, "sourceIds": {"type": "array", "items": {"$ref": "#/$defs/id"}}, "opportunityIds": {"type": "array", "items": {"$ref": "#/$defs/id"}}, "notes": {"type": "string"}, "layout": {"type": "string"}}},
+    "slide": {
+      "oneOf": [
+        {"allOf": [{"$ref": "#/$defs/baseSlide"}, {"type": "object", "properties": {"layout": {"const": "cover"}, "visual": {"$ref": "#/$defs/visual"}, "subtitle": {"$ref": "#/$defs/text"}, "body": {"$ref": "#/$defs/text"}, "pillars": {"type": "array", "minItems": 1, "maxItems": 3, "items": {"$ref": "#/$defs/text"}}}, "required": ["visual", "subtitle", "body", "pillars"]}]},
+        {"allOf": [{"$ref": "#/$defs/baseSlide"}, {"type": "object", "properties": {"layout": {"const": "fit"}, "visual": {"$ref": "#/$defs/visual"}, "companyLabel": {"$ref": "#/$defs/text"}, "companyHeadline": {"$ref": "#/$defs/text"}, "companyBody": {"$ref": "#/$defs/text"}, "partnerLabel": {"$ref": "#/$defs/text"}, "partnerBody": {"$ref": "#/$defs/text"}, "benefits": {"type": "array", "minItems": 2, "maxItems": 3, "items": {"type": "object", "required": ["title", "body"], "properties": {"title": {"$ref": "#/$defs/text"}, "body": {"$ref": "#/$defs/text"}}}}, "takeaway": {"$ref": "#/$defs/text"}}, "required": ["visual", "companyLabel", "companyHeadline", "companyBody", "partnerLabel", "partnerBody", "benefits", "takeaway"]}]},
+        {"allOf": [{"$ref": "#/$defs/baseSlide"}, {"type": "object", "properties": {"layout": {"const": "options"}, "options": {"type": "array", "minItems": 2, "maxItems": 3, "items": {"type": "object", "required": ["title", "body", "revenue"], "properties": {"title": {"$ref": "#/$defs/text"}, "body": {"$ref": "#/$defs/text"}, "revenue": {"$ref": "#/$defs/text"}, "visual": {"$ref": "#/$defs/visual"}, "schematic": {"enum": ["manufacture", "hybrid", "service"]}}}}, "payment": {"$ref": "#/$defs/payment"}, "status": {"$ref": "#/$defs/text"}, "explore": {"$ref": "#/$defs/text"}}, "required": ["options", "status", "explore"]}]},
+        {"allOf": [{"$ref": "#/$defs/baseSlide"}, {"type": "object", "properties": {"layout": {"const": "models"}, "models": {"type": "array", "minItems": 2, "maxItems": 2, "items": {"type": "object", "required": ["label", "title", "body", "payments", "benefit"], "properties": {"label": {"$ref": "#/$defs/text"}, "title": {"$ref": "#/$defs/text"}, "body": {"$ref": "#/$defs/text"}, "visual": {"$ref": "#/$defs/visual"}, "technologyLabel": {"$ref": "#/$defs/text"}, "payments": {"$ref": "#/$defs/payment"}, "benefit": {"$ref": "#/$defs/text"}}}}, "explore": {"$ref": "#/$defs/text"}}, "required": ["models", "explore"]}]},
+        {"allOf": [{"$ref": "#/$defs/baseSlide"}, {"type": "object", "properties": {"layout": {"const": "channels"}, "scope": {"$ref": "#/$defs/text"}, "selection": {"$ref": "#/$defs/text"}, "criteria": {"$ref": "#/$defs/text"}, "visual": {"$ref": "#/$defs/visual"}, "models": {"type": "array", "minItems": 1, "maxItems": 2, "items": {"type": "object", "required": ["label", "benefit", "payments"], "properties": {"label": {"$ref": "#/$defs/text"}, "benefit": {"$ref": "#/$defs/text"}, "payments": {"$ref": "#/$defs/payment"}}}}, "serviceLabel": {"$ref": "#/$defs/text"}, "service": {"$ref": "#/$defs/text"}, "explore": {"$ref": "#/$defs/text"}}, "required": ["scope", "selection", "criteria", "models", "serviceLabel", "service", "explore"]}]},
+        {"allOf": [{"$ref": "#/$defs/baseSlide"}, {"type": "object", "properties": {"layout": {"const": "missions"}, "intro": {"$ref": "#/$defs/text"}, "status": {"$ref": "#/$defs/text"}, "cards": {"type": "array", "minItems": 2, "maxItems": 4, "items": {"type": "object", "required": ["label", "title", "description", "visual"], "properties": {"label": {"$ref": "#/$defs/text"}, "title": {"$ref": "#/$defs/text"}, "description": {"$ref": "#/$defs/text"}, "visual": {"$ref": "#/$defs/visual"}}}}, "explore": {"$ref": "#/$defs/text"}}, "required": ["intro", "status", "cards", "explore"]}]},
+        {"allOf": [{"$ref": "#/$defs/baseSlide"}, {"type": "object", "properties": {"layout": {"const": "close"}, "visual": {"$ref": "#/$defs/visual"}, "intro": {"$ref": "#/$defs/text"}, "conversations": {"type": "array", "minItems": 1, "maxItems": 3, "items": {"type": "object", "required": ["title", "body"], "properties": {"title": {"$ref": "#/$defs/text"}, "body": {"$ref": "#/$defs/text"}}}}, "ask": {"$ref": "#/$defs/text"}, "contact": {"$ref": "#/$defs/text"}}, "required": ["visual", "intro", "conversations", "ask", "contact"]}]}
+      ]
+    },
+    "policy": {"type": "object", "additionalProperties": false, "required": ["forbiddenTerms", "forbiddenPartnerNames", "requiredPhrases", "allowMissingLogosForInternalReview"], "properties": {"forbiddenTerms": {"type": "array", "items": {"$ref": "#/$defs/text"}}, "forbiddenPartnerNames": {"type": "array", "items": {"$ref": "#/$defs/text"}}, "requiredPhrases": {"type": "array", "items": {"$ref": "#/$defs/text"}}, "allowMissingLogosForInternalReview": {"type": "boolean"}}}
+  }
+}
