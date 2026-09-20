@@ -1,30 +1,29 @@
 ---
 name: strategic-partner-deck
-description: Build or revise a bespoke strategic-partnership deck from a partner brief, commercial opportunities and approved imagery. Use for industrial/OEM, energy, licensing, manufacturing, distribution or strategic-partner presentations.
+description: Build or revise persuasive strategic-partner sales decks for industrial/OEM, energy, manufacturing, licensing or distribution partnerships. Use source-linked evidence, reusable visuals, safe talk tracks and human-edit-safe native production.
 ---
 
-# Bespoke partnership decks, repeatable production
+# Strategic-partner decks (V2.1)
 
-Read [README](README.md), [workflow](docs/WORKFLOW.md), [content contract](docs/CONTENT-CONTRACT.md), [layouts](docs/LAYOUTS.md), and [native lifecycle](docs/NATIVE-LIFECYCLE.md) before building. For revisions also read [revision safety](docs/REVISION-SAFETY.md); for imagery read [asset catalogue](docs/ASSET-CATALOGUE.md).
+Read [README](README.md), [workflow](docs/WORKFLOW.md), [content contract](docs/CONTENT-CONTRACT.md), [numbers](docs/NUMBERS.md), [layouts](docs/LAYOUTS.md), [asset catalogue](docs/ASSET-CATALOGUE.md), and [native lifecycle](docs/NATIVE-LIFECYCLE.md). For revisions read [revision safety](docs/REVISION-SAFETY.md). Preserve explicit visual arguments, provenance, rights, crops and attachment records; generated scenes are illustrations, not proof.
 
-## Route the request
+Use this lane for a partner-specific proposal—not an investor deck, authority proposal, employer network, route-economics deck, or standalone two-pager. Keep partner dossiers, relationship notes, live IDs, credentials and confidential imagery in a restricted project; this generic package uses fictional examples only.
 
-This is the strategic-partnership lane, separate from an investor story. Do not substitute it for an approved mobility/country, public-authority, employer-network or route-economics deck workflow. Reuse their assets and checks only where appropriate. If a two-pager or partner dossier exists, reuse its source/claim records and synthesis rather than researching from zero. A standalone two-pager has its own renderer and narrative.
+## Non-negotiable authoring principles
 
-## Work in two modes
+1. Write the concrete proposition and why it matters before choosing a number or image. A date, asset name or token statistic is not meaningful support.
+2. Bind material visible claims to the exact claim use and, for quantities, to the exact visible representation. Distinguish fact, measured result, record, precedent, model, target, proposal and unresolved placeholder.
+3. Record operating context, provenance, assumptions and applicability. A ratio or price is not portable across hull/configuration, speed, payload, mission, geography or date without a supported transfer. Models and targets are allowed when plainly labeled and based.
+4. Use claim-specific inline/footnote qualifications; never let a slide-wide status label misrepresent mixed evidence. Footnotes are a new V2.1 channel only: maximum 240 characters at 8pt; do not shrink fonts to fit.
+5. Track which recipient holds which prior document/version. Prior possession by one stakeholder is not permission to share with another. Reconcile corrections as well as retained and updated claims.
+6. Export only audience-cleared talk tracks. Keep the full evidence manifest restricted. A check or test is not human visual review or external-release approval.
 
-**Create:** recover the latest approved company evidence, partner research, relationship context and asset library. Establish the correct entity, meeting audience, objective and disclosure level. Write a partner-specific thesis and opportunity records. Each names product, customer, payer, payment relationship, partner benefit, both contributions and next question. Choose the number of opportunities and slide sequence from the business—not from an old partner's deck.
+## Required story before production
 
-Prepare the storyboard and actual image shortlist. Obtain the user's thesis/storyboard approval before a real partner build. Select layouts for their explanatory job; edit excess words instead of shrinking everything. Build a new native staging destination, never another partner's production deck. The local CLI is offline; use an authorized NativePort adapter for Slides.
+Create `sales.brief` with audience decision, partner relevance/thesis, Navier difference, combination advantage, strategic upside, investment boundary, sources and unresolved questions. Complete the source inventory/disposition and opportunity sales cases before selecting compositions. Include the V2.1 companion intake (`companions`) and lever-transfer assessment (`leverTransfer`, with a reason when not applicable).
 
-**Revise:** read the latest full native presentation, not an old local builder. Bind exact deck identity; protect benchmark/investor IDs. Archive a backup, allowlist only requested objects, and stage a review copy. Preserve human logos, crops, notes and attached hull marks. Read current image dimensions after replacement. Do not replay a full build over an edited deck. Unexpected changes or uncertain prior writes stop the workflow. Live promotion requires a provider with atomic conditional revisions; the current Tasklet Slides adapter deliberately holds it.
+Plan a two-pass editorial review: (1) what proposition/mechanism/proposal does each slide make and what supports it; (2) does that support apply to this partner, mission, environment and decision? Passing validation does not answer either question.
 
-## Review and deliver
+## Production and compatibility
 
-1. Fresh-reader comprehension using visible copy only: partner rationale, product, payer, benefit and next ask.
-2. Evidence/privacy/rights checks. Actual products, concepts and context imagery stay visibly distinct. A marine dealer is not an operator; country presence is not selected-market evidence; proposals are not commitments.
-3. Inspect actual full-slide and phone renders: hierarchy, wrapping, arrows, crops, foil/hull truth, logos, captions and bounds. Phone views must convey headline/gist; fine text may require zoom.
-4. Confirm native readback, changed-object scope, unchanged-page parity and replay behavior. Passing tests is not visual approval.
-5. Obtain the user's finished-deck/release approval before external circulation. Internal tests and agent inspection never impersonate human approval.
-
-Save the editable deck, PDF, source/claim and asset records, review receipts, current binding and open holds in a versioned restricted project. Keep this shared toolkit generic. Never publish private dossiers, partner proposals, account/deck IDs or confidential assets with it.
+Compile offline, then stage through an authorized `NativePort` into a fresh destination. Inspect the actual native output and PDF at full and phone size. Keep agent/fixture diagnostics, human finished-deck review and external-release approval separate. V2.1 projects use schema `2.1.0`; legacy `1.0.0`/`2.0.0` remain readable, while migration creates a held draft and invents no claims, continuity or approvals. See [workflow](docs/WORKFLOW.md).

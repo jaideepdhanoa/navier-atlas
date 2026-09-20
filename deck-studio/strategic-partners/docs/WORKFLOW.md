@@ -1,73 +1,35 @@
-# Operating workflow: bespoke story, repeatable production
+# V2.1 operating workflow
 
-Use this lane for strategic-partnership presentations, not for an investor story or an approved mobility, public-authority, employer-network or route-economics deck. Those lanes retain their own narrative and financial rules. Share evidence, brand assets and quality checks without forcing one commercial structure onto every partner.
+Use this lane for a bespoke strategic-partner proposal. Keep investor, authority, employer-network, route-economics and two-pager narratives separate. Real work belongs in a restricted project; generic examples are fictional.
 
-## Start with a compact request
+## 1. Intake and continuity
 
-> Build a strategic-partnership deck for **[partner/business entity]**, for **[audience/meeting]**, aimed at **[desired outcome]**. Use **[existing brief or relationship context]**.
+Confirm legal entity, audience, decision, mission, relationship stage and disclosure level. Recover approved evidence and recipient-specific prior documents. Record who holds each document/version; possession by one stakeholder does not authorize distribution to another. Complete the companion intake and source corrections before reusing consequential claims.
 
-Recover existing material first. Ask only for missing information that changes the result. Work in a restricted project outside this public toolkit. The public demo is a fictional test fixture, not approved company copy.
+## 2. Thesis and evidence
 
-## 1. Intake and evidence
+Complete `sales.brief`, source inventory/dispositions and opportunity sales cases. For every material claim record provenance, context, dependencies, quantity, applicability and price basis where relevant. Use matched conditions or supported transfer; separate benchmark, target, model, precedent and proposal from demonstrated proof. Add a replacement plan for unresolved placeholders.
 
-Record the correct entity, audience, objective, relationship stage and disclosure level in the project. Reuse the latest approved company evidence, partner dossier and two-pager synthesis. Preserve source IDs, dates, exact claim basis and limitations when adapting those records to `Source`, `Claim` and `Asset`; do not create competing versions of the same fact. The deck and two-pager retain separate narrative/layout contracts.
+## 3. Editorial passes and storyboard
 
-Separate public facts, private relationship signals, proposed arrangements and unanswered questions. A dealer is not an operator; a facility is not available capacity; a product specification is not integration approval. Corporate presence alone does not establish marine-market fit.
+Pass one asks: what concrete proposition/mechanism/proposal does each slide make and what supports it? Pass two asks: does that support apply to this partner, mission, environment and decision? Use claim-specific labels and concise footnotes; do not add numbers just to satisfy a quota. Introduce the opportunity portfolio before detailed chapters. Bind actual copy blocks, claims, claim uses and quantity uses.
 
-**Output:** completed intake, sources/claims, unresolved questions and audience decisions. See [content contract](CONTENT-CONTRACT.md).
+## 4. Visual checkpoint
 
-## 2. Commercial blueprint
+Select a registered composition for its explanatory job. Record each visual's argument, required features, prohibited implications, maturity, source, rights, crop and review. Generated/derivative scenes are illustrative and cannot establish proof or silently choose architecture. Record explicit mark attachments. Keep mixed evidence meanings separate.
 
-Write the partner benefit before the help the company wants. For each genuine opportunity, define:
+## 5. Validate and compile
 
-- product or service;
-- customer and payer;
-- who pays whom, and for what;
-- contributions and benefits for both parties;
-- evidence versus proposal; and
-- the next requirement, assessment or introduction.
+Run validation and compile into a fresh directory. Validation checks authored structure and disclosure; compilation emits deterministic artifacts and holds unresolved work. The default 115-word body budget is advisory; character/layout limits remain binding. Do not describe tests as installation, visual inspection or release approval.
 
-Choose the number of opportunities from the business. Supply, contract build, licensing, resale, referral and service are different arrangements. A venture or industrial sponsor is not automatically the operating buyer. Do not add speculative fees, sales or volumes together as committed revenue.
+## 6. Native/PDF review
 
-**Output:** one clear thesis, opportunity records and a concrete ask.
+Stage through an authorized `NativePort`, read back the editable output, then run diagnostics against the actual native snapshot and optional PDF word geometry. Inspect full and phone pages manually for hierarchy, wraps, crops, labels, marks, arrows and bounds. `inspected:false` remains until a human records inspection; missing PDF words explicitly leave orphan-wrap detection unchecked. Human finished-deck and external-release approvals are distinct.
 
-## 3. Storyboard and assets — human checkpoint 1
+## 7. Revise and deliver
 
-Select layouts by explanatory job, not a fixed slide count: product-led opening, complementary contributions, engineering alternatives, ownership/payment models, channel context, mission gallery, specific close. A consistent identity does not require identical cards. See [layouts](LAYOUTS.md).
+Use a fresh snapshot, backup and narrow allowlist on a review copy. Preserve unrequested edits and attached marks. Promotion is fail-closed without atomic conditional revisions. Deliver editable staging, PDF, hashes, source/claim/asset records, continuity/reconciliations, diagnostics, review receipts and open holds together.
 
-Search the existing asset catalogue before new sourcing. Show actual candidate images at this checkpoint, with useful crops and visible maturity labels. Distinguish actual product photography, demonstrated activity, context imagery and concepts. Avoid unnecessary image repetition. Do not infer rights or external clearance from an accessible URL. See [asset catalogue](ASSET-CATALOGUE.md).
+## 8. Compatibility
 
-Compile the storyboard and visible copy locally. Obtain the user's thesis/storyboard approval before a real partner build. Internal workflow tests must be clearly labeled as such and cannot stand in for partner approval.
-
-**Output:** approved storyboard, image shortlist and recorded holds.
-
-## 4. Native production
-
-Use a new partner-bound staging destination with native editable text, shapes and diagrams. Archive exact source assets and retain their provenance. Inspect contained hardware references and logos differently from cropped product fields. Layout warnings are prompts for review, not automatic approval.
-
-The offline CLI assembles the production artifacts; an authenticated adapter performs native Slides work. Follow [native lifecycle](NATIVE-LIFECYCLE.md), including journaled creation, remote asset verification, readback and notes handling. Never target another partner's production presentation or a protected benchmark.
-
-**Output:** editable staging deck, exported PDF, native readback, source/image manifests and binding.
-
-## 5. Review — human checkpoint 2
-
-Run separate checks:
-
-1. **Comprehension:** a fresh reader using only visible copy can explain the partner rationale, products, payment relationships, benefits and next ask.
-2. **Evidence and disclosure:** check claims, current product names, source dates, explicit proposals, image rights and audience clearance.
-3. **Actual visual inspection:** open every rendered page and phone preview. Check hierarchy, wraps, dividers, crops, hull/foil truth, logos, arrow direction and captions. Phone previews must communicate the gist; fine labels may need zoom.
-4. **Integrity:** confirm the intended destination and object scope, native readback and repeat-run behavior. Tests and generated review templates are not visual approval.
-
-Present the finished deck to the user. Keep agent inspection distinct from the user's decision; external circulation requires explicit approval. Save any remaining release holds rather than describing an internal prototype as partner-ready.
-
-## 6. Revise without losing human work
-
-Start from a fresh live snapshot and backup—not the previous builder. Allowlist requested objects and stage a review copy. Retain unrequested logos, crops, text, notes and attached hull marks. Read current intrinsic image dimensions after replacement; never move an attached mark using stale dimensions.
-
-The available revision operations are deliberately narrow. Live promotion requires atomic conditional revisions from the provider; the current Tasklet adapter does not expose these, so it produces review copies and holds production promotion. Do not bypass this protection. See [revision safety](REVISION-SAFETY.md).
-
-## 7. Deliver and improve
-
-Keep the editable deck, reviewed PDF, project content, source/claim and asset records, native binding, backups, reviews and open questions together in a versioned restricted project. Add newly cleared assets to the private catalogue with exact hashes and usage decisions.
-
-Record production time, review rounds, manual corrections and composition coverage. Generalize useful lessons and tested layouts into this toolkit; do not publish partner content, private research, credentials, presentation IDs or confidential image bytes. Quality comes from stronger commercial judgment and visual choices, not from removing the two human checkpoints.
+`init2.1` is the intended new scaffold (`init` remains an alias). `migrate` keeps legacy data/assets readable: 1.0.0 receives the historical V2 story-authoring envelope with V2.1 completion instructions; 2.0.0 receives a V2.1 evidence-authoring envelope. Neither envelope is compiler input, and neither invents missing claims, partner context, recipient continuity or approvals. Complete the story and evidence in a separate 2.1.0 project.

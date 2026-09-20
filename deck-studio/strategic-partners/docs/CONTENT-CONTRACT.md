@@ -1,28 +1,23 @@
-# Strategic-partner deck content contract
+# V2.1 content contract
 
-The validator checks the neutral content model in `src/types.ts`. Rendering and native presentation handling are separate modules; validation does not claim comprehension or visual review. A passing validator is a release gate input, not a substitute for editorial, comprehension, rights, or PDF/phone inspection.
+The runtime contract is in `src/types.ts`, `src/evidence-types.ts`, `src/evidence.ts`, `src/talk-track.ts`, `src/footnotes.ts` and `src/diagnostics.ts`. A valid project is not automatically persuasive, truthful, rights-cleared, visually inspected or approved for release.
 
-## Data and evidence
+## Brief, sources and sales cases
 
-Every source has an ID, title, locator, visibility, and real `YYYY-MM-DD` as-of date. Public source locators must be HTTP(S). Claims point to one or more sources, state an evidence class, and include a plain-language `basis`. A claim and asset must list the audiences for which it is cleared. Opportunities must name the product, customer, payer, commercial logic, both parties' contributions/benefits, and the next question. This keeps supply, manufacture, license, direct sale, resale, service, and operator-program ideas distinct rather than implying one bundled commitment.
+Complete `sales.brief` with the V2 sales fields plus `companions` and `leverTransfer`. `companions` is recipient/version-specific: record held documents, consequential claims and each disposition (`retained`, `updated`, `corrected`, `notes-only`, `retired`). A correction needs replacement claims, sources, owner and reason. A prior document held by one recipient is not clearance for another. Use `leverTransfer.status:'not-applicable'` only with a reason.
 
-Quantitative visible copy is checked conservatively: the slide must cite a claim and that claim must have a basis. The heuristic intentionally cannot decide whether a number is materially accurate. Editorial review still owns units, limitations, calculations, and claim-to-copy mapping.
+Sources used by V2.1 claims identify kind (`primary`/`secondary`), visibility, audience and recipient clearance. Do not expose private locators. A benchmark, precedent or placeholder must retain its actual basis; partner-visible placeholders need approval and a replacement owner/question.
 
-## Audience and privacy
+## Claims and visible uses
 
-`internal`, `partner`, and `public` are separate audiences. Partner/public references must be cleared for the corresponding audience. Public validation/publication rejects non-public sources and assets even when unused and requires public clearance for claims. Internal logo omission is allowed only as a `release-hold`; a partner/public artifact requires both logo asset IDs. Partner-facing use of private source material emits an editorial-check warning: private locators must not be copied into notes or visible output automatically.
+A used 2.1 claim requires topic, provenance, operating context and `dependsOn`; numeric claims require quantities and applicability. Currency claims require a relevant price basis. `ClaimUse` binds a claim to visible framing (`fact`, `modeled`, `target`, `record`, `precedent`, `placeholder` or `proposal`) and role. `QuantityUse` binds the exact visible display to a quantity. Slide-wide `claimIds` alone do not establish what prose means.
 
-Do not treat `nativeSource` or `embeddingUrl` as an archived asset. Local assets need a relative path, rights note, caption, SHA-256, positive dimensions, supported image MIME, and audience clearance. With `checkFiles`, the validator additionally verifies file existence, symlink containment under `projectRoot`, binary MIME/dimensions, and SHA-256. Concept assets need a visible `concept`, `illustrative`, `notional`, or `proposed` caption. A photograph must be actual/demonstrated and may not be described as newly generated.
+`EvidenceFootnote` is authored and claim/source-linked. It is optional, must be audience-safe, and the combined visible band is max 240 characters. It is not a blanket slide evidence grade. Mixed measured/model/target/record material keeps separate labels; essential context cannot be hidden in fine print.
 
-## Slides and copy discipline
+## Notes, reviews and diagnostics
 
-A deck starts with `cover` and ends with `close`; the middle is intentionally variable. Layout counts are contractual: cover pillars 1–3, fit benefits 2–3, options 2–3, models exactly 2, channels 1–2, missions 2–4, close conversations 1–3. Main titles are capped at approximately 95 characters. Payment arrows are represented by explicit `Transaction` objects with actors, labels, and `kind: "payment"`.
+A 2.1 external slide uses a cleared `TalkTrack` (`say`, `basis`, `guardrail`, `qa`) with reviewer/date/reason, audience and recipient clearance. `notesMode:'audit'` is internal only. `evidenceManifest` is a restricted working record, not partner notes. Two editorial rounds are required: proposition/support, then applicability/decision relevance.
 
-The validator rejects retired `N120`, policy-forbidden terms, other-partner leakage, unknown references, unsafe IDs, unsupported strong readiness claims, malformed crops, and missing business/evidence fields. It does not require a market selection: a hypothesis can remain geography-neutral, provided proposed work is labeled as proposed and the next question is explicit. Avoid unsupported launch dates, capacity, approval, or delivery promises.
+`densityLedger` counts emitted body/fine-print words, bound quantity uses, hedge tokens and notes words; it does not count facts proved. The default body budget is 115 advisory unless composition policy overrides it. `numeralDiagnostics` checks bound quantities and context; `geometryDiagnostics` uses actual native transforms and optional PDF words. Missing PDF words means orphan-wrap detection is not checked. All diagnostics remain separate from human inspection.
 
-## Required human checks before release
-
-1. Read visible copy without notes and explain why the partner cares, every product/payment relationship, and the next ask.
-2. Check that all claims, captions, rights, and private-source handling are editorially cleared for the stated audience.
-3. Render every slide, inspect dividers, crops, text wrapping, payment directions, and logos at full size and on a phone.
-4. Preserve the source project, build/replay inputs, native backup, live IDs, source map, and separate comprehension and visual-review receipts.
+V1/legacy 1.0.0 and 2.0.0 remain readable. Migration creates a held draft and preserves assets/data without fabricating evidence, continuity, claims or approvals.

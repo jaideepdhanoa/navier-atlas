@@ -1,79 +1,4164 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://schemas.example.invalid/navier/strategic-partner-project-1.0.0.json",
-  "title": "Strategic partner deck project",
+  "$id": "https://schemas.example.invalid/strategic-partner-project-2.0.0.json",
+  "title": "Strategic partner deck project — V1 compatibility and V2 sales authoring",
   "description": "Partner-neutral, source-led deck content contract. Runtime validation adds audience, privacy, filesystem, and editorial heuristics.",
   "type": "object",
   "additionalProperties": false,
-  "required": ["schemaVersion", "meta", "sources", "claims", "assets", "opportunities", "slides", "policy"],
+  "required": [
+    "schemaVersion",
+    "meta",
+    "sources",
+    "claims",
+    "assets",
+    "opportunities",
+    "slides",
+    "policy"
+  ],
   "properties": {
-    "schemaVersion": {"const": "1.0.0"},
-    "meta": {"$ref": "#/$defs/meta"},
-    "sources": {"type": "array", "items": {"$ref": "#/$defs/source"}},
-    "claims": {"type": "array", "items": {"$ref": "#/$defs/claim"}},
-    "assets": {"type": "array", "items": {"$ref": "#/$defs/asset"}},
-    "opportunities": {"type": "array", "items": {"$ref": "#/$defs/opportunity"}},
-    "slides": {"type": "array", "minItems": 2, "items": {"$ref": "#/$defs/slide"}},
-    "policy": {"$ref": "#/$defs/policy"}
+    "schemaVersion": {
+      "enum": [
+        "1.0.0",
+        "2.0.0",
+        "2.1.0"
+      ]
+    },
+    "meta": {
+      "$ref": "#/$defs/meta"
+    },
+    "sources": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/source"
+      }
+    },
+    "claims": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/claim"
+      }
+    },
+    "assets": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/asset"
+      }
+    },
+    "opportunities": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/opportunity"
+      }
+    },
+    "slides": {
+      "type": "array",
+      "minItems": 2,
+      "items": {
+        "$ref": "#/$defs/slide"
+      }
+    },
+    "policy": {
+      "$ref": "#/$defs/policy"
+    },
+    "sales": {
+      "$ref": "#/$defs/sales"
+    }
   },
   "$defs": {
-    "id": {"type": "string", "pattern": "^[A-Za-z0-9_-]+$", "minLength": 1},
-    "text": {"type": "string", "minLength": 1},
-    "audience": {"enum": ["internal", "partner", "public"]},
-    "visibility": {"enum": ["public", "internal", "restricted"]},
-    "date": {"type": "string", "pattern": "^\\d{4}-\\d{2}-\\d{2}$"},
+    "id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9_-]+$",
+      "minLength": 1
+    },
+    "text": {
+      "type": "string",
+      "minLength": 1
+    },
+    "audience": {
+      "enum": [
+        "internal",
+        "partner",
+        "public"
+      ]
+    },
+    "visibility": {
+      "enum": [
+        "public",
+        "internal",
+        "restricted"
+      ]
+    },
+    "date": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+    },
     "meta": {
-      "type": "object", "additionalProperties": false,
-      "required": ["projectId", "revision", "title", "company", "partner", "legalEntity", "audience", "archetype", "objective", "meetingAudience", "date", "classification", "fictional", "footer"],
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "projectId",
+        "revision",
+        "title",
+        "company",
+        "partner",
+        "legalEntity",
+        "audience",
+        "archetype",
+        "objective",
+        "meetingAudience",
+        "date",
+        "classification",
+        "fictional",
+        "footer"
+      ],
       "properties": {
-        "projectId": {"$ref": "#/$defs/id"}, "revision": {"$ref": "#/$defs/id"}, "title": {"$ref": "#/$defs/text"},
-        "company": {"$ref": "#/$defs/text"}, "partner": {"$ref": "#/$defs/text"}, "legalEntity": {"$ref": "#/$defs/text"},
-        "audience": {"$ref": "#/$defs/audience"}, "archetype": {"enum": ["industrial", "energy-operator", "strategic"]},
-        "objective": {"$ref": "#/$defs/text"}, "meetingAudience": {"$ref": "#/$defs/text"}, "date": {"$ref": "#/$defs/date"},
-        "classification": {"$ref": "#/$defs/text"}, "fictional": {"type": "boolean"}, "companyLogoAssetId": {"$ref": "#/$defs/id"}, "partnerLogoAssetId": {"$ref": "#/$defs/id"}, "footer": {"$ref": "#/$defs/text"}
+        "projectId": {
+          "$ref": "#/$defs/id"
+        },
+        "revision": {
+          "$ref": "#/$defs/id"
+        },
+        "title": {
+          "$ref": "#/$defs/text"
+        },
+        "company": {
+          "$ref": "#/$defs/text"
+        },
+        "partner": {
+          "$ref": "#/$defs/text"
+        },
+        "legalEntity": {
+          "$ref": "#/$defs/text"
+        },
+        "audience": {
+          "$ref": "#/$defs/audience"
+        },
+        "archetype": {
+          "enum": [
+            "industrial",
+            "energy-operator",
+            "strategic"
+          ]
+        },
+        "objective": {
+          "$ref": "#/$defs/text"
+        },
+        "meetingAudience": {
+          "$ref": "#/$defs/text"
+        },
+        "date": {
+          "$ref": "#/$defs/date"
+        },
+        "classification": {
+          "$ref": "#/$defs/text"
+        },
+        "fictional": {
+          "type": "boolean"
+        },
+        "companyLogoAssetId": {
+          "$ref": "#/$defs/id"
+        },
+        "partnerLogoAssetId": {
+          "$ref": "#/$defs/id"
+        },
+        "footer": {
+          "$ref": "#/$defs/text"
+        },
+        "recipientIds": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/id"
+          },
+          "minItems": 0
+        },
+        "notesMode": {
+          "enum": [
+            "talk-track",
+            "audit"
+          ]
+        }
       }
     },
     "source": {
-      "type": "object", "additionalProperties": false, "required": ["id", "title", "locator", "asOf", "visibility"],
-      "properties": {"id": {"$ref": "#/$defs/id"}, "title": {"$ref": "#/$defs/text"}, "locator": {"$ref": "#/$defs/text"}, "asOf": {"$ref": "#/$defs/date"}, "visibility": {"$ref": "#/$defs/visibility"}}
-    },
-    "claim": {
-      "type": "object", "additionalProperties": false, "required": ["id", "statement", "evidenceClass", "sourceIds", "basis", "clearedFor"],
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "title",
+        "locator",
+        "asOf",
+        "visibility"
+      ],
       "properties": {
-        "id": {"$ref": "#/$defs/id"}, "statement": {"$ref": "#/$defs/text"},
-        "evidenceClass": {"enum": ["measured", "demonstrated", "historical", "company-reported", "preliminary", "modeled", "planned", "proposed", "fictional"]},
-        "sourceIds": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/id"}}, "basis": {"$ref": "#/$defs/text"},
-        "clearedFor": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/audience"}}, "limitations": {"type": "string"}
+        "id": {
+          "$ref": "#/$defs/id"
+        },
+        "title": {
+          "$ref": "#/$defs/text"
+        },
+        "locator": {
+          "$ref": "#/$defs/text"
+        },
+        "asOf": {
+          "$ref": "#/$defs/date"
+        },
+        "visibility": {
+          "$ref": "#/$defs/visibility"
+        },
+        "kind": {
+          "enum": [
+            "primary",
+            "secondary"
+          ]
+        },
+        "clearedFor": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/audience"
+          },
+          "minItems": 0
+        },
+        "recipientIds": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/id"
+          },
+          "minItems": 0
+        }
       }
     },
-    "crop": {"type": "object", "additionalProperties": false, "required": ["left", "top", "right", "bottom"], "properties": {"left": {"type": "number", "minimum": 0, "maximum": 1}, "top": {"type": "number", "minimum": 0, "maximum": 1}, "right": {"type": "number", "minimum": 0, "maximum": 1}, "bottom": {"type": "number", "minimum": 0, "maximum": 1}}},
-    "asset": {
-      "type": "object", "additionalProperties": false,
-      "required": ["id", "path", "sha256", "width", "height", "mimeType", "kind", "maturity", "missions", "geography", "roles", "sourceIds", "visibility", "clearedFor", "rightsNote", "caption"],
+    "claim": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "statement",
+        "evidenceClass",
+        "sourceIds",
+        "basis",
+        "clearedFor"
+      ],
       "properties": {
-        "id": {"$ref": "#/$defs/id"}, "path": {"$ref": "#/$defs/text"}, "sha256": {"type": "string", "pattern": "^[A-Fa-f0-9]{64}$"}, "width": {"type": "number", "exclusiveMinimum": 0}, "height": {"type": "number", "exclusiveMinimum": 0},
-        "mimeType": {"enum": ["image/png", "image/jpeg", "image/webp", "image/gif", "image/svg+xml"]}, "kind": {"enum": ["photograph", "rendering", "schematic", "logo"]}, "maturity": {"enum": ["actual", "demonstrated", "concept", "context", "brand"]},
-        "title": {"$ref": "#/$defs/text"}, "vessel": {"type": "string"}, "missions": {"type": "array", "items": {"$ref": "#/$defs/text"}}, "geography": {"type": "array", "items": {"$ref": "#/$defs/text"}}, "roles": {"type": "array", "items": {"$ref": "#/$defs/text"}}, "sourceIds": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/id"}}, "visibility": {"$ref": "#/$defs/visibility"}, "clearedFor": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/audience"}}, "rightsNote": {"$ref": "#/$defs/text"}, "caption": {"$ref": "#/$defs/text"}, "focalPoint": {"type": "object", "additionalProperties": false, "required": ["x", "y"], "properties": {"x": {"type": "number", "minimum": 0, "maximum": 1}, "y": {"type": "number", "minimum": 0, "maximum": 1}}}, "keepRegion": {"$ref": "#/$defs/crop"}, "crop": {"$ref": "#/$defs/crop"}, "embeddingUrl": {"type": "string", "format": "uri"}, "nativeSource": {"type": "object", "additionalProperties": false, "required": ["presentationId", "slideObjectId", "imageObjectId"], "properties": {"presentationId": {"$ref": "#/$defs/text"}, "slideObjectId": {"$ref": "#/$defs/text"}, "imageObjectId": {"$ref": "#/$defs/text"}}}, "repoSource": {"type": "object", "additionalProperties": false, "required": ["owner", "repo", "ref", "path", "blobSha"], "properties": {"owner": {"$ref": "#/$defs/text"}, "repo": {"$ref": "#/$defs/text"}, "ref": {"$ref": "#/$defs/text"}, "path": {"$ref": "#/$defs/text"}, "blobSha": {"$ref": "#/$defs/text"}}}
+        "id": {
+          "$ref": "#/$defs/id"
+        },
+        "statement": {
+          "$ref": "#/$defs/text"
+        },
+        "evidenceClass": {
+          "enum": [
+            "measured",
+            "demonstrated",
+            "historical",
+            "company-reported",
+            "preliminary",
+            "modeled",
+            "planned",
+            "proposed",
+            "fictional",
+            "tested",
+            "target",
+            "in-design"
+          ]
+        },
+        "sourceIds": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/id"
+          }
+        },
+        "basis": {
+          "$ref": "#/$defs/text"
+        },
+        "clearedFor": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/audience"
+          }
+        },
+        "limitations": {
+          "type": "string"
+        },
+        "topic": {
+          "enum": [
+            "performance",
+            "economics",
+            "entity-capability",
+            "commercial-status",
+            "market",
+            "proposal"
+          ]
+        },
+        "provenance": {
+          "$ref": "#/$defs/provenance"
+        },
+        "context": {
+          "$ref": "#/$defs/operatingContext"
+        },
+        "quantities": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/quantity"
+          },
+          "minItems": 0
+        },
+        "dependsOn": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "minItems": 0
+        },
+        "priceBasis": {
+          "$ref": "#/$defs/priceBasis"
+        },
+        "applicability": {
+          "$ref": "#/$defs/applicability"
+        },
+        "replacementPlan": {
+          "$ref": "#/$defs/replacementPlan"
+        },
+        "recipientIds": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/id"
+          },
+          "minItems": 0
+        }
+      }
+    },
+    "crop": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "left",
+        "top",
+        "right",
+        "bottom"
+      ],
+      "properties": {
+        "left": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "top": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "right": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "bottom": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        }
+      }
+    },
+    "asset": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "path",
+        "sha256",
+        "width",
+        "height",
+        "mimeType",
+        "kind",
+        "maturity",
+        "missions",
+        "geography",
+        "roles",
+        "sourceIds",
+        "visibility",
+        "clearedFor",
+        "rightsNote",
+        "caption"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/id"
+        },
+        "path": {
+          "$ref": "#/$defs/text"
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "width": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "height": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "mimeType": {
+          "enum": [
+            "image/png",
+            "image/jpeg",
+            "image/webp",
+            "image/gif",
+            "image/svg+xml"
+          ]
+        },
+        "kind": {
+          "enum": [
+            "photograph",
+            "rendering",
+            "schematic",
+            "logo"
+          ]
+        },
+        "maturity": {
+          "enum": [
+            "actual",
+            "demonstrated",
+            "concept",
+            "context",
+            "brand"
+          ]
+        },
+        "title": {
+          "$ref": "#/$defs/text"
+        },
+        "vessel": {
+          "type": "string"
+        },
+        "missions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/text"
+          }
+        },
+        "geography": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/text"
+          }
+        },
+        "roles": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/text"
+          }
+        },
+        "sourceIds": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/id"
+          }
+        },
+        "visibility": {
+          "$ref": "#/$defs/visibility"
+        },
+        "clearedFor": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/audience"
+          }
+        },
+        "rightsNote": {
+          "$ref": "#/$defs/text"
+        },
+        "caption": {
+          "$ref": "#/$defs/text"
+        },
+        "focalPoint": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "x",
+            "y"
+          ],
+          "properties": {
+            "x": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            },
+            "y": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            }
+          }
+        },
+        "keepRegion": {
+          "$ref": "#/$defs/crop"
+        },
+        "crop": {
+          "$ref": "#/$defs/crop"
+        },
+        "embeddingUrl": {
+          "type": "string",
+          "format": "uri"
+        },
+        "nativeSource": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "presentationId",
+            "slideObjectId",
+            "imageObjectId"
+          ],
+          "properties": {
+            "presentationId": {
+              "$ref": "#/$defs/text"
+            },
+            "slideObjectId": {
+              "$ref": "#/$defs/text"
+            },
+            "imageObjectId": {
+              "$ref": "#/$defs/text"
+            }
+          }
+        },
+        "repoSource": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "owner",
+            "repo",
+            "ref",
+            "path",
+            "blobSha"
+          ],
+          "properties": {
+            "owner": {
+              "$ref": "#/$defs/text"
+            },
+            "repo": {
+              "$ref": "#/$defs/text"
+            },
+            "ref": {
+              "$ref": "#/$defs/text"
+            },
+            "path": {
+              "$ref": "#/$defs/text"
+            },
+            "blobSha": {
+              "$ref": "#/$defs/text"
+            }
+          }
+        },
+        "visualBrief": {
+          "$ref": "#/$defs/visualBrief"
+        }
       }
     },
     "opportunity": {
-      "type": "object", "additionalProperties": false, "required": ["id", "kind", "title", "product", "customer", "payer", "commercialLogic", "partnerBenefit", "companyContribution", "partnerContribution", "nextQuestion", "claimIds", "status"],
-      "properties": {"id": {"$ref": "#/$defs/id"}, "kind": {"enum": ["supply", "co-development", "contract-build", "license", "direct-sale", "resale", "service", "operator-program", "other"]}, "title": {"$ref": "#/$defs/text"}, "product": {"$ref": "#/$defs/text"}, "customer": {"$ref": "#/$defs/text"}, "payer": {"$ref": "#/$defs/text"}, "commercialLogic": {"$ref": "#/$defs/text"}, "partnerBenefit": {"$ref": "#/$defs/text"}, "companyContribution": {"$ref": "#/$defs/text"}, "partnerContribution": {"$ref": "#/$defs/text"}, "nextQuestion": {"$ref": "#/$defs/text"}, "claimIds": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/id"}}, "status": {"enum": ["proposed", "existing"]}}
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "kind",
+        "title",
+        "product",
+        "customer",
+        "payer",
+        "commercialLogic",
+        "partnerBenefit",
+        "companyContribution",
+        "partnerContribution",
+        "nextQuestion",
+        "claimIds",
+        "status"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/id"
+        },
+        "kind": {
+          "enum": [
+            "supply",
+            "co-development",
+            "contract-build",
+            "license",
+            "direct-sale",
+            "resale",
+            "service",
+            "operator-program",
+            "other"
+          ]
+        },
+        "title": {
+          "$ref": "#/$defs/text"
+        },
+        "product": {
+          "$ref": "#/$defs/text"
+        },
+        "customer": {
+          "$ref": "#/$defs/text"
+        },
+        "payer": {
+          "$ref": "#/$defs/text"
+        },
+        "commercialLogic": {
+          "$ref": "#/$defs/text"
+        },
+        "partnerBenefit": {
+          "$ref": "#/$defs/text"
+        },
+        "companyContribution": {
+          "$ref": "#/$defs/text"
+        },
+        "partnerContribution": {
+          "$ref": "#/$defs/text"
+        },
+        "nextQuestion": {
+          "$ref": "#/$defs/text"
+        },
+        "claimIds": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/id"
+          }
+        },
+        "status": {
+          "enum": [
+            "proposed",
+            "existing"
+          ]
+        },
+        "salesCase": {
+          "$ref": "#/$defs/salesCase"
+        }
+      }
     },
-    "visual": {"type": "object", "additionalProperties": false, "required": ["assetId", "caption"], "properties": {"assetId": {"$ref": "#/$defs/id"}, "caption": {"$ref": "#/$defs/text"}, "crop": {"$ref": "#/$defs/crop"}}},
-    "payment": {"type": "object", "additionalProperties": false, "required": ["actors", "labels", "kind"], "properties": {"actors": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/text"}}, "labels": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/text"}}, "kind": {"const": "payment"}}},
-    "baseSlide": {"type": "object", "required": ["key", "kicker", "title", "claimIds", "sourceIds", "opportunityIds", "notes", "layout"], "properties": {"key": {"$ref": "#/$defs/id"}, "kicker": {"$ref": "#/$defs/text"}, "title": {"$ref": "#/$defs/text"}, "claimIds": {"type": "array", "items": {"$ref": "#/$defs/id"}}, "sourceIds": {"type": "array", "items": {"$ref": "#/$defs/id"}}, "opportunityIds": {"type": "array", "items": {"$ref": "#/$defs/id"}}, "notes": {"type": "string"}, "layout": {"type": "string"}}},
+    "visual": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "assetId",
+        "caption"
+      ],
+      "properties": {
+        "assetId": {
+          "$ref": "#/$defs/id"
+        },
+        "caption": {
+          "$ref": "#/$defs/text"
+        },
+        "crop": {
+          "$ref": "#/$defs/crop"
+        },
+        "attachments": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/attachment"
+          },
+          "minItems": 0
+        }
+      }
+    },
+    "payment": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "actors",
+        "labels",
+        "kind"
+      ],
+      "properties": {
+        "actors": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/text"
+          }
+        },
+        "labels": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/text"
+          }
+        },
+        "kind": {
+          "const": "payment"
+        }
+      }
+    },
+    "baseSlide": {
+      "type": "object",
+      "required": [
+        "key",
+        "kicker",
+        "title",
+        "claimIds",
+        "sourceIds",
+        "opportunityIds",
+        "notes",
+        "layout"
+      ],
+      "properties": {
+        "key": {
+          "$ref": "#/$defs/id"
+        },
+        "kicker": {
+          "$ref": "#/$defs/text"
+        },
+        "title": {
+          "$ref": "#/$defs/text"
+        },
+        "claimIds": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/id"
+          }
+        },
+        "sourceIds": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/id"
+          }
+        },
+        "opportunityIds": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/id"
+          }
+        },
+        "notes": {
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "$ref": "#/$defs/talkTrack"
+            }
+          ]
+        },
+        "layout": {
+          "type": "string"
+        },
+        "claimUses": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/claimUse"
+          },
+          "minItems": 0
+        },
+        "quantityUses": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/quantityUse"
+          },
+          "minItems": 0
+        },
+        "footnotes": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/evidenceFootnote"
+          },
+          "minItems": 0
+        }
+      }
+    },
     "slide": {
       "oneOf": [
-        {"allOf": [{"$ref": "#/$defs/baseSlide"}, {"type": "object", "properties": {"layout": {"const": "cover"}, "visual": {"$ref": "#/$defs/visual"}, "subtitle": {"$ref": "#/$defs/text"}, "body": {"$ref": "#/$defs/text"}, "pillars": {"type": "array", "minItems": 1, "maxItems": 3, "items": {"$ref": "#/$defs/text"}}}, "required": ["visual", "subtitle", "body", "pillars"]}]},
-        {"allOf": [{"$ref": "#/$defs/baseSlide"}, {"type": "object", "properties": {"layout": {"const": "fit"}, "visual": {"$ref": "#/$defs/visual"}, "companyLabel": {"$ref": "#/$defs/text"}, "companyHeadline": {"$ref": "#/$defs/text"}, "companyBody": {"$ref": "#/$defs/text"}, "partnerLabel": {"$ref": "#/$defs/text"}, "partnerBody": {"$ref": "#/$defs/text"}, "benefits": {"type": "array", "minItems": 2, "maxItems": 3, "items": {"type": "object", "required": ["title", "body"], "properties": {"title": {"$ref": "#/$defs/text"}, "body": {"$ref": "#/$defs/text"}}}}, "takeaway": {"$ref": "#/$defs/text"}}, "required": ["visual", "companyLabel", "companyHeadline", "companyBody", "partnerLabel", "partnerBody", "benefits", "takeaway"]}]},
-        {"allOf": [{"$ref": "#/$defs/baseSlide"}, {"type": "object", "properties": {"layout": {"const": "options"}, "options": {"type": "array", "minItems": 2, "maxItems": 3, "items": {"type": "object", "required": ["title", "body", "revenue"], "properties": {"title": {"$ref": "#/$defs/text"}, "body": {"$ref": "#/$defs/text"}, "revenue": {"$ref": "#/$defs/text"}, "visual": {"$ref": "#/$defs/visual"}, "schematic": {"enum": ["manufacture", "hybrid", "service"]}}}}, "payment": {"$ref": "#/$defs/payment"}, "status": {"$ref": "#/$defs/text"}, "explore": {"$ref": "#/$defs/text"}}, "required": ["options", "status", "explore"]}]},
-        {"allOf": [{"$ref": "#/$defs/baseSlide"}, {"type": "object", "properties": {"layout": {"const": "models"}, "models": {"type": "array", "minItems": 2, "maxItems": 2, "items": {"type": "object", "required": ["label", "title", "body", "payments", "benefit"], "properties": {"label": {"$ref": "#/$defs/text"}, "title": {"$ref": "#/$defs/text"}, "body": {"$ref": "#/$defs/text"}, "visual": {"$ref": "#/$defs/visual"}, "technologyLabel": {"$ref": "#/$defs/text"}, "payments": {"$ref": "#/$defs/payment"}, "benefit": {"$ref": "#/$defs/text"}}}}, "explore": {"$ref": "#/$defs/text"}}, "required": ["models", "explore"]}]},
-        {"allOf": [{"$ref": "#/$defs/baseSlide"}, {"type": "object", "properties": {"layout": {"const": "channels"}, "scope": {"$ref": "#/$defs/text"}, "selection": {"$ref": "#/$defs/text"}, "criteria": {"$ref": "#/$defs/text"}, "visual": {"$ref": "#/$defs/visual"}, "models": {"type": "array", "minItems": 1, "maxItems": 2, "items": {"type": "object", "required": ["label", "benefit", "payments"], "properties": {"label": {"$ref": "#/$defs/text"}, "benefit": {"$ref": "#/$defs/text"}, "payments": {"$ref": "#/$defs/payment"}}}}, "serviceLabel": {"$ref": "#/$defs/text"}, "service": {"$ref": "#/$defs/text"}, "explore": {"$ref": "#/$defs/text"}}, "required": ["scope", "selection", "criteria", "models", "serviceLabel", "service", "explore"]}]},
-        {"allOf": [{"$ref": "#/$defs/baseSlide"}, {"type": "object", "properties": {"layout": {"const": "missions"}, "intro": {"$ref": "#/$defs/text"}, "status": {"$ref": "#/$defs/text"}, "cards": {"type": "array", "minItems": 2, "maxItems": 4, "items": {"type": "object", "required": ["label", "title", "description", "visual"], "properties": {"label": {"$ref": "#/$defs/text"}, "title": {"$ref": "#/$defs/text"}, "description": {"$ref": "#/$defs/text"}, "visual": {"$ref": "#/$defs/visual"}}}}, "explore": {"$ref": "#/$defs/text"}}, "required": ["intro", "status", "cards", "explore"]}]},
-        {"allOf": [{"$ref": "#/$defs/baseSlide"}, {"type": "object", "properties": {"layout": {"const": "close"}, "visual": {"$ref": "#/$defs/visual"}, "intro": {"$ref": "#/$defs/text"}, "conversations": {"type": "array", "minItems": 1, "maxItems": 3, "items": {"type": "object", "required": ["title", "body"], "properties": {"title": {"$ref": "#/$defs/text"}, "body": {"$ref": "#/$defs/text"}}}}, "ask": {"$ref": "#/$defs/text"}, "contact": {"$ref": "#/$defs/text"}}, "required": ["visual", "intro", "conversations", "ask", "contact"]}]}
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "key": {
+              "$ref": "#/$defs/id"
+            },
+            "kicker": {
+              "$ref": "#/$defs/text"
+            },
+            "title": {
+              "$ref": "#/$defs/text"
+            },
+            "claimIds": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/id"
+              }
+            },
+            "sourceIds": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/id"
+              }
+            },
+            "opportunityIds": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/id"
+              }
+            },
+            "notes": {
+              "oneOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "$ref": "#/$defs/talkTrack"
+                }
+              ]
+            },
+            "layout": {
+              "const": "cover"
+            },
+            "visual": {
+              "$ref": "#/$defs/visual"
+            },
+            "subtitle": {
+              "$ref": "#/$defs/text"
+            },
+            "body": {
+              "$ref": "#/$defs/text"
+            },
+            "pillars": {
+              "type": "array",
+              "minItems": 1,
+              "maxItems": 3,
+              "items": {
+                "$ref": "#/$defs/text"
+              }
+            },
+            "claimUses": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/claimUse"
+              },
+              "minItems": 0
+            },
+            "quantityUses": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/quantityUse"
+              },
+              "minItems": 0
+            },
+            "footnotes": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/evidenceFootnote"
+              },
+              "minItems": 0
+            }
+          },
+          "required": [
+            "key",
+            "kicker",
+            "title",
+            "claimIds",
+            "sourceIds",
+            "opportunityIds",
+            "notes",
+            "layout",
+            "visual",
+            "subtitle",
+            "body",
+            "pillars"
+          ]
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "key": {
+              "$ref": "#/$defs/id"
+            },
+            "kicker": {
+              "$ref": "#/$defs/text"
+            },
+            "title": {
+              "$ref": "#/$defs/text"
+            },
+            "claimIds": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/id"
+              }
+            },
+            "sourceIds": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/id"
+              }
+            },
+            "opportunityIds": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/id"
+              }
+            },
+            "notes": {
+              "oneOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "$ref": "#/$defs/talkTrack"
+                }
+              ]
+            },
+            "layout": {
+              "const": "fit"
+            },
+            "visual": {
+              "$ref": "#/$defs/visual"
+            },
+            "companyLabel": {
+              "$ref": "#/$defs/text"
+            },
+            "companyHeadline": {
+              "$ref": "#/$defs/text"
+            },
+            "companyBody": {
+              "$ref": "#/$defs/text"
+            },
+            "partnerLabel": {
+              "$ref": "#/$defs/text"
+            },
+            "partnerBody": {
+              "$ref": "#/$defs/text"
+            },
+            "benefits": {
+              "type": "array",
+              "minItems": 2,
+              "maxItems": 3,
+              "items": {
+                "type": "object",
+                "required": [
+                  "title",
+                  "body"
+                ],
+                "properties": {
+                  "title": {
+                    "$ref": "#/$defs/text"
+                  },
+                  "body": {
+                    "$ref": "#/$defs/text"
+                  }
+                },
+                "additionalProperties": false
+              }
+            },
+            "takeaway": {
+              "$ref": "#/$defs/text"
+            },
+            "claimUses": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/claimUse"
+              },
+              "minItems": 0
+            },
+            "quantityUses": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/quantityUse"
+              },
+              "minItems": 0
+            },
+            "footnotes": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/evidenceFootnote"
+              },
+              "minItems": 0
+            }
+          },
+          "required": [
+            "key",
+            "kicker",
+            "title",
+            "claimIds",
+            "sourceIds",
+            "opportunityIds",
+            "notes",
+            "layout",
+            "visual",
+            "companyLabel",
+            "companyHeadline",
+            "companyBody",
+            "partnerLabel",
+            "partnerBody",
+            "benefits",
+            "takeaway"
+          ]
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "key": {
+              "$ref": "#/$defs/id"
+            },
+            "kicker": {
+              "$ref": "#/$defs/text"
+            },
+            "title": {
+              "$ref": "#/$defs/text"
+            },
+            "claimIds": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/id"
+              }
+            },
+            "sourceIds": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/id"
+              }
+            },
+            "opportunityIds": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/id"
+              }
+            },
+            "notes": {
+              "oneOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "$ref": "#/$defs/talkTrack"
+                }
+              ]
+            },
+            "layout": {
+              "const": "options"
+            },
+            "options": {
+              "type": "array",
+              "minItems": 2,
+              "maxItems": 3,
+              "items": {
+                "type": "object",
+                "required": [
+                  "title",
+                  "body",
+                  "revenue"
+                ],
+                "properties": {
+                  "title": {
+                    "$ref": "#/$defs/text"
+                  },
+                  "body": {
+                    "$ref": "#/$defs/text"
+                  },
+                  "revenue": {
+                    "$ref": "#/$defs/text"
+                  },
+                  "visual": {
+                    "$ref": "#/$defs/visual"
+                  },
+                  "schematic": {
+                    "enum": [
+                      "manufacture",
+                      "hybrid",
+                      "service"
+                    ]
+                  }
+                },
+                "additionalProperties": false
+              }
+            },
+            "payment": {
+              "$ref": "#/$defs/payment"
+            },
+            "status": {
+              "$ref": "#/$defs/text"
+            },
+            "explore": {
+              "$ref": "#/$defs/text"
+            },
+            "claimUses": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/claimUse"
+              },
+              "minItems": 0
+            },
+            "quantityUses": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/quantityUse"
+              },
+              "minItems": 0
+            },
+            "footnotes": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/evidenceFootnote"
+              },
+              "minItems": 0
+            }
+          },
+          "required": [
+            "key",
+            "kicker",
+            "title",
+            "claimIds",
+            "sourceIds",
+            "opportunityIds",
+            "notes",
+            "layout",
+            "options",
+            "status",
+            "explore"
+          ]
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "key": {
+              "$ref": "#/$defs/id"
+            },
+            "kicker": {
+              "$ref": "#/$defs/text"
+            },
+            "title": {
+              "$ref": "#/$defs/text"
+            },
+            "claimIds": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/id"
+              }
+            },
+            "sourceIds": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/id"
+              }
+            },
+            "opportunityIds": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/id"
+              }
+            },
+            "notes": {
+              "oneOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "$ref": "#/$defs/talkTrack"
+                }
+              ]
+            },
+            "layout": {
+              "const": "models"
+            },
+            "models": {
+              "type": "array",
+              "minItems": 2,
+              "maxItems": 2,
+              "items": {
+                "type": "object",
+                "required": [
+                  "label",
+                  "title",
+                  "body",
+                  "payments",
+                  "benefit"
+                ],
+                "properties": {
+                  "label": {
+                    "$ref": "#/$defs/text"
+                  },
+                  "title": {
+                    "$ref": "#/$defs/text"
+                  },
+                  "body": {
+                    "$ref": "#/$defs/text"
+                  },
+                  "visual": {
+                    "$ref": "#/$defs/visual"
+                  },
+                  "technologyLabel": {
+                    "$ref": "#/$defs/text"
+                  },
+                  "payments": {
+                    "$ref": "#/$defs/payment"
+                  },
+                  "benefit": {
+                    "$ref": "#/$defs/text"
+                  }
+                },
+                "additionalProperties": false
+              }
+            },
+            "explore": {
+              "$ref": "#/$defs/text"
+            },
+            "claimUses": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/claimUse"
+              },
+              "minItems": 0
+            },
+            "quantityUses": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/quantityUse"
+              },
+              "minItems": 0
+            },
+            "footnotes": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/evidenceFootnote"
+              },
+              "minItems": 0
+            }
+          },
+          "required": [
+            "key",
+            "kicker",
+            "title",
+            "claimIds",
+            "sourceIds",
+            "opportunityIds",
+            "notes",
+            "layout",
+            "models",
+            "explore"
+          ]
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "key": {
+              "$ref": "#/$defs/id"
+            },
+            "kicker": {
+              "$ref": "#/$defs/text"
+            },
+            "title": {
+              "$ref": "#/$defs/text"
+            },
+            "claimIds": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/id"
+              }
+            },
+            "sourceIds": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/id"
+              }
+            },
+            "opportunityIds": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/id"
+              }
+            },
+            "notes": {
+              "oneOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "$ref": "#/$defs/talkTrack"
+                }
+              ]
+            },
+            "layout": {
+              "const": "channels"
+            },
+            "scope": {
+              "$ref": "#/$defs/text"
+            },
+            "selection": {
+              "$ref": "#/$defs/text"
+            },
+            "criteria": {
+              "$ref": "#/$defs/text"
+            },
+            "visual": {
+              "$ref": "#/$defs/visual"
+            },
+            "models": {
+              "type": "array",
+              "minItems": 1,
+              "maxItems": 2,
+              "items": {
+                "type": "object",
+                "required": [
+                  "label",
+                  "benefit",
+                  "payments"
+                ],
+                "properties": {
+                  "label": {
+                    "$ref": "#/$defs/text"
+                  },
+                  "benefit": {
+                    "$ref": "#/$defs/text"
+                  },
+                  "payments": {
+                    "$ref": "#/$defs/payment"
+                  }
+                },
+                "additionalProperties": false
+              }
+            },
+            "serviceLabel": {
+              "$ref": "#/$defs/text"
+            },
+            "service": {
+              "$ref": "#/$defs/text"
+            },
+            "explore": {
+              "$ref": "#/$defs/text"
+            },
+            "claimUses": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/claimUse"
+              },
+              "minItems": 0
+            },
+            "quantityUses": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/quantityUse"
+              },
+              "minItems": 0
+            },
+            "footnotes": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/evidenceFootnote"
+              },
+              "minItems": 0
+            }
+          },
+          "required": [
+            "key",
+            "kicker",
+            "title",
+            "claimIds",
+            "sourceIds",
+            "opportunityIds",
+            "notes",
+            "layout",
+            "scope",
+            "selection",
+            "criteria",
+            "models",
+            "serviceLabel",
+            "service",
+            "explore"
+          ]
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "key": {
+              "$ref": "#/$defs/id"
+            },
+            "kicker": {
+              "$ref": "#/$defs/text"
+            },
+            "title": {
+              "$ref": "#/$defs/text"
+            },
+            "claimIds": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/id"
+              }
+            },
+            "sourceIds": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/id"
+              }
+            },
+            "opportunityIds": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/id"
+              }
+            },
+            "notes": {
+              "oneOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "$ref": "#/$defs/talkTrack"
+                }
+              ]
+            },
+            "layout": {
+              "const": "missions"
+            },
+            "intro": {
+              "$ref": "#/$defs/text"
+            },
+            "status": {
+              "$ref": "#/$defs/text"
+            },
+            "cards": {
+              "type": "array",
+              "minItems": 2,
+              "maxItems": 4,
+              "items": {
+                "type": "object",
+                "required": [
+                  "label",
+                  "title",
+                  "description",
+                  "visual"
+                ],
+                "properties": {
+                  "label": {
+                    "$ref": "#/$defs/text"
+                  },
+                  "title": {
+                    "$ref": "#/$defs/text"
+                  },
+                  "description": {
+                    "$ref": "#/$defs/text"
+                  },
+                  "visual": {
+                    "$ref": "#/$defs/visual"
+                  }
+                },
+                "additionalProperties": false
+              }
+            },
+            "explore": {
+              "$ref": "#/$defs/text"
+            },
+            "claimUses": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/claimUse"
+              },
+              "minItems": 0
+            },
+            "quantityUses": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/quantityUse"
+              },
+              "minItems": 0
+            },
+            "footnotes": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/evidenceFootnote"
+              },
+              "minItems": 0
+            }
+          },
+          "required": [
+            "key",
+            "kicker",
+            "title",
+            "claimIds",
+            "sourceIds",
+            "opportunityIds",
+            "notes",
+            "layout",
+            "intro",
+            "status",
+            "cards",
+            "explore"
+          ]
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "key": {
+              "$ref": "#/$defs/id"
+            },
+            "kicker": {
+              "$ref": "#/$defs/text"
+            },
+            "title": {
+              "$ref": "#/$defs/text"
+            },
+            "claimIds": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/id"
+              }
+            },
+            "sourceIds": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/id"
+              }
+            },
+            "opportunityIds": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/id"
+              }
+            },
+            "notes": {
+              "oneOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "$ref": "#/$defs/talkTrack"
+                }
+              ]
+            },
+            "layout": {
+              "const": "close"
+            },
+            "visual": {
+              "$ref": "#/$defs/visual"
+            },
+            "intro": {
+              "$ref": "#/$defs/text"
+            },
+            "conversations": {
+              "type": "array",
+              "minItems": 1,
+              "maxItems": 3,
+              "items": {
+                "type": "object",
+                "required": [
+                  "title",
+                  "body"
+                ],
+                "properties": {
+                  "title": {
+                    "$ref": "#/$defs/text"
+                  },
+                  "body": {
+                    "$ref": "#/$defs/text"
+                  }
+                },
+                "additionalProperties": false
+              }
+            },
+            "ask": {
+              "$ref": "#/$defs/text"
+            },
+            "contact": {
+              "$ref": "#/$defs/text"
+            },
+            "claimUses": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/claimUse"
+              },
+              "minItems": 0
+            },
+            "quantityUses": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/quantityUse"
+              },
+              "minItems": 0
+            },
+            "footnotes": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/evidenceFootnote"
+              },
+              "minItems": 0
+            }
+          },
+          "required": [
+            "key",
+            "kicker",
+            "title",
+            "claimIds",
+            "sourceIds",
+            "opportunityIds",
+            "notes",
+            "layout",
+            "visual",
+            "intro",
+            "conversations",
+            "ask",
+            "contact"
+          ]
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "key": {
+              "$ref": "#/$defs/id"
+            },
+            "kicker": {
+              "$ref": "#/$defs/text"
+            },
+            "title": {
+              "$ref": "#/$defs/id"
+            },
+            "claimIds": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/id"
+              }
+            },
+            "sourceIds": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/id"
+              }
+            },
+            "opportunityIds": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/id"
+              }
+            },
+            "notes": {
+              "oneOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "$ref": "#/$defs/talkTrack"
+                }
+              ]
+            },
+            "layout": {
+              "const": "sales"
+            },
+            "status": {
+              "$ref": "#/$defs/id"
+            },
+            "composition": {
+              "const": "partner-opportunity"
+            },
+            "intro": {
+              "$ref": "#/$defs/id"
+            },
+            "domains": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "heading": {
+                    "$ref": "#/$defs/id"
+                  },
+                  "body": {
+                    "$ref": "#/$defs/id"
+                  }
+                },
+                "required": [
+                  "heading",
+                  "body"
+                ]
+              },
+              "minItems": 2,
+              "maxItems": 3
+            },
+            "proof": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "heading": {
+                    "$ref": "#/$defs/id"
+                  },
+                  "body": {
+                    "$ref": "#/$defs/id"
+                  }
+                },
+                "required": [
+                  "heading",
+                  "body"
+                ]
+              },
+              "minItems": 1,
+              "maxItems": 3
+            },
+            "offer": {
+              "$ref": "#/$defs/id"
+            },
+            "claimUses": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/claimUse"
+              },
+              "minItems": 0
+            },
+            "quantityUses": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/quantityUse"
+              },
+              "minItems": 0
+            },
+            "footnotes": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/evidenceFootnote"
+              },
+              "minItems": 0
+            }
+          },
+          "required": [
+            "key",
+            "kicker",
+            "title",
+            "claimIds",
+            "sourceIds",
+            "opportunityIds",
+            "notes",
+            "layout",
+            "status",
+            "composition",
+            "intro",
+            "domains",
+            "proof",
+            "offer"
+          ]
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "key": {
+              "$ref": "#/$defs/id"
+            },
+            "kicker": {
+              "$ref": "#/$defs/text"
+            },
+            "title": {
+              "$ref": "#/$defs/id"
+            },
+            "claimIds": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/id"
+              }
+            },
+            "sourceIds": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/id"
+              }
+            },
+            "opportunityIds": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/id"
+              }
+            },
+            "notes": {
+              "oneOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "$ref": "#/$defs/talkTrack"
+                }
+              ]
+            },
+            "layout": {
+              "const": "sales"
+            },
+            "status": {
+              "$ref": "#/$defs/id"
+            },
+            "composition": {
+              "const": "product-value"
+            },
+            "visual": {
+              "$ref": "#/$defs/visual"
+            },
+            "mechanism": {
+              "$ref": "#/$defs/id"
+            },
+            "benefits": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "heading": {
+                    "$ref": "#/$defs/id"
+                  },
+                  "body": {
+                    "$ref": "#/$defs/id"
+                  }
+                },
+                "required": [
+                  "heading",
+                  "body"
+                ]
+              },
+              "minItems": 2,
+              "maxItems": 2
+            },
+            "proof": {
+              "$ref": "#/$defs/id"
+            },
+            "claimUses": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/claimUse"
+              },
+              "minItems": 0
+            },
+            "quantityUses": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/quantityUse"
+              },
+              "minItems": 0
+            },
+            "footnotes": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/evidenceFootnote"
+              },
+              "minItems": 0
+            }
+          },
+          "required": [
+            "key",
+            "kicker",
+            "title",
+            "claimIds",
+            "sourceIds",
+            "opportunityIds",
+            "notes",
+            "layout",
+            "status",
+            "composition",
+            "visual",
+            "mechanism",
+            "benefits",
+            "proof"
+          ]
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "key": {
+              "$ref": "#/$defs/id"
+            },
+            "kicker": {
+              "$ref": "#/$defs/text"
+            },
+            "title": {
+              "$ref": "#/$defs/id"
+            },
+            "claimIds": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/id"
+              }
+            },
+            "sourceIds": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/id"
+              }
+            },
+            "opportunityIds": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/id"
+              }
+            },
+            "notes": {
+              "oneOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "$ref": "#/$defs/talkTrack"
+                }
+              ]
+            },
+            "layout": {
+              "const": "sales"
+            },
+            "status": {
+              "$ref": "#/$defs/id"
+            },
+            "composition": {
+              "const": "platform-architecture"
+            },
+            "banner": {
+              "$ref": "#/$defs/id"
+            },
+            "physical": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "heading": {
+                    "$ref": "#/$defs/id"
+                  },
+                  "body": {
+                    "$ref": "#/$defs/id"
+                  },
+                  "visual": {
+                    "$ref": "#/$defs/visual"
+                  }
+                },
+                "required": [
+                  "heading",
+                  "body"
+                ]
+              },
+              "minItems": 2,
+              "maxItems": 4
+            },
+            "ownership": {
+              "$ref": "#/$defs/id"
+            },
+            "software": {
+              "$ref": "#/$defs/id"
+            },
+            "revenue": {
+              "$ref": "#/$defs/id"
+            },
+            "demand": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "heading": {
+                    "$ref": "#/$defs/id"
+                  },
+                  "body": {
+                    "$ref": "#/$defs/id"
+                  }
+                },
+                "required": [
+                  "heading",
+                  "body"
+                ]
+              },
+              "minItems": 2,
+              "maxItems": 3
+            },
+            "takeaway": {
+              "$ref": "#/$defs/id"
+            },
+            "claimUses": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/claimUse"
+              },
+              "minItems": 0
+            },
+            "quantityUses": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/quantityUse"
+              },
+              "minItems": 0
+            },
+            "footnotes": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/evidenceFootnote"
+              },
+              "minItems": 0
+            }
+          },
+          "required": [
+            "key",
+            "kicker",
+            "title",
+            "claimIds",
+            "sourceIds",
+            "opportunityIds",
+            "notes",
+            "layout",
+            "status",
+            "composition",
+            "banner",
+            "physical",
+            "ownership",
+            "software",
+            "revenue",
+            "demand",
+            "takeaway"
+          ]
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "key": {
+              "$ref": "#/$defs/id"
+            },
+            "kicker": {
+              "$ref": "#/$defs/text"
+            },
+            "title": {
+              "$ref": "#/$defs/id"
+            },
+            "claimIds": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/id"
+              }
+            },
+            "sourceIds": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/id"
+              }
+            },
+            "opportunityIds": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/id"
+              }
+            },
+            "notes": {
+              "oneOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "$ref": "#/$defs/talkTrack"
+                }
+              ]
+            },
+            "layout": {
+              "const": "sales"
+            },
+            "status": {
+              "$ref": "#/$defs/id"
+            },
+            "composition": {
+              "const": "opportunity-portfolio"
+            },
+            "intro": {
+              "$ref": "#/$defs/id"
+            },
+            "programs": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "opportunityId": {
+                    "$ref": "#/$defs/id"
+                  },
+                  "heading": {
+                    "$ref": "#/$defs/id"
+                  },
+                  "value": {
+                    "$ref": "#/$defs/id"
+                  },
+                  "visual": {
+                    "$ref": "#/$defs/visual"
+                  }
+                },
+                "required": [
+                  "opportunityId",
+                  "heading",
+                  "value",
+                  "visual"
+                ]
+              },
+              "minItems": 2,
+              "maxItems": 4
+            },
+            "connection": {
+              "$ref": "#/$defs/id"
+            },
+            "claimUses": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/claimUse"
+              },
+              "minItems": 0
+            },
+            "quantityUses": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/quantityUse"
+              },
+              "minItems": 0
+            },
+            "footnotes": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/evidenceFootnote"
+              },
+              "minItems": 0
+            }
+          },
+          "required": [
+            "key",
+            "kicker",
+            "title",
+            "claimIds",
+            "sourceIds",
+            "opportunityIds",
+            "notes",
+            "layout",
+            "status",
+            "composition",
+            "intro",
+            "programs",
+            "connection"
+          ]
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "key": {
+              "$ref": "#/$defs/id"
+            },
+            "kicker": {
+              "$ref": "#/$defs/text"
+            },
+            "title": {
+              "$ref": "#/$defs/id"
+            },
+            "claimIds": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/id"
+              }
+            },
+            "sourceIds": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/id"
+              }
+            },
+            "opportunityIds": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/id"
+              }
+            },
+            "notes": {
+              "oneOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "$ref": "#/$defs/talkTrack"
+                }
+              ]
+            },
+            "layout": {
+              "const": "sales"
+            },
+            "status": {
+              "$ref": "#/$defs/id"
+            },
+            "composition": {
+              "const": "mission-hero"
+            },
+            "visual": {
+              "$ref": "#/$defs/visual"
+            },
+            "need": {
+              "$ref": "#/$defs/id"
+            },
+            "benefits": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "heading": {
+                    "$ref": "#/$defs/id"
+                  },
+                  "body": {
+                    "$ref": "#/$defs/id"
+                  }
+                },
+                "required": [
+                  "heading",
+                  "body"
+                ]
+              },
+              "minItems": 2,
+              "maxItems": 3
+            },
+            "payoff": {
+              "$ref": "#/$defs/id"
+            },
+            "claimUses": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/claimUse"
+              },
+              "minItems": 0
+            },
+            "quantityUses": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/quantityUse"
+              },
+              "minItems": 0
+            },
+            "footnotes": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/evidenceFootnote"
+              },
+              "minItems": 0
+            }
+          },
+          "required": [
+            "key",
+            "kicker",
+            "title",
+            "claimIds",
+            "sourceIds",
+            "opportunityIds",
+            "notes",
+            "layout",
+            "status",
+            "composition",
+            "visual",
+            "need",
+            "benefits",
+            "payoff"
+          ]
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "key": {
+              "$ref": "#/$defs/id"
+            },
+            "kicker": {
+              "$ref": "#/$defs/text"
+            },
+            "title": {
+              "$ref": "#/$defs/id"
+            },
+            "claimIds": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/id"
+              }
+            },
+            "sourceIds": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/id"
+              }
+            },
+            "opportunityIds": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/id"
+              }
+            },
+            "notes": {
+              "oneOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "$ref": "#/$defs/talkTrack"
+                }
+              ]
+            },
+            "layout": {
+              "const": "sales"
+            },
+            "status": {
+              "$ref": "#/$defs/id"
+            },
+            "composition": {
+              "const": "customer-alternative"
+            },
+            "intro": {
+              "$ref": "#/$defs/id"
+            },
+            "alternatives": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "heading": {
+                    "$ref": "#/$defs/id"
+                  },
+                  "body": {
+                    "$ref": "#/$defs/id"
+                  },
+                  "emphasis": {
+                    "type": "boolean"
+                  }
+                },
+                "required": [
+                  "heading",
+                  "body",
+                  "emphasis"
+                ]
+              },
+              "minItems": 2,
+              "maxItems": 3
+            },
+            "jobs": {
+              "$ref": "#/$defs/id"
+            },
+            "advantage": {
+              "$ref": "#/$defs/id"
+            },
+            "comparison": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "basisBlockId": {
+                  "$ref": "#/$defs/id"
+                },
+                "claimIds": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/id"
+                  },
+                  "minItems": 1
+                },
+                "kind": {
+                  "enum": [
+                    "qualitative",
+                    "modeled",
+                    "measured"
+                  ]
+                }
+              },
+              "required": [
+                "basisBlockId",
+                "claimIds",
+                "kind"
+              ]
+            },
+            "claimUses": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/claimUse"
+              },
+              "minItems": 0
+            },
+            "quantityUses": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/quantityUse"
+              },
+              "minItems": 0
+            },
+            "footnotes": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/evidenceFootnote"
+              },
+              "minItems": 0
+            }
+          },
+          "required": [
+            "key",
+            "kicker",
+            "title",
+            "claimIds",
+            "sourceIds",
+            "opportunityIds",
+            "notes",
+            "layout",
+            "status",
+            "composition",
+            "intro",
+            "alternatives",
+            "jobs",
+            "advantage",
+            "comparison"
+          ]
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "key": {
+              "$ref": "#/$defs/id"
+            },
+            "kicker": {
+              "$ref": "#/$defs/text"
+            },
+            "title": {
+              "$ref": "#/$defs/id"
+            },
+            "claimIds": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/id"
+              }
+            },
+            "sourceIds": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/id"
+              }
+            },
+            "opportunityIds": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/id"
+              }
+            },
+            "notes": {
+              "oneOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "$ref": "#/$defs/talkTrack"
+                }
+              ]
+            },
+            "layout": {
+              "const": "sales"
+            },
+            "status": {
+              "$ref": "#/$defs/id"
+            },
+            "composition": {
+              "const": "integrated-infrastructure"
+            },
+            "visual": {
+              "$ref": "#/$defs/visual"
+            },
+            "intro": {
+              "$ref": "#/$defs/id"
+            },
+            "actions": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "heading": {
+                    "$ref": "#/$defs/id"
+                  },
+                  "body": {
+                    "$ref": "#/$defs/id"
+                  }
+                },
+                "required": [
+                  "heading",
+                  "body"
+                ]
+              },
+              "minItems": 2,
+              "maxItems": 3
+            },
+            "options": {
+              "$ref": "#/$defs/id"
+            },
+            "claimUses": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/claimUse"
+              },
+              "minItems": 0
+            },
+            "quantityUses": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/quantityUse"
+              },
+              "minItems": 0
+            },
+            "footnotes": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/evidenceFootnote"
+              },
+              "minItems": 0
+            }
+          },
+          "required": [
+            "key",
+            "kicker",
+            "title",
+            "claimIds",
+            "sourceIds",
+            "opportunityIds",
+            "notes",
+            "layout",
+            "status",
+            "composition",
+            "visual",
+            "intro",
+            "actions",
+            "options"
+          ]
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "key": {
+              "$ref": "#/$defs/id"
+            },
+            "kicker": {
+              "$ref": "#/$defs/text"
+            },
+            "title": {
+              "$ref": "#/$defs/id"
+            },
+            "claimIds": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/id"
+              }
+            },
+            "sourceIds": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/id"
+              }
+            },
+            "opportunityIds": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/id"
+              }
+            },
+            "notes": {
+              "oneOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "$ref": "#/$defs/talkTrack"
+                }
+              ]
+            },
+            "layout": {
+              "const": "sales"
+            },
+            "status": {
+              "$ref": "#/$defs/id"
+            },
+            "composition": {
+              "const": "strategic-close"
+            },
+            "intro": {
+              "$ref": "#/$defs/id"
+            },
+            "stakes": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "heading": {
+                    "$ref": "#/$defs/id"
+                  },
+                  "body": {
+                    "$ref": "#/$defs/id"
+                  }
+                },
+                "required": [
+                  "heading",
+                  "body"
+                ]
+              },
+              "minItems": 2,
+              "maxItems": 3
+            },
+            "visual": {
+              "$ref": "#/$defs/visual"
+            },
+            "invitation": {
+              "$ref": "#/$defs/id"
+            },
+            "companion": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "labelBlockId": {
+                  "$ref": "#/$defs/id"
+                },
+                "url": {
+                  "type": "string",
+                  "format": "uri",
+                  "pattern": "^https://"
+                }
+              },
+              "required": [
+                "labelBlockId",
+                "url"
+              ]
+            },
+            "claimUses": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/claimUse"
+              },
+              "minItems": 0
+            },
+            "quantityUses": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/quantityUse"
+              },
+              "minItems": 0
+            },
+            "footnotes": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/evidenceFootnote"
+              },
+              "minItems": 0
+            }
+          },
+          "required": [
+            "key",
+            "kicker",
+            "title",
+            "claimIds",
+            "sourceIds",
+            "opportunityIds",
+            "notes",
+            "layout",
+            "status",
+            "composition",
+            "intro",
+            "stakes",
+            "visual",
+            "invitation"
+          ]
+        }
       ]
     },
-    "policy": {"type": "object", "additionalProperties": false, "required": ["forbiddenTerms", "forbiddenPartnerNames", "requiredPhrases", "allowMissingLogosForInternalReview"], "properties": {"forbiddenTerms": {"type": "array", "items": {"$ref": "#/$defs/text"}}, "forbiddenPartnerNames": {"type": "array", "items": {"$ref": "#/$defs/text"}}, "requiredPhrases": {"type": "array", "items": {"$ref": "#/$defs/text"}}, "allowMissingLogosForInternalReview": {"type": "boolean"}}}
-  }
+    "policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "forbiddenTerms",
+        "forbiddenPartnerNames",
+        "requiredPhrases",
+        "allowMissingLogosForInternalReview"
+      ],
+      "properties": {
+        "forbiddenTerms": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/text"
+          }
+        },
+        "forbiddenPartnerNames": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/text"
+          }
+        },
+        "requiredPhrases": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/text"
+          }
+        },
+        "allowMissingLogosForInternalReview": {
+          "type": "boolean"
+        },
+        "editorial": {
+          "$ref": "#/$defs/editorialPolicy"
+        },
+        "approvedExceptions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/policyException"
+          },
+          "minItems": 0
+        }
+      }
+    },
+    "opportunityBinding": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "opportunityId": {
+          "$ref": "#/$defs/id"
+        },
+        "field": {
+          "enum": [
+            "title",
+            "product",
+            "customer",
+            "payer",
+            "commercialLogic",
+            "partnerBenefit",
+            "companyContribution",
+            "partnerContribution",
+            "nextQuestion",
+            "salesCase.need",
+            "salesCase.alternative",
+            "salesCase.scaleBasis",
+            "salesCase.mechanism",
+            "salesCase.outcome",
+            "salesCase.ambition",
+            "salesCase.entryPoint",
+            "salesCase.evidenceBoundary"
+          ]
+        }
+      },
+      "required": [
+        "opportunityId",
+        "field"
+      ]
+    },
+    "salesCase": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "need": {
+          "$ref": "#/$defs/text"
+        },
+        "alternative": {
+          "$ref": "#/$defs/text"
+        },
+        "scaleBasis": {
+          "$ref": "#/$defs/text"
+        },
+        "mechanism": {
+          "$ref": "#/$defs/text"
+        },
+        "outcome": {
+          "$ref": "#/$defs/text"
+        },
+        "ambition": {
+          "$ref": "#/$defs/text"
+        },
+        "entryPoint": {
+          "$ref": "#/$defs/text"
+        },
+        "evidenceBoundary": {
+          "$ref": "#/$defs/text"
+        },
+        "demandStatus": {
+          "enum": [
+            "partner-demand",
+            "market-context",
+            "hypothesis"
+          ]
+        },
+        "readiness": {
+          "enum": [
+            "existing",
+            "demonstrated",
+            "in-design",
+            "exploratory"
+          ]
+        }
+      },
+      "required": [
+        "need",
+        "alternative",
+        "scaleBasis",
+        "mechanism",
+        "outcome",
+        "ambition",
+        "entryPoint",
+        "evidenceBoundary",
+        "demandStatus",
+        "readiness"
+      ]
+    },
+    "copyBlock": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/id"
+        },
+        "text": {
+          "$ref": "#/$defs/text"
+        },
+        "from": {
+          "$ref": "#/$defs/opportunityBinding"
+        },
+        "bindings": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/opportunityBinding"
+          },
+          "minItems": 0
+        },
+        "claimIds": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/id"
+          },
+          "minItems": 0
+        },
+        "placement": {
+          "enum": [
+            "core",
+            "appendix",
+            "notes"
+          ]
+        },
+        "placementReason": {
+          "$ref": "#/$defs/text"
+        },
+        "qualification": {
+          "$ref": "#/$defs/text"
+        },
+        "claimUses": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/claimUse"
+          },
+          "minItems": 0
+        },
+        "quantityUses": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/quantityUse"
+          },
+          "minItems": 0
+        }
+      },
+      "required": [
+        "id",
+        "bindings",
+        "claimIds",
+        "placement"
+      ],
+      "oneOf": [
+        {
+          "required": [
+            "text"
+          ],
+          "not": {
+            "required": [
+              "from"
+            ],
+            "type": "object",
+            "properties": {
+              "from": {}
+            }
+          },
+          "type": "object",
+          "properties": {
+            "text": {}
+          }
+        },
+        {
+          "required": [
+            "from"
+          ],
+          "not": {
+            "required": [
+              "text"
+            ],
+            "type": "object",
+            "properties": {
+              "text": {}
+            }
+          },
+          "type": "object",
+          "properties": {
+            "from": {}
+          }
+        }
+      ]
+    },
+    "salesBrief": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "role": {
+          "enum": [
+            "standalone",
+            "investment-companion"
+          ]
+        },
+        "audienceDecision": {
+          "$ref": "#/$defs/text"
+        },
+        "partnerRelevance": {
+          "$ref": "#/$defs/text"
+        },
+        "partnerThesis": {
+          "$ref": "#/$defs/text"
+        },
+        "companyDifference": {
+          "$ref": "#/$defs/text"
+        },
+        "combinationAdvantage": {
+          "$ref": "#/$defs/text"
+        },
+        "strategicUpside": {
+          "$ref": "#/$defs/text"
+        },
+        "investmentBoundary": {
+          "$ref": "#/$defs/text"
+        },
+        "sourceIds": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/id"
+          },
+          "minItems": 1
+        },
+        "unresolvedQuestions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/text"
+          },
+          "minItems": 0
+        },
+        "companions": {
+          "$ref": "#/$defs/companionContinuity"
+        },
+        "leverTransfer": {
+          "$ref": "#/$defs/leverTransfer"
+        }
+      },
+      "required": [
+        "role",
+        "audienceDecision",
+        "partnerRelevance",
+        "partnerThesis",
+        "companyDifference",
+        "combinationAdvantage",
+        "strategicUpside",
+        "investmentBoundary",
+        "sourceIds",
+        "unresolvedQuestions"
+      ]
+    },
+    "storySource": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/id"
+        },
+        "sourceId": {
+          "$ref": "#/$defs/id"
+        },
+        "kind": {
+          "enum": [
+            "proposition",
+            "reference-slide"
+          ]
+        },
+        "importance": {
+          "enum": [
+            "core",
+            "supporting"
+          ]
+        },
+        "summary": {
+          "$ref": "#/$defs/text"
+        },
+        "locator": {
+          "$ref": "#/$defs/text"
+        }
+      },
+      "required": [
+        "id",
+        "sourceId",
+        "kind",
+        "importance",
+        "summary"
+      ]
+    },
+    "sourceDisposition": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "sourceItemId": {
+          "$ref": "#/$defs/id"
+        },
+        "action": {
+          "enum": [
+            "keep",
+            "strengthen",
+            "qualify",
+            "omit"
+          ]
+        },
+        "reason": {
+          "$ref": "#/$defs/text"
+        },
+        "destinationBlockIds": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/id"
+          },
+          "minItems": 0
+        },
+        "visualDecision": {
+          "enum": [
+            "reuse-native",
+            "adapt",
+            "replace",
+            "not-visual"
+          ]
+        },
+        "visualReason": {
+          "$ref": "#/$defs/text"
+        }
+      },
+      "required": [
+        "sourceItemId",
+        "action",
+        "reason",
+        "destinationBlockIds",
+        "visualDecision",
+        "visualReason"
+      ]
+    },
+    "narrativeEntry": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "slideKey": {
+          "$ref": "#/$defs/id"
+        },
+        "job": {
+          "enum": [
+            "opening",
+            "partner-relevance",
+            "company-advantage",
+            "platform",
+            "portfolio",
+            "opportunity",
+            "strategic-value",
+            "invitation",
+            "support"
+          ]
+        },
+        "takeaway": {
+          "$ref": "#/$defs/text"
+        },
+        "transition": {
+          "$ref": "#/$defs/text"
+        },
+        "chapter": {
+          "$ref": "#/$defs/text"
+        },
+        "placement": {
+          "enum": [
+            "core",
+            "appendix"
+          ]
+        },
+        "opportunityIds": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/id"
+          },
+          "minItems": 0
+        },
+        "support": {
+          "$ref": "#/$defs/slideSupport"
+        }
+      },
+      "required": [
+        "slideKey",
+        "job",
+        "takeaway",
+        "transition",
+        "chapter",
+        "placement",
+        "opportunityIds"
+      ]
+    },
+    "sales": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "brief": {
+          "$ref": "#/$defs/salesBrief"
+        },
+        "sourceInventory": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/storySource"
+          },
+          "minItems": 1
+        },
+        "sourceDisposition": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/sourceDisposition"
+          },
+          "minItems": 1
+        },
+        "blocks": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/copyBlock"
+          },
+          "minItems": 1
+        },
+        "narrative": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/narrativeEntry"
+          },
+          "minItems": 2
+        }
+      },
+      "required": [
+        "brief",
+        "sourceInventory",
+        "sourceDisposition",
+        "blocks",
+        "narrative"
+      ]
+    },
+    "visualBrief": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "argument": {
+          "$ref": "#/$defs/text"
+        },
+        "requiredFeatures": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/text"
+          },
+          "minItems": 1
+        },
+        "prohibitedImplications": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/text"
+          },
+          "minItems": 1
+        },
+        "origin": {
+          "enum": [
+            "existing",
+            "generated",
+            "derivative",
+            "fixture"
+          ]
+        },
+        "referenceSourceIds": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/id"
+          },
+          "minItems": 1
+        },
+        "architectureOptions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/text"
+          },
+          "minItems": 0
+        },
+        "unresolvedChoices": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/text"
+          },
+          "minItems": 0
+        },
+        "sourceSlide": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "sourceId": {
+              "$ref": "#/$defs/id"
+            },
+            "locator": {
+              "$ref": "#/$defs/text"
+            }
+          },
+          "required": [
+            "sourceId",
+            "locator"
+          ]
+        },
+        "review": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "status": {
+              "enum": [
+                "pending",
+                "reviewed"
+              ]
+            },
+            "reviewerKind": {
+              "enum": [
+                "human",
+                "agent",
+                "fixture"
+              ]
+            },
+            "reviewer": {
+              "type": "string"
+            },
+            "reviewedAt": {
+              "type": "string"
+            },
+            "assetSha256": {
+              "type": "string",
+              "pattern": "^[A-Fa-f0-9]{64}$"
+            }
+          },
+          "required": [
+            "status",
+            "reviewerKind",
+            "reviewer",
+            "reviewedAt",
+            "assetSha256"
+          ]
+        }
+      },
+      "required": [
+        "argument",
+        "requiredFeatures",
+        "prohibitedImplications",
+        "origin",
+        "referenceSourceIds",
+        "architectureOptions",
+        "unresolvedChoices",
+        "review"
+      ]
+    },
+    "attachment": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "assetId": {
+          "$ref": "#/$defs/id"
+        },
+        "parentSha256": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "assetSha256": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "region": {
+          "$ref": "#/$defs/crop"
+        },
+        "review": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "status": {
+              "enum": [
+                "pending",
+                "reviewed"
+              ]
+            },
+            "reviewerKind": {
+              "enum": [
+                "human",
+                "agent",
+                "fixture"
+              ]
+            },
+            "reviewer": {
+              "type": "string"
+            },
+            "reviewedAt": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "status",
+            "reviewerKind",
+            "reviewer",
+            "reviewedAt"
+          ]
+        }
+      },
+      "required": [
+        "assetId",
+        "parentSha256",
+        "assetSha256",
+        "region",
+        "review"
+      ]
+    },
+    "evidenceReview": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "reviewer": {
+          "type": "string",
+          "minLength": 1
+        },
+        "reviewedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "reviewer",
+        "reviewedAt",
+        "reason"
+      ]
+    },
+    "condition": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "key": {
+          "type": "string",
+          "minLength": 1
+        },
+        "value": {
+          "oneOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "string",
+              "minLength": 1
+            }
+          ]
+        },
+        "unit": {
+          "type": "string",
+          "minLength": 1
+        },
+        "display": {
+          "type": "string",
+          "minLength": 1
+        },
+        "material": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "key",
+        "value",
+        "unit",
+        "display",
+        "material"
+      ]
+    },
+    "operatingContext": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "geography": {
+          "type": "string",
+          "minLength": 1
+        },
+        "mission": {
+          "type": "string",
+          "minLength": 1
+        },
+        "configuration": {
+          "type": "string",
+          "minLength": 1
+        },
+        "asOf": {
+          "$ref": "#/$defs/date"
+        },
+        "conditions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/condition"
+          },
+          "minItems": 0
+        }
+      },
+      "required": [
+        "geography",
+        "mission",
+        "configuration",
+        "asOf",
+        "conditions"
+      ]
+    },
+    "quantity": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/id"
+        },
+        "metric": {
+          "type": "string",
+          "minLength": 1
+        },
+        "value": {
+          "oneOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "min": {
+                  "type": "number"
+                },
+                "max": {
+                  "type": "number"
+                }
+              },
+              "required": [
+                "min",
+                "max"
+              ]
+            }
+          ]
+        },
+        "unit": {
+          "type": "string",
+          "minLength": 1
+        },
+        "statistic": {
+          "enum": [
+            "typical",
+            "record",
+            "single-test",
+            "target",
+            "scenario",
+            "reported"
+          ]
+        }
+      },
+      "required": [
+        "id",
+        "metric",
+        "value",
+        "unit",
+        "statistic"
+      ]
+    },
+    "provenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "subject": {
+          "type": "string",
+          "minLength": 1
+        },
+        "reportedBy": {
+          "type": "string",
+          "minLength": 1
+        },
+        "owner": {
+          "enum": [
+            "company",
+            "partner",
+            "market",
+            "third-party",
+            "fictional"
+          ]
+        }
+      },
+      "required": [
+        "subject",
+        "reportedBy",
+        "owner"
+      ]
+    },
+    "priceBasis": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "category": {
+          "enum": [
+            "fuel",
+            "power",
+            "labor",
+            "capex",
+            "opex",
+            "service-price",
+            "revenue",
+            "investment",
+            "other"
+          ]
+        },
+        "currency": {
+          "type": "string",
+          "pattern": "^[A-Z]{3}$"
+        },
+        "geography": {
+          "type": "string",
+          "minLength": 1
+        },
+        "asOf": {
+          "$ref": "#/$defs/date"
+        },
+        "rates": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "name": {
+                "type": "string",
+                "minLength": 1
+              },
+              "value": {
+                "type": "number"
+              },
+              "unit": {
+                "type": "string",
+                "minLength": 1
+              },
+              "sourceIds": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/$defs/id"
+                },
+                "minItems": 0
+              }
+            },
+            "required": [
+              "name",
+              "value",
+              "unit",
+              "sourceIds"
+            ]
+          },
+          "minItems": 0
+        }
+      },
+      "required": [
+        "category",
+        "currency",
+        "geography",
+        "asOf",
+        "rates"
+      ]
+    },
+    "applicability": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "mode": {
+          "enum": [
+            "same-context",
+            "supported-transfer",
+            "benchmark",
+            "unresolved"
+          ]
+        },
+        "target": {
+          "$ref": "#/$defs/operatingContext"
+        },
+        "rationale": {
+          "type": "string",
+          "minLength": 1
+        },
+        "sourceIds": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/id"
+          },
+          "minItems": 0
+        }
+      },
+      "required": [
+        "mode",
+        "target",
+        "rationale",
+        "sourceIds"
+      ]
+    },
+    "replacementPlan": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "question": {
+          "type": "string",
+          "minLength": 1
+        },
+        "owner": {
+          "type": "string",
+          "minLength": 1
+        },
+        "partnerVisibleApproval": {
+          "$ref": "#/$defs/evidenceReview"
+        }
+      },
+      "required": [
+        "question",
+        "owner"
+      ]
+    },
+    "quantityUse": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "claimId": {
+          "$ref": "#/$defs/id"
+        },
+        "quantityId": {
+          "$ref": "#/$defs/id"
+        },
+        "display": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "claimId",
+        "quantityId",
+        "display"
+      ]
+    },
+    "claimUse": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "claimId": {
+          "$ref": "#/$defs/id"
+        },
+        "framing": {
+          "enum": [
+            "fact",
+            "modeled",
+            "target",
+            "record",
+            "precedent",
+            "placeholder",
+            "proposal"
+          ]
+        },
+        "role": {
+          "enum": [
+            "partner-result",
+            "company-proof",
+            "market-context",
+            "historical",
+            "benchmark"
+          ]
+        },
+        "qualification": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "channel": {
+              "enum": [
+                "inline",
+                "footnote"
+              ]
+            },
+            "text": {
+              "type": "string",
+              "minLength": 1
+            },
+            "footnoteId": {
+              "$ref": "#/$defs/id"
+            }
+          },
+          "required": [
+            "channel",
+            "text"
+          ]
+        }
+      },
+      "required": [
+        "claimId",
+        "framing",
+        "role"
+      ]
+    },
+    "evidenceFootnote": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/id"
+        },
+        "claimIds": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/id"
+          },
+          "minItems": 1
+        },
+        "sourceIds": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/id"
+          },
+          "minItems": 0
+        },
+        "text": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 240
+        }
+      },
+      "required": [
+        "id",
+        "claimIds",
+        "sourceIds",
+        "text"
+      ]
+    },
+    "talkTrack": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "say": {
+          "type": "string"
+        },
+        "basis": {
+          "type": "string"
+        },
+        "guardrail": {
+          "type": "string"
+        },
+        "qa": {
+          "type": "string"
+        },
+        "claimIds": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/id"
+          },
+          "minItems": 0
+        },
+        "sourceIds": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/id"
+          },
+          "minItems": 0
+        },
+        "clearedFor": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/audience"
+          },
+          "minItems": 1
+        },
+        "recipientIds": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/id"
+          },
+          "minItems": 0
+        },
+        "review": {
+          "$ref": "#/$defs/evidenceReview"
+        }
+      },
+      "required": [
+        "say",
+        "basis",
+        "guardrail",
+        "qa",
+        "claimIds",
+        "sourceIds",
+        "clearedFor",
+        "recipientIds",
+        "review"
+      ]
+    },
+    "companionDocument": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/id"
+        },
+        "sourceId": {
+          "$ref": "#/$defs/id"
+        },
+        "version": {
+          "type": "string",
+          "minLength": 1
+        },
+        "asOf": {
+          "$ref": "#/$defs/date"
+        },
+        "heldBy": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/id"
+          },
+          "minItems": 1
+        },
+        "claimIds": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/id"
+          },
+          "minItems": 0
+        }
+      },
+      "required": [
+        "id",
+        "sourceId",
+        "version",
+        "asOf",
+        "heldBy",
+        "claimIds"
+      ]
+    },
+    "reconciliation": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "documentId": {
+          "$ref": "#/$defs/id"
+        },
+        "priorClaimId": {
+          "$ref": "#/$defs/id"
+        },
+        "currentClaimIds": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/id"
+          },
+          "minItems": 0
+        },
+        "action": {
+          "enum": [
+            "retained",
+            "updated",
+            "corrected",
+            "notes-only",
+            "retired"
+          ]
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 1
+        },
+        "status": {
+          "enum": [
+            "resolved",
+            "unresolved"
+          ]
+        },
+        "sourceIds": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/id"
+          },
+          "minItems": 0
+        },
+        "owner": {
+          "type": "string",
+          "minLength": 1
+        },
+        "reviewedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "documentId",
+        "priorClaimId",
+        "currentClaimIds",
+        "action",
+        "reason",
+        "status",
+        "sourceIds",
+        "owner",
+        "reviewedAt"
+      ]
+    },
+    "companionContinuity": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "status": {
+          "enum": [
+            "reviewed",
+            "none",
+            "unknown"
+          ]
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 1
+        },
+        "documents": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/companionDocument"
+          },
+          "minItems": 0
+        },
+        "reconciliations": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/reconciliation"
+          },
+          "minItems": 0
+        }
+      },
+      "required": [
+        "status",
+        "reason",
+        "documents",
+        "reconciliations"
+      ]
+    },
+    "leverTransfer": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "status": {
+          "enum": [
+            "assessed",
+            "not-applicable",
+            "unresolved"
+          ]
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 1
+        },
+        "claimIds": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/id"
+          },
+          "minItems": 0
+        },
+        "sourceIds": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/id"
+          },
+          "minItems": 0
+        },
+        "result": {
+          "enum": [
+            "survives",
+            "reframed",
+            "unresolved",
+            "not-applicable"
+          ]
+        },
+        "reframe": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "status",
+        "reason",
+        "claimIds",
+        "sourceIds",
+        "result"
+      ]
+    },
+    "slideSupport": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "enum": [
+            "evidence",
+            "mechanism",
+            "proposal",
+            "synthesis"
+          ]
+        },
+        "proposition": {
+          "type": "string",
+          "minLength": 1
+        },
+        "whyItMatters": {
+          "type": "string",
+          "minLength": 1
+        },
+        "claimIds": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/id"
+          },
+          "minItems": 0
+        },
+        "rationale": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "kind",
+        "proposition",
+        "whyItMatters",
+        "claimIds",
+        "rationale"
+      ]
+    },
+    "policyException": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "reviewer": {
+          "type": "string",
+          "minLength": 1
+        },
+        "reviewedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 1
+        },
+        "code": {
+          "enum": [
+            "PRECEDENT_DENSITY",
+            "HEDGE_DENSITY",
+            "BODY_DENSITY",
+            "FORBIDDEN_CONTENT"
+          ]
+        },
+        "path": {
+          "type": "string",
+          "minLength": 1
+        },
+        "term": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "reviewer",
+        "reviewedAt",
+        "reason",
+        "code",
+        "path"
+      ]
+    },
+    "editorialPolicy": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "maxHedgeTokens": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "maxPrecedents": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "notesWordBudget": {
+          "type": "integer",
+          "minimum": 30
+        },
+        "bodyWordBudgets": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "integer",
+            "minimum": 30
+          }
+        }
+      },
+      "required": []
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "schemaVersion": {
+            "enum": [
+              "2.0.0",
+              "2.1.0"
+            ]
+          }
+        },
+        "type": "object"
+      },
+      "then": {
+        "required": [
+          "sales"
+        ],
+        "properties": {
+          "opportunities": {
+            "items": {
+              "required": [
+                "salesCase"
+              ],
+              "type": "object",
+              "properties": {
+                "salesCase": {}
+              }
+            },
+            "type": "array"
+          },
+          "sales": {}
+        },
+        "type": "object"
+      },
+      "else": {
+        "not": {
+          "required": [
+            "sales"
+          ],
+          "type": "object",
+          "properties": {
+            "sales": {}
+          }
+        },
+        "properties": {
+          "slides": {
+            "items": {
+              "not": {
+                "properties": {
+                  "layout": {
+                    "const": "sales"
+                  }
+                },
+                "type": "object"
+              }
+            },
+            "type": "array"
+          }
+        },
+        "type": "object"
+      }
+    }
+  ]
 }

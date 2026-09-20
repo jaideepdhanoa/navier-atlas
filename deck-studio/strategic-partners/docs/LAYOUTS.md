@@ -1,21 +1,24 @@
-# Native layout contract
+# V2.1 composition and layout contract
 
-`compileProject` emits one blank native Slides page per `Project.slides` item. The page is 720 × 405 pt and uses a dark editorial palette with Exo 2 text. Every slide includes a deterministic `createSlide`, page background, editable text boxes, native lines/shapes, and native images; no raster slide is created.
+`src/compositions.ts` renders eight registered sales compositions: `partner-opportunity`, `product-value`, `platform-architecture`, `opportunity-portfolio`, `mission-hero`, `customer-alternative`, `integrated-infrastructure` and `strategic-close`. Unknown names/fields fail. Choose by explanatory job, not fixed slide count.
 
-## Layouts
+| Composition | Job |
+|---|---|
+| `partner-opportunity` | Establish partner-relevant portfolio opportunity and offer. |
+| `product-value` | Explain a product mechanism and customer outcome. |
+| `platform-architecture` | Show physical/digital/ownership/revenue architecture and demand. |
+| `opportunity-portfolio` | Make connected businesses legible before chapters. |
+| `mission-hero` | Sell one mission-specific need, benefit and payoff. |
+| `customer-alternative` | Compare current alternatives on an explicit qualitative, modeled or measured basis. |
+| `integrated-infrastructure` | Explain operating roles and infrastructure choices/options. |
+| `strategic-close` | Close on partner-specific stakes and invitation. |
 
-- **cover** — large visual field, editable company/partner marks when supplied, one title/subtitle/body and 1–3 pillars.
-- **fit** — dominant product visual paired with company contribution, partner value and 2–3 benefits.
-- **options** — 2–3 independent alternatives. A supplied visual is preferred; otherwise the renderer draws a clearly illustrative manufacture, hybrid or service schematic. Any transaction is a labelled **PROPOSED PAYMENTS** chain.
-- **models** — exactly two ownership/payment models with product boundary, optional visual, payment actors and benefit.
-- **channels** — scope/selection/criteria on the left, 1–2 channel mechanics and service terms on the right. It never invents a map, route or operating coverage.
-- **missions** — a 2–4 image gallery. Four cards use a shorter title budget and smaller cards so passenger-transport-network-length titles remain readable in two lines.
-- **close** — experience-led visual and 1–3 concrete conversations, ask and contact.
+## Shared layout rules
 
-## Images and safety
+Sales fields resolve through `CopyBlock` IDs; bindings provide traceability, not proof. Payment flows use explicit `Transaction` objects with actors and `kind:'payment'`. A visual brief states its argument, required features, prohibited implications, provenance, architecture options and unresolved choices. Concepts remain visibly illustrative.
 
-URLs come from `options.assetUrls` first, then `Asset.embeddingUrl`. With `allowUnresolvedAssets`, unresolved URLs become `asset://<id>` and a warning is emitted; these placeholders are not valid for native apply. Native image placement preserves aspect ratio using CENTER_CROP for product fields and CENTER_INSIDE for logos and contained hardware references. Google Slides mints the image IDs; the native lifecycle rebinds them from a fresh snapshot.
+V2.1 claim uses are direct: bind each material visible assertion to `claimUses`, and each visible number to `quantityUses`. Use claim-linked inline or footnote qualifications when evidence classes differ; do not apply one slide-wide grade. Footnotes occupy a real evidence band (max 240 characters at 8pt, only new 2.1 output). Fonts are not reduced; body spacing and image frames reflow and must be inspected in actual output.
 
-Arbitrary explicit crop metadata is rejected rather than silently ignored. Use an archived crop derivative or a reviewed native edit for a custom crop. Noncentral focal points and protected regions produce review warnings; they are not automatically honored by CENTER_CROP. Inspect the actual rendered result. Use a provider-supported image format for native embedding: archive raster derivatives of SVG/WebP sources when the provider requires PNG/JPEG/GIF. Local validation of an SVG does not imply native-provider compatibility.
+The current default body budget is 115 words as an advisory diagnostic unless composition policy overrides it. Character limits and layout contracts still bind. Density is a review signal, not a target. Intentional text-on-image/attached layers are excluded by geometry diagnostics; actual text-text overlap and out-of-bounds text remain findings. Native/PDF review is separate from tests.
 
-Text, payment arrows and source/claim/opportunity manifest notes remain editable or inspectable. IDs are deterministic, namespaced by project and slide key, and capped at 50 characters. Bounds warnings identify native elements that extend beyond the page; title and large-content budgets fail before request generation.
+Legacy layouts remain readable where their contract is valid. Do not create a partner-specific renderer; a materially new reusable argument belongs in a tested composition.
