@@ -3,7 +3,7 @@ import {salesAudit,slideTitle,resolveBlock} from './authoring';
 import {editorialTemplate} from './reviews';
 
 export function emptySalesAuthoring():SalesAuthoring{return {
- brief:{role:'standalone',audienceDecision:'TO AUTHOR',partnerRelevance:'TO AUTHOR',partnerThesis:'TO AUTHOR',companyDifference:'TO AUTHOR',combinationAdvantage:'TO AUTHOR',strategicUpside:'TO AUTHOR',investmentBoundary:'TO AUTHOR',sourceIds:[],unresolvedQuestions:['Recover the approved brief, strongest source slides, audience, decision and disclosure boundary.']},
+ brief:{role:'standalone',audienceDecision:'TO AUTHOR',partnerRelevance:'TO AUTHOR',partnerThesis:'TO AUTHOR',companyDifference:'TO AUTHOR',combinationAdvantage:'TO AUTHOR',strategicUpside:'TO AUTHOR',investmentBoundary:'TO AUTHOR',sourceIds:[],unresolvedQuestions:['Recover the approved brief, strongest source slides, audience, decision and disclosure boundary.'],companions:{status:'unknown',reason:'Recover the versioned documents each recipient already holds.',documents:[],reconciliations:[]},leverTransfer:{status:'unresolved',reason:'Assess whether the thesis relies on transferred economics or performance.',claimIds:[],sourceIds:[],result:'unresolved'}},
  sourceInventory:[],sourceDisposition:[],blocks:[],narrative:[],
 };}
 export function salesArtifacts(project:Project,compiled:CompiledDeck):Record<string,string>{
@@ -27,6 +27,6 @@ export function migrationDraft(project:Project){
  if(project.schemaVersion!=='1.0.0')throw new Error('Migration input must be a V1 project. Existing V2 projects do not need conversion.');
  return {status:'HELD',kind:'V2-AUTHORING-DRAFT-NOT-A-PROJECT',sourceVersion:project.schemaVersion,projectId:project.meta.projectId,
   sales:emptySalesAuthoring(),opportunityCases:project.opportunities.map(o=>({opportunityId:o.id,need:'',alternative:'',scaleBasis:'',mechanism:'',outcome:'',ambition:'',entryPoint:'',evidenceBoundary:'',demandStatus:null,readiness:null})),
-  instructions:['The V1 snapshot remains runnable with the V1 compatibility path.','Author the partner thesis and original-source dispositions; do not infer them from empty fields.','Build real CopyBlocks; from references dereference opportunity values. Bind abbreviated authored copy explicitly.','Choose compositions by their explanatory job. Do not convert every old slide into the same layout.','Preserve human native edits by making a new staging/review copy, not replaying a build over a live deck.','Only set schemaVersion 2.0.0 on a new project after authoring and validation; this draft is not compiler input.'],
+  instructions:['The V1 snapshot remains runnable with the V1 compatibility path.','Author the partner thesis and original-source dispositions; do not infer them from empty fields.','Build real CopyBlocks; from references dereference opportunity values. Bind abbreviated authored copy explicitly.','Choose compositions by their explanatory job. Do not convert every old slide into the same layout.','Preserve human native edits by making a new staging/review copy, not replaying a build over a live deck.','For a new project use schemaVersion 2.1.0 after authoring the V2 sales story and the structured evidence, recipient continuity, safe talk tracks and two editorial rounds. This historical V2 story envelope is not compiler input.'],
  };
 }

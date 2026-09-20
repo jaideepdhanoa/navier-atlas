@@ -1,43 +1,35 @@
-# V2 operating workflow
+# V2.1 operating workflow
 
-Use this lane for a bespoke strategic-partner proposal. Keep investor, authority, employer-network, route-economics and two-pager narratives separate. Work in a restricted project; public examples are fictional.
+Use this lane for a bespoke strategic-partner proposal. Keep investor, authority, employer-network, route-economics and two-pager narratives separate. Real work belongs in a restricted project; generic examples are fictional.
 
-## 1. Intake and evidence
+## 1. Intake and continuity
 
-Confirm legal entity, audience, decision, meeting context, relationship stage and disclosure level. Recover approved sources, partner research, source-slide references, claims, and image candidates. Record dates, evidence class, basis, limitations and audience clearance. Separate fact, proposal, hypothesis and unresolved question.
+Confirm legal entity, audience, decision, mission, relationship stage and disclosure level. Recover approved evidence and recipient-specific prior documents. Record who holds each document/version; possession by one stakeholder does not authorize distribution to another. Complete the companion intake and source corrections before reusing consequential claims.
 
-## 2. Thesis and source preservation
+## 2. Thesis and evidence
 
-Before an outline, complete `sales.brief`. State why the opportunity matters to this partner, what Navier changes, why the combination is better than the current alternative/build-alone path, the strategic prize, the ask, and the standalone/investment-companion boundary. Investment-companion decks may reuse necessary technology proof but should not repeat the investment team/origin/fundraising case.
+Complete `sales.brief`, source inventory/dispositions and opportunity sales cases. For every material claim record provenance, context, dependencies, quantity, applicability and price basis where relevant. Use matched conditions or supported transfer; separate benchmark, target, model, precedent and proposal from demonstrated proof. Add a replacement plan for unresolved placeholders.
 
-Create `sourceInventory` and one disposition per important proposition/reference slide. A retained idea needs a rendered destination; a core idea cannot disappear silently. Decide explicitly whether to reuse a native source composition, adapt it, replace it, or leave it non-visual. Qualify unsupported certainty rather than deleting ambition.
+## 3. Editorial passes and storyboard
 
-## 3. Sales cases and narrative
+Pass one asks: what concrete proposition/mechanism/proposal does each slide make and what supports it? Pass two asks: does that support apply to this partner, mission, environment and decision? Use claim-specific labels and concise footnotes; do not add numbers just to satisfy a quota. Introduce the opportunity portfolio before detailed chapters. Bind actual copy blocks, claims, claim uses and quantity uses.
 
-For each opportunity, preserve product/customer/payer/payment/contribution fields and complete the sales case: need, current alternative, scale basis, Navier mechanism, outcome, partner upside, ambitious business, credible first engagement, and evidence boundary. Record demand status and readiness. The first engagement is an entry point, not the business ceiling.
+## 4. Visual checkpoint
 
-Plan the narrative before selecting compositions. Use `sales.narrative` to state each slide's one takeaway, narrative job, chapter, transition and opportunity IDs. Introduce the opportunity portfolio before detailed chapters. Sell the opportunity; put detailed requirements, validation plans, risk allocation and contracting choices in notes/appendix unless they are necessary to the visible argument. Build copy blocks with actual IDs, claims, placement and field bindings.
+Select a registered composition for its explanatory job. Record each visual's argument, required features, prohibited implications, maturity, source, rights, crop and review. Generated/derivative scenes are illustrative and cannot establish proof or silently choose architecture. Record explicit mark attachments. Keep mixed evidence meanings separate.
 
-## 4. Visual storyboard — checkpoint 1
+## 5. Validate and compile
 
-Choose among the eight registered compositions by explanatory job, not fixed slide count. Shortlist real candidates from the local catalogue and record each visual's argument, required visible features, prohibited implications, maturity, source, crop and review. For a generated/derivative scene, state product references, illustrative status, architecture options and unresolved choices. Never let a concept select an unresolved power source, site, scale, configuration or commercial commitment.
+Run validation and compile into a fresh directory. Validation checks authored structure and disclosure; compilation emits deterministic artifacts and holds unresolved work. The default 115-word body budget is advisory; character/layout limits remain binding. Do not describe tests as installation, visual inspection or release approval.
 
-Record explicit parent-image attachments for hull marks or other overlays with parent hash, mark hash, normalized region and review. Do not infer attachment from filenames or pixels. Run the editorial/fresh-reader review and resolve findings before native production. A review template is unsigned `HELD`, not user approval.
+## 6. Native/PDF review
 
-## 5. Compile and stage native output
+Stage through an authorized `NativePort`, read back the editable output, then run diagnostics against the actual native snapshot and optional PDF word geometry. Inspect full and phone pages manually for hierarchy, wraps, crops, labels, marks, arrows and bounds. `inspected:false` remains until a human records inspection; missing PDF words explicitly leave orphan-wrap detection unchecked. Human finished-deck and external-release approvals are distinct.
 
-Run `validate`, then `compile` into a fresh output directory. Compile emits deterministic JSON/Markdown/manifests and holds unresolved asset URLs, evidence, native work or QA; it does not fetch bytes or create a deck. With an authorized `NativePort`, `createStaging` requires an approved storyboard receipt, editorial review when configured, verified remote asset hashes, fresh destination, native readback and notes/bindings checks. Preserve editable text, shapes, images, labels and payment arrows.
+## 7. Revise and deliver
 
-## 6. Actual render review — checkpoint 2
+Use a fresh snapshot, backup and narrow allowlist on a review copy. Preserve unrequested edits and attached marks. Promotion is fail-closed without atomic conditional revisions. Deliver editable staging, PDF, hashes, source/claim/asset records, continuity/reconciliations, diagnostics, review receipts and open holds together.
 
-Run `render-review` with the actual compiled deck, native snapshot and PDF. Inspect full and phone outputs for hierarchy, headline gist, wrapping, crops, labels, product truth, arrows, logos and bounds. Record `VisualInspection` only after inspection; the generated bundle starts `inspected:false` and external release held. Keep source fidelity, rights, clearance and qualification checks separate from visual checks.
+## 8. Compatibility
 
-Obtain human finished-deck approval, then explicit human external-release approval with the correct review purpose. Agent or fixture checks, tests, validation, and render collection are not approvals. Missing clearance remains held.
-
-## 7. Revise safely
-
-Read a fresh complete native snapshot, bind exact deck identity, archive a backup, and apply only allowlisted narrow edits to a review copy. Preserve unrequested human edits and attached marks; recompute image geometry from current dimensions. Never full-rebuild or unconditionally overwrite production. Promotion is fail-closed unless the provider supports atomic conditional revisions.
-
-## 8. V1 migration and delivery
-
-`migrate --project <v1> --out <draft>` preserves V1 fields/assets and creates a held V2 draft. It does not synthesize a thesis, source dispositions, sales cases, narrative or approvals; complete those explicitly. Deliver editable staging output, PDF, source/claim/asset records, hashes, native readback, review receipts, binding, backups and open holds together in a restricted versioned project.
+`init2.1` is the intended new scaffold (`init` remains an alias). `migrate` keeps legacy data/assets readable: 1.0.0 receives the historical V2 story-authoring envelope with V2.1 completion instructions; 2.0.0 receives a V2.1 evidence-authoring envelope. Neither envelope is compiler input, and neither invents missing claims, partner context, recipient continuity or approvals. Complete the story and evidence in a separate 2.1.0 project.

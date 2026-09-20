@@ -1,11 +1,13 @@
 // Public, partner-neutral contracts. Partner dossiers, account bindings and live IDs stay outside this package.
 import type { SalesCase, SalesAuthoring, SalesSlide, CopyEmission, VisualBrief, VisualAttachment } from './sales-types';
 export type * from './sales-types';
+export type * from './evidence-types';
+import type {ClaimEvidence,TalkTrack,ClaimUse,QuantityUse,EvidenceFootnote,EditorialPolicy,PolicyException} from './evidence-types';
 export type Audience = 'internal' | 'partner' | 'public';
 export type Visibility = 'public' | 'internal' | 'restricted';
-export type EvidenceClass = 'measured' | 'demonstrated' | 'historical' | 'company-reported' | 'preliminary' | 'modeled' | 'planned' | 'proposed' | 'fictional';
-export interface Source { id:string; title:string; locator:string; asOf:string; visibility:Visibility; }
-export interface Claim { id:string; statement:string; evidenceClass:EvidenceClass; sourceIds:string[]; basis:string; clearedFor:Audience[]; limitations?:string; }
+export type EvidenceClass = 'measured' | 'demonstrated' | 'historical' | 'company-reported' | 'preliminary' | 'modeled' | 'planned' | 'proposed' | 'fictional' | 'tested' | 'target' | 'in-design';
+export interface Source { id:string; title:string; locator:string; asOf:string; visibility:Visibility; kind?:'primary'|'secondary'; clearedFor?:Audience[]; recipientIds?:string[]; }
+export interface Claim extends ClaimEvidence { id:string; statement:string; evidenceClass:EvidenceClass; sourceIds:string[]; basis:string; clearedFor:Audience[]; limitations?:string; }
 export interface Crop { left:number; top:number; right:number; bottom:number; }
 export interface Asset {
  id:string; path:string; sha256:string; width:number; height:number; mimeType:string;
@@ -25,7 +27,7 @@ export interface Opportunity {
 }
 export interface Visual { assetId:string; caption:string; crop?:Crop; attachments?:VisualAttachment[]; }
 export interface Transaction { actors:string[]; labels:string[]; kind:'payment'; }
-export interface BaseSlide { key:string; kicker:string; title:string; claimIds:string[]; sourceIds:string[]; opportunityIds:string[]; notes:string; }
+export interface BaseSlide { key:string; kicker:string; title:string; claimIds:string[]; sourceIds:string[]; opportunityIds:string[]; notes:string|TalkTrack; claimUses?:ClaimUse[]; quantityUses?:QuantityUse[]; footnotes?:EvidenceFootnote[]; }
 export interface CoverSlide extends BaseSlide { layout:'cover'; visual:Visual; subtitle:string; body:string; pillars:string[]; }
 export interface FitSlide extends BaseSlide { layout:'fit'; visual:Visual; companyLabel:string; companyHeadline:string; companyBody:string; partnerLabel:string; partnerBody:string; benefits:{title:string;body:string}[]; takeaway:string; }
 export interface OptionsSlide extends BaseSlide { layout:'options'; options:{title:string;body:string;visual?:Visual;schematic?:'manufacture'|'hybrid'|'service';revenue:string}[]; payment?:Transaction; status:string; explore:string; }
@@ -36,11 +38,11 @@ export interface CloseSlide extends BaseSlide { layout:'close'; visual:Visual; i
 export type LegacySlide = CoverSlide | FitSlide | OptionsSlide | ModelsSlide | ChannelsSlide | MissionsSlide | CloseSlide;
 export type Slide = LegacySlide | SalesSlide;
 export interface Project {
- schemaVersion:'1.0.0'|'2.0.0';
+ schemaVersion:'1.0.0'|'2.0.0'|'2.1.0';
  sales?:SalesAuthoring;
- meta:{projectId:string;revision:string;title:string;company:string;partner:string;legalEntity:string;audience:Audience;archetype:'industrial'|'energy-operator'|'strategic';objective:string;meetingAudience:string;date:string;classification:string;fictional:boolean;companyLogoAssetId?:string;partnerLogoAssetId?:string;footer:string;};
+ meta:{projectId:string;revision:string;title:string;company:string;partner:string;legalEntity:string;audience:Audience;archetype:'industrial'|'energy-operator'|'strategic';objective:string;meetingAudience:string;date:string;classification:string;fictional:boolean;companyLogoAssetId?:string;partnerLogoAssetId?:string;footer:string;recipientIds?:string[];notesMode?:'talk-track'|'audit';};
  sources:Source[];claims:Claim[];assets:Asset[];opportunities:Opportunity[];slides:Slide[];
- policy:{forbiddenTerms:string[];forbiddenPartnerNames:string[];requiredPhrases:string[];allowMissingLogosForInternalReview:boolean;};
+ policy:{forbiddenTerms:string[];forbiddenPartnerNames:string[];requiredPhrases:string[];allowMissingLogosForInternalReview:boolean;editorial?:EditorialPolicy;approvedExceptions?:PolicyException[];};
 }
 export interface ValidationIssue { severity:'error'|'warning'|'release-hold'; code:string; path:string; message:string; }
 export interface ValidationResult { ok:boolean; releaseReady:boolean; issues:ValidationIssue[]; }

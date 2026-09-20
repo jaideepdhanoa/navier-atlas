@@ -5,6 +5,7 @@ import {sha256,EMU} from './primitives';
 import {assertValidProject} from './validate';
 import type {EditorialReview} from './types';
 import {requireEditorialReview} from './reviews';
+import {snapshotDensity} from './diagnostics';
 import {snapshotHash,elementsById,verifyPatchPlan,patchRequests,verifyPatchResult,makePatchPlan} from './revisions';
 
 /** Inject an authenticated connection. This library itself contains no accounts, credentials or destination IDs. */
@@ -63,7 +64,7 @@ function pristineDefaultTitleSlide(s:DeckSnapshot):boolean {
 }
 export async function createStaging(project:Project,compiled:CompiledDeck,port:NativePort,options:{root:string;out:string;storyboard:ReviewReceipt;title?:string;verifiedAssetHashes:Record<string,string>;unverifiedInternalAssetIds?:string[];protectedIds?:string[];allowPristineTitleSlide?:boolean;editorial?:EditorialReview;workflowTest?:boolean}):Promise<StageReceipt>{
   await assertValidProject(project,{projectRoot:options.root,checkFiles:true});validateCompiled(compiled);requireReview(options.storyboard,'storyboard',compiled.inputHash);
-  if(project.schemaVersion==='2.0.0'){
+  if(['2.0.0','2.1.0'].includes(project.schemaVersion)){
     requireEditorialReview(project,compiled,options.editorial);
     if(options.workflowTest){if(!project.meta.fictional||project.meta.audience!=='internal'||options.storyboard.purpose!=='workflow-test'||!['agent','fixture'].includes(options.storyboard.reviewerKind??''))throw new Error('Workflow-test staging is limited to explicitly fictional internal proofs; never impersonate human approval.');}
     else {requireReview(options.storyboard,'storyboard',compiled.inputHash,true);if(options.storyboard.purpose!=='storyboard-approval')throw new Error('Human storyboard approval must state its purpose.');}
@@ -142,6 +143,8 @@ export async function stageRevision(binding:Binding,plan:PatchPlan,port:NativePo
   const stageBinding={...binding,presentationId:stage.presentationId,expectedTitle:stageBefore.title!,lastApplied:undefined};const stagePlan=makePatchPlan(stageBinding,stageBefore,{revision:plan.revision,operations:plan.operations,allowedObjectIds:plan.allowedObjectIds});
   await save(resolve(out,'source-plan.json'),plan);await save(resolve(out,'staging-plan.json'),stagePlan);await save(resolve(out,'native-before.json'),stageBefore);
   journal.status='apply-pending';await save(receiptPath,journal);await port.batch(stage.presentationId,patchRequests(stagePlan,stageBefore));const after=await port.snapshot(stage.presentationId);const result=verifyPatchResult(stageBefore,after,stagePlan);
+  await save(resolve(out,'density-before-after.json'),{before:snapshotDensity(stageBefore),after:snapshotDensity(after),note:'Native text density only; snapshot records cannot verify fact counts. Visual review still required.'});
+  await save(resolve(out,'change-log.json'),{planHash:plan.planHash,operations:plan.operations,sourceEvidence:'Required in the companion editorial change log for each new or changed consequential claim; native patches do not infer evidence.'});
   const unchanged=await port.snapshot(binding.presentationId);if(snapshotHash(unchanged)!==snapshotHash(before))throw new Error('Source changed during review-copy work; reconcile before promotion.');
   Object.assign(journal,{status:'complete',result,afterHash:snapshotHash(after),sourceUnchanged:true,productionPromotion:port.conditionalRevisions?'requires-reviewed-promotion':'held-no-conditional-revisions'});await save(resolve(out,'native-after.json'),after);await save(receiptPath,journal);
   if(port.exportPDF)await save(resolve(out,'export-receipt.json'),await port.exportPDF(stage.presentationId,resolve(out,'deck.pdf')));return journal;

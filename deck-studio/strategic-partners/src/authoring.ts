@@ -18,7 +18,7 @@ export function resolveBlock(project:Project,id:string){
  if(block.from){const o=project.opportunities.find(o=>o.id===block.from!.opportunityId);if(!o)throw new Error(`Unknown opportunity ${block.from.opportunityId}`);text=block.from.field.startsWith('salesCase.')?o.salesCase?.[block.from.field.slice(10) as keyof NonNullable<typeof o.salesCase>]:(o as unknown as Record<string,string>)[block.from.field];}
  if(!nonempty(text))throw new Error(`Copy block ${id} resolves to no authored text; do not invent missing sales copy.`);
  const bindings=bindingsFor(block);
- const claimIds=unique([...block.claimIds,...bindings.flatMap(b=>project.opportunities.find(o=>o.id===b.opportunityId)?.claimIds??[])]);
+ const claimIds=unique([...block.claimIds,...(project.schemaVersion==='2.1.0'?[]:bindings.flatMap(b=>project.opportunities.find(o=>o.id===b.opportunityId)?.claimIds??[]))]);
  return {block,text:text!+(block.qualification?'\n'+block.qualification:''),claimIds,bindings};
 }
 export function blockIds(slide:Slide):string[]{
@@ -64,7 +64,7 @@ export function notesBlocks(project:Project,slide:Slide){
 
 /** Add semantic constraints on top of JSON Schema. This is not a test of persuasion or factual accuracy. */
 export function salesIssues(project:Project):ValidationIssue[]{
- if(project.schemaVersion!=='2.0.0')return [];
+ if(!['2.0.0','2.1.0'].includes(project.schemaVersion))return [];
  const result:ValidationIssue[]=[],add=(code:string,path:string,message:string,severity:ValidationIssue['severity']='error')=>result.push({code,path,message,severity});
  const sales=project.sales;if(!sales){add('SALES_REQUIRED','sales','V2 requires sales authoring.');return result;}
  const blocks=new Map(sales.blocks.map(b=>[b.id,b]));
@@ -112,7 +112,7 @@ export function salesIssues(project:Project):ValidationIssue[]{
     proposed:/\b(?:proposed|proposal|concept|target(?:ed)?|in[- ]design|hypothesis|illustrative|exploratory|future|intended)\b/i,
    };
    const uncertain=unique(r.claimIds.map(id=>claims.get(id)?.evidenceClass??'').filter(kind=>kind in qualifierPatterns));
-   if(uncertain.length&&rendered.has(b.id)){
+   if(project.schemaVersion!=='2.1.0'&&uncertain.length&&rendered.has(b.id)){
     for(const use of rendered.get(b.id)??[]){
      const status=use.slide.layout==='sales'?resolveBlock(project,use.slide.status).text:'';
      for(const kind of uncertain)if(!qualifierPatterns[kind].test(r.text+' '+status))add('VISIBLE_QUALIFIER',`sales.blocks.${b.id}`,`A ${kind} claim needs a matching visible qualification; a generic concept label, confidentiality note or speaker note is not enough.`);

@@ -3,11 +3,12 @@ import type {
 } from './types';
 import { isPlausibleMime, isUnsafeAssetPath, verifyAssetFiles } from './assets';
 import {schemaIssues} from './schema';
+import {evidenceIssues,approvedException} from './evidence';
 import {salesIssues,blockIds,resolveBlock,collectVisuals,slideBlockClaims} from './authoring';
 
 const AUDIENCES = new Set<Audience>(['internal', 'partner', 'public']);
 const VISIBILITIES = new Set(['public', 'internal', 'restricted']);
-const EVIDENCE = new Set(['measured', 'demonstrated', 'historical', 'company-reported', 'preliminary', 'modeled', 'planned', 'proposed', 'fictional']);
+const EVIDENCE = new Set(['measured', 'demonstrated', 'historical', 'company-reported', 'preliminary', 'modeled', 'planned', 'proposed', 'fictional', 'tested', 'target', 'in-design']);
 const OPPORTUNITY_KINDS = new Set(['supply', 'co-development', 'contract-build', 'license', 'direct-sale', 'resale', 'service', 'operator-program', 'other']);
 const LAYOUTS = new Set(['cover', 'fit', 'options', 'models', 'channels', 'missions', 'close', 'sales']);
 const ID = /^[A-Za-z0-9_-]+$/;
@@ -224,11 +225,11 @@ export async function validateProject(data: unknown, options: { projectRoot?: st
   // Union errors can include irrelevant missing properties from other slide layouts.
   // Preserve V1's detailed budget/readiness diagnostics when traversal is safe.
   const unsafeRoot=!isRecord(data.meta)||!isRecord(data.policy)||['sources','claims','assets','opportunities','slides'].some(key=>!Array.isArray(data[key])||data[key].some((item:unknown)=>!isRecord(item)));
-  const unsafeV2=data.schemaVersion==='2.0.0'&&structural.some(i=>/must be (?:object|array|string|number|boolean)|must have required property/.test(i.message));
+  const unsafeV2=['2.0.0','2.1.0'].includes(data.schemaVersion)&&structural.some(i=>/must be (?:object|array|string|number|boolean)|must have required property/.test(i.message));
   if(unsafeRoot||unsafeV2)return {ok:false,releaseReady:false,issues};
   const project = data as any;
   required(issues, project, ['schemaVersion', 'meta', 'sources', 'claims', 'assets', 'opportunities', 'slides', 'policy'], 'project');
-  if (!['1.0.0','2.0.0'].includes(project.schemaVersion)) error(issues, 'SCHEMA_VERSION', 'schemaVersion', 'Expected schemaVersion 1.0.0 or 2.0.0');
+  if (!['1.0.0','2.0.0','2.1.0'].includes(project.schemaVersion)) error(issues, 'SCHEMA_VERSION', 'schemaVersion', 'Expected schemaVersion 1.0.0, 2.0.0 or 2.1.0');
   const meta = project.meta;
   if (!isRecord(meta)) error(issues, 'META_REQUIRED', 'meta', 'meta must be an object');
   else {
@@ -255,7 +256,8 @@ export async function validateProject(data: unknown, options: { projectRoot?: st
   assets.forEach((a, i) => { if (isRecord(a)) refs(issues, a.sourceIds, `assets[${i}].sourceIds`, sourceIds, true); });
   opportunities.forEach((o, i) => validateOpportunity(issues, o, `opportunities[${i}]`, claimIds));
   const opportunityIds = new Set(opportunities.filter(isRecord).map(o => o.id).filter((x): x is string => typeof x === 'string'));
-  if(project.schemaVersion==='2.0.0'&&structural.length===0)issues.push(...salesIssues(project));
+  if(['2.0.0','2.1.0'].includes(project.schemaVersion)&&structural.length===0)issues.push(...salesIssues(project));
+  if(structural.length===0)issues.push(...evidenceIssues(project));
   const known = { claims: claimIds, sources: sourceIds, assets: assetIds, opportunities: opportunityIds, assetRecords: assets };
   slides.forEach((s, i) => validateSlide(issues, s, i, known));
   if (slides.length < 2 || slides[0]?.layout !== 'cover') error(issues, 'SLIDE_ORDER', 'slides', 'Slide order must start with cover and include a variable-length deck');
@@ -303,7 +305,7 @@ export async function validateProject(data: unknown, options: { projectRoot?: st
   if (policy?.forbiddenTerms || policy?.forbiddenPartnerNames) {
     const forbidden = [...(policy.forbiddenTerms ?? []), ...(policy.forbiddenPartnerNames ?? [])].filter(str);
     const content = allStrings({ ...project, policy: undefined }).filter(x => x.path !== 'meta.partner');
-    for (const item of content) for (const term of forbidden) if (term && item.value.toLocaleLowerCase().includes(term.toLocaleLowerCase())) error(issues, 'FORBIDDEN_CONTENT', item.path, 'Content contains a policy-forbidden term or other-partner name');
+    for (const item of content) for (const term of forbidden) if (term && item.value.toLocaleLowerCase().includes(term.toLocaleLowerCase())&&!approvedException(project,'FORBIDDEN_CONTENT',item.path,term)) error(issues, 'FORBIDDEN_CONTENT', item.path, 'Content contains a policy-forbidden term or other-partner name');
     for (const item of content) if (/\bN120\b/i.test(item.value)) error(issues, 'RETIRED_PRODUCT_LEAKAGE', item.path, 'Retired product name N120 is prohibited');
     const visible = slides.flatMap((s: any) => {if(s.layout==='sales'&&structural.length===0){try{return blockIds(s).map(id=>resolveBlock(project,id).text);}catch{return [];}}return slideText(s);}).join(' ').toLocaleLowerCase();
     for (const phrase of policy.requiredPhrases ?? []) if (str(phrase) && !visible.includes(phrase.toLocaleLowerCase())) error(issues, 'REQUIRED_PHRASE_MISSING', 'slides', `Required phrase is missing from visible slide copy: ${phrase}`);

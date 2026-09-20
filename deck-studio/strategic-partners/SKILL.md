@@ -1,30 +1,29 @@
 ---
 name: strategic-partner-deck
-description: Build or revise persuasive strategic-partner sales decks for industrial/OEM, energy, manufacturing, licensing or distribution partnerships. Use V2 sales cases, source preservation, reusable visuals and human-edit-safe production.
+description: Build or revise persuasive strategic-partner sales decks for industrial/OEM, energy, manufacturing, licensing or distribution partnerships. Use source-linked evidence, reusable visuals, safe talk tracks and human-edit-safe native production.
 ---
 
-# Strategic-partner decks (V2)
+# Strategic-partner decks (V2.1)
 
-Read [README](README.md), [workflow](docs/WORKFLOW.md), [content contract](docs/CONTENT-CONTRACT.md), [layouts](docs/LAYOUTS.md), and [native lifecycle](docs/NATIVE-LIFECYCLE.md). For imagery read [asset catalogue](docs/ASSET-CATALOGUE.md); for revisions read [revision safety](docs/REVISION-SAFETY.md).
+Read [README](README.md), [workflow](docs/WORKFLOW.md), [content contract](docs/CONTENT-CONTRACT.md), [numbers](docs/NUMBERS.md), [layouts](docs/LAYOUTS.md), [asset catalogue](docs/ASSET-CATALOGUE.md), and [native lifecycle](docs/NATIVE-LIFECYCLE.md). For revisions read [revision safety](docs/REVISION-SAFETY.md). Preserve explicit visual arguments, provenance, rights, crops and attachment records; generated scenes are illustrations, not proof.
 
-Use this lane for a partner-specific proposal—not an investor deck, authority proposal, employer network, route-economics deck, or standalone two-pager. Keep partner dossiers, relationship notes, live IDs, credentials, and confidential imagery in a restricted project; this package remains generic.
+Use this lane for a partner-specific proposal—not an investor deck, authority proposal, employer network, route-economics deck, or standalone two-pager. Keep partner dossiers, relationship notes, live IDs, credentials and confidential imagery in a restricted project; this generic package uses fictional examples only.
+
+## Non-negotiable authoring principles
+
+1. Write the concrete proposition and why it matters before choosing a number or image. A date, asset name or token statistic is not meaningful support.
+2. Bind material visible claims to the exact claim use and, for quantities, to the exact visible representation. Distinguish fact, measured result, record, precedent, model, target, proposal and unresolved placeholder.
+3. Record operating context, provenance, assumptions and applicability. A ratio or price is not portable across hull/configuration, speed, payload, mission, geography or date without a supported transfer. Models and targets are allowed when plainly labeled and based.
+4. Use claim-specific inline/footnote qualifications; never let a slide-wide status label misrepresent mixed evidence. Footnotes are a new V2.1 channel only: maximum 240 characters at 8pt; do not shrink fonts to fit.
+5. Track which recipient holds which prior document/version. Prior possession by one stakeholder is not permission to share with another. Reconcile corrections as well as retained and updated claims.
+6. Export only audience-cleared talk tracks. Keep the full evidence manifest restricted. A check or test is not human visual review or external-release approval.
 
 ## Required story before production
 
-1. Establish a `sales.brief` with `role` (`standalone` or `investment-companion`), `audienceDecision`, `partnerRelevance`, `partnerThesis`, `companyDifference`, `combinationAdvantage`, `strategicUpside`, `investmentBoundary`, `sourceIds`, and `unresolvedQuestions`.
-2. Record each important source proposition/reference slide in `sales.sourceInventory`, then disposition every item as `keep`, `strengthen`, `qualify`, or `omit`. A retained item must bind to rendered copy; an omission needs a reason. Decide whether to `reuse-native`, `adapt`, `replace`, or leave `not-visual`.
-3. Model opportunities with the normal commercial fields plus `salesCase`: `need`, `alternative`, `scaleBasis`, `mechanism`, `outcome`, `ambition`, `entryPoint`, `evidenceBoundary`, `demandStatus`, and `readiness`. Keep the ambitious business distinct from the credible first engagement.
-4. Explain the opportunity set before detailed chapters. Use `sales.blocks` (actual copy or `from` references), explicit opportunity bindings, `placement` (`core`, `appendix`, `notes`), claims, and qualification. A binding provides traceability; it does not prove that prose communicates the asserted meaning.
-5. Plan each slide in `sales.narrative` with `takeaway`, `job`, `chapter`, `transition`, opportunity IDs, and placement. Sell need → solution → differentiated mechanism → outcome → partner upside; do not turn the internal sales-case checklist into an on-slide grid.
+Create `sales.brief` with audience decision, partner relevance/thesis, Navier difference, combination advantage, strategic upside, investment boundary, sources and unresolved questions. Complete the source inventory/disposition and opportunity sales cases before selecting compositions. Include the V2.1 companion intake (`companions`) and lever-transfer assessment (`leverTransfer`, with a reason when not applicable).
 
-The eight registered V2 compositions are `partner-opportunity`, `product-value`, `platform-architecture`, `opportunity-portfolio`, `mission-hero`, `customer-alternative`, `integrated-infrastructure`, and `strategic-close`. Unknown composition fields fail validation. See [layouts](docs/LAYOUTS.md).
+Plan a two-pass editorial review: (1) what proposition/mechanism/proposal does each slide make and what supports it; (2) does that support apply to this partner, mission, environment and decision? Passing validation does not answer either question.
 
-## Visual truth and review
+## Production and compatibility
 
-Every `VisualBrief` states its `argument`, `requiredFeatures`, `prohibitedImplications`, `origin`, reference sources, architecture options, unresolved choices, and review. Generated scenes are illustrative; they cannot establish proof or silently select unresolved architecture. Explicit `VisualAttachment` records bind a mark to a parent image hash and normalized region; do not infer attachment from filenames or pixels. Source-slide reuse is a recorded storyboard decision, not automatic rights clearance.
-
-Before native production, create the editorial review with fresh-reader answers for partner importance, company difference, recognizable businesses, strategic upside, and invitation, plus partner-specificity/name-swap, company-removal, and source-fidelity tests. These are editorial judgments, not proof from passing software checks.
-
-After native staging, use `render-review` for the actual PDF/native snapshot and inspect full and phone pages. Review kind and purpose matter: agent/fixture inspection is not human finished-deck or external-release approval. Unsigned templates are `HELD`; missing clearances stay held. Do not unconditionally overwrite a live deck. Revision promotion requires provider atomic conditional revisions; otherwise stage a review copy only. See [native lifecycle](docs/NATIVE-LIFECYCLE.md).
-
-V1 projects remain readable. `migrate` creates a held draft with explicit unresolved V2 authoring; it does not invent a thesis, rewrite sales cases, or approve a deck.
+Compile offline, then stage through an authorized `NativePort` into a fresh destination. Inspect the actual native output and PDF at full and phone size. Keep agent/fixture diagnostics, human finished-deck review and external-release approval separate. V2.1 projects use schema `2.1.0`; legacy `1.0.0`/`2.0.0` remain readable, while migration creates a held draft and invents no claims, continuity or approvals. See [workflow](docs/WORKFLOW.md).

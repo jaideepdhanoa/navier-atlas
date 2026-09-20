@@ -5,6 +5,10 @@ import {drawSales} from './compositions';
 import {assertSchema} from './schema';
 import {salesIssues,slideTitle,slideBlockClaims,notesBlocks} from './authoring';
 import {attachmentFrame} from './attachments';
+import {evidenceIssues} from './evidence';
+import {renderTalkTrack} from './talk-track';
+import {drawEvidenceFootnotes} from './footnotes';
+import {densityLedger,numeralDiagnostics} from './diagnostics';
 export interface RenderOptions {assetUrls?:Record<string,string>;allowUnresolvedAssets?:boolean;}
 export class RenderSafetyError extends Error {constructor(message:string){super(message);this.name='RenderSafetyError';}}
 type Warning=CompiledDeck['warnings'][number];
@@ -22,12 +26,6 @@ function checkBudgets(s:Slide){
   if(s.layout==='missions'){budget(s.title,48,`${s.key}.title`);budget(s.intro,100,`${s.key}.intro`);s.cards.forEach(c=>{budget(c.title,s.cards.length===4?44:56,`${s.key}.card.title`);budget(c.description,s.cards.length===4?70:116,`${s.key}.card.description`);v(c.visual,s.cards.length===4?65:100);});}
   if(s.layout==='close'){budget(s.title,51,`${s.key}.title`);budget(s.intro,70,`${s.key}.intro`);budget(s.ask,83,`${s.key}.ask`);budget(s.contact,50,`${s.key}.contact`);s.conversations.forEach(c=>{budget(c.title,36,`${s.key}.conversation.title`);budget(c.body,96,`${s.key}.conversation.body`);});v(s.visual);}
   if('explore'in s)budget(s.explore,110,`${s.key}.explore`);
-}
-function notes(project:Project,s:Slide){
-  const claimIds=slideBlockClaims(project,s);
-  const sourceIds=new Set([...s.sourceIds,...project.claims.filter(c=>claimIds.includes(c.id)).flatMap(c=>c.sourceIds)]);
-  const sources=project.sources.filter(x=>sourceIds.has(x.id)&&x.visibility==='public').map(x=>`${x.id}: ${x.title}\n${x.locator} (as of ${x.asOf})`).join('\n\n');
-  return [slideTitle(project,s),project.meta.audience==='internal'?[s.notes,...notesBlocks(project,s).map(b=>`${b.text} (detail placement: ${b.block.placementReason})`)].join('\n'):'',`EVIDENCE\n${project.claims.filter(c=>claimIds.includes(c.id)).map(c=>`${c.id} · ${c.evidenceClass}: ${c.basis}${c.limitations?' | Limitations: '+c.limitations:''}`).join('\n')}`,sources?`PUBLIC SOURCES\n${sources}`:'',`BINDING\n${JSON.stringify({slideKey:s.key,claimIds:s.claimIds,sourceIds:s.sourceIds,opportunityIds:s.opportunityIds})}`].filter(Boolean).join('\n\n');
 }
 function footer(p:Project){return p.meta.footer||`${p.meta.company} · ${p.meta.partner}`;}
 function visual(c:NativeCanvas,p:Project,warnings:Warning[],assets:Map<string,Asset>,urls:Map<string,string>,v:Visual|undefined,frame:{x:number;y:number;w:number;h:number},role:string,caption:'below'|'inside'|'none'='below',fit:'cover'|'contain'='cover'){
@@ -94,15 +92,17 @@ function draw(c:NativeCanvas,s:Slide,p:Project,a:Map<string,Asset>,u:Map<string,
   return [];
 }
 export function compileProject(project:Project,options:RenderOptions={}):CompiledDeck{
-  if(project.schemaVersion==='2.0.0'){assertSchema(project);const bad=salesIssues(project).filter(i=>i.severity==='error');if(bad.length)throw new RenderSafetyError(bad.slice(0,12).map(i=>`${i.code} ${i.path}: ${i.message}`).join('; '));}
+  if(['2.0.0','2.1.0'].includes(project.schemaVersion)){assertSchema(project);const bad=[...salesIssues(project),...evidenceIssues(project)].filter(i=>i.severity==='error');if(bad.length)throw new RenderSafetyError(bad.slice(0,12).map(i=>`${i.code} ${i.path}: ${i.message}`).join('; '));}
   const warnings:Warning[]=[],assets=new Map(project.assets.map(a=>[a.id,a])),used=new Set<string>();
   const visit=(x:any)=>{if(Array.isArray(x))x.forEach(visit);else if(x&&typeof x==='object')Object.entries(x).forEach(([k,v])=>{if(k==='assetId'&&typeof v==='string')used.add(v);else visit(v);});};project.slides.forEach(visit);[project.meta.companyLogoAssetId,project.meta.partnerLogoAssetId].forEach(id=>id&&used.add(id));
   const urls=new Map<string,string>();for(const id of used){const asset=assets.get(id);if(!asset)throw new RenderSafetyError(`Unknown asset ${id}`);const url=options.assetUrls?.[id]||asset.embeddingUrl;if(url)urls.set(id,url);else if(options.allowUnresolvedAssets){urls.set(id,`asset://${id}`);warn(warnings,'UNRESOLVED_ASSET',`assets.${id}`,'Resolve to a verified image URL before native staging.');}else throw new RenderSafetyError(`No embedding URL for asset ${id}`);}
   const slides:CompiledSlide[]=[],requests:any[]=[],seen=new Set<string>();
-  project.slides.forEach((s,i)=>{checkBudgets(s);const id=stableId(project.meta.projectId,s.key,'page'),c=new NativeCanvas(id,project.meta.projectId,s.key);c.requests.push({createSlide:{objectId:id,slideLayoutReference:{predefinedLayout:'BLANK'}}});const copyBindings=draw(c,s,project,assets,urls,warnings,i+1);
+  project.slides.forEach((s,i)=>{checkBudgets(s);const id=stableId(project.meta.projectId,s.key,'page'),c=new NativeCanvas(id,project.meta.projectId,s.key);c.requests.push({createSlide:{objectId:id,slideLayoutReference:{predefinedLayout:'BLANK'}}});const copyBindings=draw(c,s,project,assets,urls,warnings,i+1);drawEvidenceFootnotes(c,project,s);
     for(const r of c.requests){if(Object.keys(r).length!==1)throw new RenderSafetyError('Each Slides request must contain exactly one operation.');for(const[k,v]of Object.entries(r)as any){if(k.startsWith('create')&&v.objectId){if(seen.has(v.objectId))throw new RenderSafetyError(`Duplicate native ID ${v.objectId}`);seen.add(v.objectId);}}}
     c.boxes.forEach(b=>{if(outOfCanvas(b)&&!b.intentionalClip)warn(warnings,'OUT_OF_CANVAS',`slides.${s.key}.${b.objectId}`,'Element extends beyond canvas.');});
-    slides.push({key:s.key,objectId:id,layout:s.layout,requests:c.requests,elements:c.elements,boxes:c.boxes,visibleText:c.boxes.filter(b=>b.role==='text'&&b.text).map(b=>b.text!),notes:notes(project,s),...(s.layout==='sales'?{copyBindings}:{})});requests.push(...c.requests);
+    slides.push({key:s.key,objectId:id,layout:s.layout,requests:c.requests,elements:c.elements,boxes:c.boxes,visibleText:c.boxes.filter(b=>b.role==='text'&&b.text).map(b=>b.text!),notes:renderTalkTrack(project,s),...(s.layout==='sales'?{copyBindings}:{})});requests.push(...c.requests);
   });
-  return{schemaVersion:'1.0.0',projectId:project.meta.projectId,revision:project.meta.revision,inputHash:sha256(project),pageSize:PAGE,slides,requests,assetUses:slides.flatMap(s=>s.elements.filter(e=>e.kind==='image'&&e.assetId).map(e=>({assetId:e.assetId!,slideKey:s.key,role:e.role,objectId:e.objectId}))),warnings};
+  const compiled:CompiledDeck={schemaVersion:'1.0.0',projectId:project.meta.projectId,revision:project.meta.revision,inputHash:sha256(project),pageSize:PAGE,slides,requests,assetUses:slides.flatMap(s=>s.elements.filter(e=>e.kind==='image'&&e.assetId).map(e=>({assetId:e.assetId!,slideKey:s.key,role:e.role,objectId:e.objectId}))),warnings};
+  if(project.schemaVersion==='2.1.0'){for(const issue of numeralDiagnostics(project,compiled)){if(issue.severity==='error')throw new RenderSafetyError(issue.code+': '+issue.detail);warn(warnings,issue.code,issue.slideKeys.join(','),issue.detail);}for(const row of densityLedger(project,compiled)){const slide=project.slides.find(s=>s.key===row.slideKey)!;const name=slide.layout==='sales'?slide.composition:slide.layout;const max=project.policy.editorial?.bodyWordBudgets?.[name]??115;if(row.bodyWords>max)warn(warnings,'BODY_DENSITY',`slides.${row.slideKey}`,`${row.bodyWords} body words exceeds the advisory ${max}-word budget. Edit for argument density, not fact count.`);}}
+  return compiled;
 }

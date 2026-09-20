@@ -6,8 +6,11 @@ import { compileProject } from './render';
 import { sha256 } from './primitives';
 import { validateProject } from './validate';
 import {salesArtifacts,emptySalesAuthoring,migrationDraft} from './sales-package';
+import {densityLedger,numeralDiagnostics} from './diagnostics';
+import {evidenceManifest} from './talk-track';
+import {upgradeEvidenceDraft} from './upgrade-evidence';
 
-export const PACKAGE_VERSION = '2.0.0';
+export const PACKAGE_VERSION = '2.1.0';
 export const DISPLAY_NAME_LIMIT = 42;
 export const LEGAL_ENTITY_LIMIT = 64;
 
@@ -51,14 +54,14 @@ function displayName(value: string, label: string, max: number): string {
 
 function intakeProject(partner: string, entity: string): Project {
   return {
-    schemaVersion: '2.0.0',
+    schemaVersion: '2.1.0',
     sales:emptySalesAuthoring(),
     meta: {
       projectId: 'intake_replace_me', revision: 'r0', title: 'Incomplete strategic partnership intake',
       company: 'Company name to replace', partner, legalEntity: entity, audience: 'internal', archetype: 'strategic',
       objective: 'Replace this fictional intake with an approved objective and evidence.',
       meetingAudience: 'Internal working group', date: '2000-01-01', classification: 'INCOMPLETE INTAKE', fictional: true,
-      footer: 'FICTIONAL INTAKE — REPLACE BEFORE PRODUCTION',
+      footer: 'FICTIONAL INTAKE — REPLACE BEFORE PRODUCTION', recipientIds:[], notesMode:'talk-track',
     },
     sources: [], claims: [], assets: [], opportunities: [], slides: [],
     policy: { forbiddenTerms: [], forbiddenPartnerNames: [], requiredPhrases: [], allowMissingLogosForInternalReview: true },
@@ -156,6 +159,9 @@ export async function compilePackage(projectPath: string, out: string, urlsPath?
     'review-template.json': JSON.stringify(reviewTemplate(project, 'storyboard', compiled.inputHash), null, 2) + '\n',
   };
   Object.assign(artifacts,salesArtifacts(project,compiled));
+  artifacts['density-ledger.json']=JSON.stringify({inputHash:compiled.inputHash,rows:densityLedger(project,compiled),meaning:'Quantity bindings are not independently verified facts.'},null,2)+'\n';
+  artifacts['numeral-review.json']=JSON.stringify(numeralDiagnostics(project,compiled),null,2)+'\n';
+  artifacts['manifests/evidence.md']=evidenceManifest(project,compiled);
   const artifactHashes = Object.fromEntries(Object.entries(artifacts).map(([name, value]) => [name, digest(value)]));
   const manifest = { schemaVersion: '1.0.0', packageVersion: PACKAGE_VERSION, projectId: project.meta.projectId, revision: project.meta.revision, inputHash: projectHash, compiledHash, artifactHashes, status: holds.length ? 'HELD' : 'READY_FOR_REVIEW', holds, nativeRender: 'not-performed', visualQa: 'not-performed' };
   artifacts['build-manifest.json'] = JSON.stringify(manifest, null, 2) + '\n';
@@ -182,7 +188,7 @@ export async function writeReviewTemplate(projectPath: string, stage: ReviewRece
 }
 
 export function cliUsage(): string {
-  return 'Usage:\n  bun src/cli.ts init --out <new-dir> --partner <name> --entity <legal entity>\n  bun src/cli.ts validate --project <project.json> [--public]\n  bun src/cli.ts compile --project <project.json> --out <new-build-dir> [--urls <asset-url-map.json>]\n  bun src/cli.ts migrate --project <v1-project.json> --out <new-draft-dir>\n  bun src/cli.ts render-review --project <project.json> --compiled <compiled.json> --snapshot <native-after.json> --pdf <deck.pdf> --out <review-dir>\n  bun src/cli.ts assets --project <project.json> --query <term>\n  bun src/cli.ts review-template --project <project.json> --stage storyboard|comprehension|visual|release --out <dir>';
+  return 'Usage:\n  bun src/cli.ts init2.1 --out <new-dir> --partner <name> --entity <legal entity> (init is a compatibility alias)\n  bun src/cli.ts validate --project <project.json> [--public]\n  bun src/cli.ts compile --project <project.json> --out <new-build-dir> [--urls <asset-url-map.json>]\n  bun src/cli.ts migrate --project <v1-project.json> --out <new-draft-dir>\n  bun src/cli.ts render-review --project <project.json> --compiled <compiled.json> --snapshot <native-after.json> --pdf <deck.pdf> --out <review-dir>\n  bun src/cli.ts assets --project <project.json> --query <term>\n  bun src/cli.ts review-template --project <project.json> --stage storyboard|comprehension|visual|release --out <dir>';
 }
 
 /** Non-destructive migration aid, not an automatic rewrite of the story or native deck. */
@@ -190,6 +196,7 @@ export async function migratePackage(projectPath:string,out:string){
  const project=await readProject(projectPath);
  const checked=await validateProject(project,{projectRoot:dirname(resolve(projectPath)),checkFiles:true});
  if(!checked.ok)throw new PackageError('Fix V1 validation before migration. No files changed.');
+ if(project.schemaVersion!=='1.0.0')return upgradeEvidenceDraft(project,projectPath,out);
  const draft=migrationDraft(project),root=resolve(out);
  await writeDeterministicJson(join(root,'project-v1.json'),project);
  for(const asset of project.assets){const bytes=await readFile(resolve(dirname(projectPath),asset.path));const dest=join(root,asset.path);await mkdir(dirname(dest),{recursive:true});if(await exists(dest)){if(digest(await readFile(dest))!==digest(bytes))throw new PackageError('Refusing to overwrite migrated asset '+dest);}else await writeFile(dest,bytes,{flag:'wx'});}

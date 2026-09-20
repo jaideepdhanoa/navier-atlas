@@ -1,5 +1,6 @@
 // Sales authoring is partner-neutral. These records belong in each restricted project.
 import type { BaseSlide, Crop, Visual } from './types';
+import type {ClaimUse,QuantityUse,CompanionContinuity,LeverTransfer,SlideSupport,DiagnosticChecks} from './evidence-types';
 
 export const SALES_FIELDS = ['need','alternative','scaleBasis','mechanism','outcome','ambition','entryPoint','evidenceBoundary'] as const;
 export type SalesField = typeof SALES_FIELDS[number];
@@ -23,11 +24,13 @@ export interface CopyBlock {
  placement:'core'|'appendix'|'notes';
  placementReason?:string;
  qualification?:string;
+ claimUses?:ClaimUse[]; quantityUses?:QuantityUse[];
 }
 export interface SalesBrief {
  role:'standalone'|'investment-companion'; audienceDecision:string;
  partnerRelevance:string; partnerThesis:string; companyDifference:string; combinationAdvantage:string;
  strategicUpside:string; investmentBoundary:string; sourceIds:string[]; unresolvedQuestions:string[];
+ companions?:CompanionContinuity;leverTransfer?:LeverTransfer;
 }
 export interface StorySource {
  id:string; sourceId:string; kind:'proposition'|'reference-slide'; importance:'core'|'supporting';
@@ -41,7 +44,7 @@ export interface SourceDisposition {
 export type NarrativeJob = 'opening'|'partner-relevance'|'company-advantage'|'platform'|'portfolio'|'opportunity'|'strategic-value'|'invitation'|'support';
 export interface NarrativeEntry {
  slideKey:string; job:NarrativeJob; takeaway:string; transition:string; chapter:string;
- placement:'core'|'appendix'; opportunityIds:string[];
+ placement:'core'|'appendix'; opportunityIds:string[]; support?:SlideSupport;
 }
 export interface SalesAuthoring {
  brief:SalesBrief; sourceInventory:StorySource[]; sourceDisposition:SourceDisposition[];
@@ -99,18 +102,19 @@ export interface CopyEmission {blockId:string;slideKey:string;objectId:string;te
 export interface ReviewFinding {code:string;severity:'revise'|'note';detail:string;slideKeys:string[];}
 export interface ReaderAnswer {answer:string;slideKeys:string[];}
 export interface EditorialReview {
- schemaVersion:'2.0.0'; subjectHash:string; visibleCopyHash:string;
+ schemaVersion:'2.0.0'|'2.1.0'; subjectHash:string; visibleCopyHash:string;
  reviewer:{name:string;kind:'human'|'agent'|'fixture'}; reviewedAt:string; decision:'pass'|'revise';
  answers:{partnerImportance:ReaderAnswer;companyDifference:ReaderAnswer;businesses:ReaderAnswer;strategicUpside:ReaderAnswer;invitation:ReaderAnswer};
- tests:{partnerSpecificity:ReaderAnswer;companyRemoval:ReaderAnswer;sourceFidelity:ReaderAnswer};
+ tests:{partnerSpecificity:ReaderAnswer;companyRemoval:ReaderAnswer;sourceFidelity:ReaderAnswer;specificity?:ReaderAnswer;applicability?:ReaderAnswer;companionContinuity?:ReaderAnswer;leverTransfer?:ReaderAnswer;qualification?:ReaderAnswer;notesDisclosure?:ReaderAnswer};
+ rounds?:{specificity:{reviewedAt:string;decision:'pass'|'revise';notes:string};relevance:{reviewedAt:string;decision:'pass'|'revise';notes:string}};
  findings:ReviewFinding[];
 }
 export interface RenderArtifact {path:string;sha256:string;}
 export interface RenderReviewBundle {
- schemaVersion:'2.0.0'; inputHash:string; compiledHash:string; nativeHash:string; nativePresentationId:string;
+ schemaVersion:'2.0.0'|'2.1.0'; inputHash:string; compiledHash:string; nativeHash:string; nativePresentationId:string;
  pdf:RenderArtifact; pageCount:number; visibleCopyHash:string;
  pages:{slideKey:string;page:number;full:RenderArtifact;phone:RenderArtifact;textCoverage:number;missingText:string[]}[];
- status:'ready-for-inspection'|'held'; holds:string[]; inspected:false; externalRelease:'held';
+ status:'ready-for-inspection'|'held'; holds:string[]; inspected:false; externalRelease:'held'; checks?:DiagnosticChecks;
 }
 export interface VisualInspection {
  schemaVersion:'2.0.0'; bundleHash:string; reviewer:{name:string;kind:'human'|'agent'|'fixture'};reviewedAt:string;

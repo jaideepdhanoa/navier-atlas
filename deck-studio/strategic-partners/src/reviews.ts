@@ -3,6 +3,7 @@ import {sha256} from './primitives';
 import {salesAudit,visibleCopyHash} from './authoring';
 import {validateProject} from './validate';
 import {verifyRenderFiles} from './artifact-files';
+import {evidenceIssues} from './evidence';
 
 const timestamp=(s:unknown)=>typeof s==='string'&&!Number.isNaN(Date.parse(s));
 const text=(s:unknown)=>typeof s==='string'&&s.trim().length>0;
@@ -10,19 +11,24 @@ const ANSWERS=['partnerImportance','companyDifference','businesses','strategicUp
 const TESTS=['partnerSpecificity','companyRemoval','sourceFidelity'] as const;
 export function editorialTemplate(project:Project,compiled:CompiledDeck):EditorialReview{
  const blank=()=>({answer:'',slideKeys:[]});
- return {schemaVersion:'2.0.0',subjectHash:compiled.inputHash,visibleCopyHash:visibleCopyHash(compiled),reviewer:{name:'',kind:'agent'},reviewedAt:'',decision:'revise',answers:{partnerImportance:blank(),companyDifference:blank(),businesses:blank(),strategicUpside:blank(),invitation:blank()},tests:{partnerSpecificity:blank(),companyRemoval:blank(),sourceFidelity:blank()},findings:[{code:'UNREVIEWED',severity:'revise',detail:'Unsigned template. Read only the visible copy first; then compare source dispositions. This is not human or release approval.',slideKeys:[]}]};
+ return {schemaVersion:project.schemaVersion==='2.1.0'?'2.1.0':'2.0.0',subjectHash:compiled.inputHash,visibleCopyHash:visibleCopyHash(compiled),reviewer:{name:'',kind:'agent'},reviewedAt:'',decision:'revise',answers:{partnerImportance:blank(),companyDifference:blank(),businesses:blank(),strategicUpside:blank(),invitation:blank()},tests:{partnerSpecificity:blank(),companyRemoval:blank(),sourceFidelity:blank(),...(project.schemaVersion==='2.1.0'?{specificity:blank(),applicability:blank(),companionContinuity:blank(),leverTransfer:blank(),qualification:blank(),notesDisclosure:blank()}:{})},...(project.schemaVersion==='2.1.0'?{rounds:{specificity:{reviewedAt:'',decision:'revise' as const,notes:''},relevance:{reviewedAt:'',decision:'revise' as const,notes:''}}}:{}),findings:[{code:'UNREVIEWED',severity:'revise',detail:'Unsigned template. Read only the visible copy first; then compare source dispositions. This is not human or release approval.',slideKeys:[]}]};
 }
 export function editorialProblems(project:Project,compiled:CompiledDeck,review:EditorialReview|undefined):string[]{
  const problems:string[]=[];
  if(!review)return ['Fresh-reader sales review is missing.'];
- if(review.schemaVersion!=='2.0.0'||review.subjectHash!==compiled.inputHash||review.visibleCopyHash!==visibleCopyHash(compiled))problems.push('Fresh-reader review is stale or bound to another artifact.');
+ if(review.schemaVersion!==(project.schemaVersion==='2.1.0'?'2.1.0':'2.0.0')||review.subjectHash!==compiled.inputHash||review.visibleCopyHash!==visibleCopyHash(compiled))problems.push('Fresh-reader review is stale or bound to another artifact.');
  if(!text(review.reviewer?.name)||!['human','agent','fixture'].includes(review.reviewer?.kind)||!timestamp(review.reviewedAt))problems.push('Editorial reviewer identity/date is missing.');
  if(review.reviewer?.kind==='fixture'&&!project.meta.fictional)problems.push('Fixture reviews cannot approve a real partner story.');
  if(review.decision!=='pass')problems.push('Fresh-reader review requests revision.');
  const keys=new Set(compiled.slides.map(s=>s.key));
- for(const [group,items] of [['answers',ANSWERS],['tests',TESTS]] as const)for(const key of items){const a=(review[group] as any)?.[key];if(!a||!text(a.answer)||!Array.isArray(a.slideKeys)||a.slideKeys.length===0||a.slideKeys.some((k:string)=>!keys.has(k)))problems.push(`Missing answer or valid visible-copy citations: ${group}.${key}.`);}
+ for(const [group,items] of [['answers',ANSWERS],['tests',project.schemaVersion==='2.1.0'?[...TESTS,'specificity','applicability','companionContinuity','leverTransfer','qualification','notesDisclosure']:TESTS]] as const)for(const key of items){const a=(review[group] as any)?.[key];if(!a||!text(a.answer)||!Array.isArray(a.slideKeys)||a.slideKeys.length===0||a.slideKeys.some((k:string)=>!keys.has(k)))problems.push(`Missing answer or valid visible-copy citations: ${group}.${key}.`);}
  if(!Array.isArray(review.findings)||review.findings.some(f=>f.severity==='revise'))problems.push('Unresolved editorial findings.');
  const audit=salesAudit(project,compiled);if(audit.findings.some(f=>f.severity==='revise'))problems.push('Sales audit has unresolved narrative/coverage findings.');
+ if(project.schemaVersion==='2.1.0'){
+  for(const name of ['specificity','relevance'] as const){const r=review.rounds?.[name];if(!r||r.decision!=='pass'||!timestamp(r.reviewedAt)||!text(r.notes))problems.push('Two pre-production editorial rounds are required: '+name);}
+  if(review.rounds&&Date.parse(review.rounds.specificity.reviewedAt)>Date.parse(review.rounds.relevance.reviewedAt))problems.push('Relevance review must follow specificity review.');
+  problems.push(...evidenceIssues(project).filter(i=>i.severity!=='warning').map(i=>i.code+': '+i.message));
+ }
  return problems;
 }
 export function requireEditorialReview(project:Project,compiled:CompiledDeck,review:EditorialReview|undefined){const bad=editorialProblems(project,compiled,review);if(bad.length)throw new Error('EDITORIAL_REVIEW_HELD: '+bad.join(' '));}

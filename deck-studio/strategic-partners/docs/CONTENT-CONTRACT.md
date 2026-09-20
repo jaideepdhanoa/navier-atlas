@@ -1,35 +1,23 @@
-# V2 content contract
+# V2.1 content contract
 
-The runtime contract is in `src/types.ts`, `src/sales-types.ts`, and `project.schema.json`; validation and rendering must agree. A valid project is not automatically persuasive, rights-cleared, visually inspected, or approved for release.
+The runtime contract is in `src/types.ts`, `src/evidence-types.ts`, `src/evidence.ts`, `src/talk-track.ts`, `src/footnotes.ts` and `src/diagnostics.ts`. A valid project is not automatically persuasive, truthful, rights-cleared, visually inspected or approved for release.
 
-## Brief, sources, and opportunities
+## Brief, sources and sales cases
 
-`Project.sales.brief` requires:
+Complete `sales.brief` with the V2 sales fields plus `companions` and `leverTransfer`. `companions` is recipient/version-specific: record held documents, consequential claims and each disposition (`retained`, `updated`, `corrected`, `notes-only`, `retired`). A correction needs replacement claims, sources, owner and reason. A prior document held by one recipient is not clearance for another. Use `leverTransfer.status:'not-applicable'` only with a reason.
 
-- `role`: `standalone` or `investment-companion`;
-- `audienceDecision`, `partnerRelevance`, `partnerThesis`, `companyDifference`, `combinationAdvantage`, `strategicUpside`;
-- `investmentBoundary`, `sourceIds`, and `unresolvedQuestions`.
+Sources used by V2.1 claims identify kind (`primary`/`secondary`), visibility, audience and recipient clearance. Do not expose private locators. A benchmark, precedent or placeholder must retain its actual basis; partner-visible placeholders need approval and a replacement owner/question.
 
-`sourceInventory` records `id`, `sourceId`, `kind` (`proposition` or `reference-slide`), `importance`, `summary`, and optional locator. Every item gets one `sourceDisposition`: `action` (`keep`, `strengthen`, `qualify`, `omit`), reason, destination block IDs, and visual decision (`reuse-native`, `adapt`, `replace`, `not-visual`) with reason. Retained propositions must reach rendered copy; core material must remain in core placement or be explicitly omitted.
+## Claims and visible uses
 
-`Opportunity` keeps V1 fields: `kind`, `title`, `product`, `customer`, `payer`, `commercialLogic`, `partnerBenefit`, both contributions, `nextQuestion`, `claimIds`, and `status` (`proposed` or `existing`). Its optional `salesCase` adds `need`, `alternative`, `scaleBasis`, `mechanism`, `outcome`, `ambition`, `entryPoint`, `evidenceBoundary`, `demandStatus` (`partner-demand`, `market-context`, `hypothesis`), and `readiness` (`existing`, `demonstrated`, `in-design`, `exploratory`). Do not combine distinct payer or payment relationships. Do not turn a first study/evaluation into the ceiling of the business.
+A used 2.1 claim requires topic, provenance, operating context and `dependsOn`; numeric claims require quantities and applicability. Currency claims require a relevant price basis. `ClaimUse` binds a claim to visible framing (`fact`, `modeled`, `target`, `record`, `precedent`, `placeholder` or `proposal`) and role. `QuantityUse` binds the exact visible display to a quantity. Slide-wide `claimIds` alone do not establish what prose means.
 
-Claims remain source-linked and carry evidence class, basis, limitations, audience clearance, and source IDs. Visible qualifiers must match the evidence class: a generic concept or confidentiality label does not qualify a modeled estimate. Keep demonstrated, modeled, planned, proposed, and unresolved material distinct. Unknowns remain unresolved; do not invent demand, economics, readiness, approvals, capacity, or launch dates.
+`EvidenceFootnote` is authored and claim/source-linked. It is optional, must be audience-safe, and the combined visible band is max 240 characters. It is not a blanket slide evidence grade. Mixed measured/model/target/record material keeps separate labels; essential context cannot be hidden in fine print.
 
-## Authoring and traceability
+## Notes, reviews and diagnostics
 
-`CopyBlock` has an ID, either `text` or `from`, `bindings`, `claimIds`, `placement` (`core`, `appendix`, `notes`), optional `placementReason`, and optional qualification. `OpportunityBinding` names an opportunity and field (including `salesCase.*`). Sales slide string fields are block IDs, not duplicate prose. A `from` block resolves a field at compile time; an authored block still needs semantic bindings. Bindings are traceability assertions, not proof that prose communicates the meaning.
+A 2.1 external slide uses a cleared `TalkTrack` (`say`, `basis`, `guardrail`, `qa`) with reviewer/date/reason, audience and recipient clearance. `notesMode:'audit'` is internal only. `evidenceManifest` is a restricted working record, not partner notes. Two editorial rounds are required: proposition/support, then applicability/decision relevance.
 
-`NarrativeEntry` records `slideKey`, `job`, `takeaway`, `transition`, `chapter`, placement, and opportunity IDs. Jobs are `opening`, `partner-relevance`, `company-advantage`, `platform`, `portfolio`, `opportunity`, `strategic-value`, `invitation`, and `support`. Introduce the opportunity set before detailed chapters; use sales-layer copy for need, product, difference, proof, upside and invitation, while keeping detailed scoping/validation/contracting in notes or appendix.
+`densityLedger` counts emitted body/fine-print words, bound quantity uses, hedge tokens and notes words; it does not count facts proved. The default body budget is 115 advisory unless composition policy overrides it. `numeralDiagnostics` checks bound quantities and context; `geometryDiagnostics` uses actual native transforms and optional PDF words. Missing PDF words means orphan-wrap detection is not checked. All diagnostics remain separate from human inspection.
 
-## Layout and evidence rules
-
-Sales compositions are registered and strictly validated; unknown composition fields fail. Titles/copy budgets, allowed fields, visual requirements and bindings are documented in [LAYOUTS](LAYOUTS.md). Payment flows use explicit `Transaction` objects with actors, labels, and `kind: "payment"`.
-
-Assets require local path, SHA-256, positive dimensions, MIME, maturity, rights note, caption, visibility, clearance and source IDs. Concepts must be visibly labeled. URLs do not confer rights or release clearance. The registry copies clearance conservatively and never infers attachments or visual facts.
-
-## Reviews and records
-
-`EditorialReview` is schema `2.0.0` and binds `subjectHash` and `visibleCopyHash`. It records reviewer identity/kind, decision, five reader answers (`partnerImportance`, `companyDifference`, `businesses`, `strategicUpside`, `invitation`), three tests (`partnerSpecificity`, `companyRemoval`, `sourceFidelity`), and findings. These are editorial assessments.
-
-`RenderReviewBundle` binds compiled/native/PDF hashes and native presentation ID, page count, PDF, full/phone page artifacts, text coverage, holds, `inspected:false`, and `externalRelease:'held'`. `VisualInspection` binds the bundle hash and records full/phone inspection per page. Reviewer kind and purpose are not interchangeable: agent or fixture review cannot satisfy human finished-deck or external-release approval.
+V1/legacy 1.0.0 and 2.0.0 remain readable. Migration creates a held draft and preserves assets/data without fabricating evidence, continuity, claims or approvals.

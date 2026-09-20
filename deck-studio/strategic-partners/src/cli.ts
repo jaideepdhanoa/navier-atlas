@@ -17,7 +17,7 @@ function output(value: unknown): void { process.stdout.write(JSON.stringify(valu
 async function main() {
   const args = process.argv.slice(2), command = args[0];
   if (!command || command === '--help' || command === '-h') { process.stdout.write(cliUsage() + '\n'); return; }
-  if (command === 'init') {
+  if (command === 'init' || command === 'init2.1') {
     const result = await initPackage(flag(args, '--out')!, flag(args, '--partner')!, flag(args, '--entity')!);
     output({ status: 'HELD', message: 'Created an INCOMPLETE-INTAKE fictional scaffold. Replace demo data before production; it is not ready for a real partner.', project: result.projectPath, hold: result.holdPath });
     return;
